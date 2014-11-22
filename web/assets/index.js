@@ -19,6 +19,7 @@ function getWebsterSyns (word, ref, key) {
           //alert("success");
       }
     });
+}
 
 function getWebsterDefinitionJSON (word, ref, key)
   { uri = "http://www.dictionaryapi.com/api/v1/references/" + encodeURIComponent(ref) + "/json/" +encodeURIComponent(word) + "?key=" + encodeURIComponent(key);
@@ -26,7 +27,7 @@ function getWebsterDefinitionJSON (word, ref, key)
     $.getJSON(uri,function(data) {
       console.log(data);
     });
-  };
+  }
 
 
 var path;
@@ -86,7 +87,7 @@ function getAndParseBHT() {
       new_arr = [];
       html_str = '<b>' + word_path_arr[0] + '</b>';
       for (var PoS in response) {
-          html_str += '<br><em>' + PoS + '</em>: '
+          html_str += '<br><em>' + PoS + '</em>: ';
           for (var syn_word in response[PoS].syn) {
             new_arr.push('<span class="syn">' + response[PoS].syn[syn_word] + '</span>');
           }
