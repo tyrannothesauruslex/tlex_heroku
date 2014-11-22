@@ -126,7 +126,8 @@ span.twitter-typeahead {
     font-family: 'Satisfy';
     font-size: 24px;
     /*vertical-align: baseline;*/
-    /*padding: 8px;*/
+    padding: 8px;
+
     padding-left: 42px;
 }
 

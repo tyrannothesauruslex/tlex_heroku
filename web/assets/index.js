@@ -1,7 +1,26 @@
-var mwUrl = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/test?key=ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d";
+var mw_url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/test?key=ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d";
 
+var mw_apikey = 'ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d';
 
-function mwJSON (word, ref, key)
+var wordnik_url = "http://api.wordnik.com/v4/word.json/";
+var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+
+function getWebsterSyns (word, ref, key) { 
+    uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + 
+          encodeURIComponent(word) + "?key=" + encodeURIComponent(mw_apikey);
+
+    $.ajax({
+      url: uri,
+      type: "GET",
+      dataType: "jsonp",  //For external apis
+      success: function(response) { 
+          //var xml = $( $.parseXML(response) );
+          console.log(response);
+          //alert("success");
+      }
+    });
+
+function getWebsterDefinitionJSON (word, ref, key)
   { uri = "http://www.dictionaryapi.com/api/v1/references/" + encodeURIComponent(ref) + "/json/" + 
           encodeURIComponent(word) + "?key=" + encodeURIComponent(key);
     //return file_get_contents(uri);
@@ -11,8 +30,6 @@ function mwJSON (word, ref, key)
   };
 
 
-var baseUrl = "http://api.wordnik.com/v4/word.json/";
-var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 var path;
 
 var bht_url = "https://words.bighugelabs.com/api/2/";
@@ -29,8 +46,8 @@ window.onload = function() {
     $('#your_word').focus();
 
     $(window).keypress(function(e) {
-      if (e.keyCode == 0 || e.keyCode == 32) {
-        console.log('Space pressed');
+      if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
+        //console.log('Space pressed, or Enter pressed');
         getAndParseBHT();
       }
     });
