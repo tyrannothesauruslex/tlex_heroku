@@ -21,8 +21,7 @@ function getWebsterSyns (word, ref, key) {
     });
 
 function getWebsterDefinitionJSON (word, ref, key)
-  { uri = "http://www.dictionaryapi.com/api/v1/references/" + encodeURIComponent(ref) + "/json/" + 
-          encodeURIComponent(word) + "?key=" + encodeURIComponent(key);
+  { uri = "http://www.dictionaryapi.com/api/v1/references/" + encodeURIComponent(ref) + "/json/" +encodeURIComponent(word) + "?key=" + encodeURIComponent(key);
     //return file_get_contents(uri);
     $.getJSON(uri,function(data) {
       console.log(data);
