@@ -9,7 +9,8 @@ var FOO, BAR;
 
 function parseWebsterSyns (response) {
       new_arr = [];
-
+      console.log(response);
+      FOO = response;
       /* entry
           term
               hw ("magic")
@@ -20,24 +21,20 @@ function parseWebsterSyns (response) {
               vi (example sentence)
               syn!
               */
-
-
-
-
       var entries = $(response).find('entry');
-      var terms;
+      var terms, html_str;
 
       for (var i = 0; i < entries.length; i++) {
         
         terms = $(entries[i]).find('term');
         for (var j = 0; j < terms.length; j++) {
-          word = terms[j].find('hw'); 
-          PoS = terms[j].find('fl'); 
+          word = $(terms[j]).find('hw'); 
+          PoS = $(terms[j]).find('fl'); 
           
           html_str += '<br><strong>' + word + '</strong> (<em>'+ PoS +'</em>)  ';
           
 
-          senses = terms[j].find('sens'); 
+          senses = $(terms[j]).find('sens'); 
           for (var k = 0; k < senses.length; k++) {
             html_str += senses[k].find('sn') + '. ' + senses[k].find('mc') + '<br>'; 
             html_str += senses[k].find('syn') + '<br>'; 
@@ -46,29 +43,9 @@ function parseWebsterSyns (response) {
 
       }
 
-      
-      //html_str = '<b>' + word_path_arr[0] + '</b>';
-      
-/*      xmlDoc = $.parseXML( response ); 
-      $xml = $( xmlDoc );
-
-      console.log($xml);
-      FOO = $xml;
-*/
-
-  
-      /*for (var PoS in response) {
-          html_str += '<br><em>' + PoS + '</em>: ';
-          for (var syn_word in response[PoS].syn) {
-            new_arr.push('<span class="syn">' + response[PoS].syn[syn_word] + '</span>');
-          }
-          //html_str += new_arr.concat(', ');
-          html_str += new_arr.join(', ');
-      }
-*/
       $('#syns').html( html_str);
-
 }
+
 
 function getWebsterSyns (word, ref, key) { 
     uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + 
