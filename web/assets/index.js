@@ -5,6 +5,30 @@ var mw_apikey = 'ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d';
 var wordnik_url = "http://api.wordnik.com/v4/word.json/";
 var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 
+
+function parseWebsterSyns (response) {
+      new_arr = [];
+      //html_str = '<b>' + word_path_arr[0] + '</b>';
+      
+      xmlDoc = $.parseXML( response ); 
+      $xml = $( xmlDoc );
+
+      //html_str = '<b>' + word_path_arr[0] + '</b>';
+      console.log($xml);
+
+      /*for (var PoS in response) {
+          html_str += '<br><em>' + PoS + '</em>: ';
+          for (var syn_word in response[PoS].syn) {
+            new_arr.push('<span class="syn">' + response[PoS].syn[syn_word] + '</span>');
+          }
+          //html_str += new_arr.concat(', ');
+          html_str += new_arr.join(', ');
+      }
+*/
+      $('#syns').html( html_str);
+
+}
+
 function getWebsterSyns (word, ref, key) { 
     uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + 
           encodeURIComponent(word) + "?key=" + encodeURIComponent(mw_apikey) ; // + '&outputFormat=application/json';
@@ -19,6 +43,8 @@ function getWebsterSyns (word, ref, key) {
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
+
+          parseWebsterSyns(response);
           //alert("success");
       }
     });
