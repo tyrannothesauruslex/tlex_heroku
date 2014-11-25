@@ -5,17 +5,58 @@ var mw_apikey = 'ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d';
 var wordnik_url = "http://api.wordnik.com/v4/word.json/";
 var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 
+var FOO, BAR;
 
 function parseWebsterSyns (response) {
       new_arr = [];
+
+      /* entry
+          term
+              hw ("magic")
+          fl (part of speech)
+          sens
+              sn (#1)
+              mc (definition 1)
+              vi (example sentence)
+              syn!
+              */
+
+
+
+
+      var entries = $(response).find('entry');
+      var terms;
+
+      for (var i = 0; i < entries.length; i++) {
+        
+        terms = $(entries[i]).find('term');
+        for (var j = 0; j < terms.length; j++) {
+          word = terms[j].find('hw'); 
+          PoS = terms[j].find('fl'); 
+          
+          html_str += '<br><strong>' + word + '</strong> (<em>'+ PoS +'</em>)  ';
+          
+
+          senses = terms[j].find('sens'); 
+          for (var k = 0; k < senses.length; k++) {
+            html_str += senses[k].find('sn') + '. ' + senses[k].find('mc') + '<br>'; 
+            html_str += senses[k].find('syn') + '<br>'; 
+          }
+        }
+
+      }
+
+      
       //html_str = '<b>' + word_path_arr[0] + '</b>';
       
-      xmlDoc = $.parseXML( response ); 
+/*      xmlDoc = $.parseXML( response ); 
       $xml = $( xmlDoc );
 
-      //html_str = '<b>' + word_path_arr[0] + '</b>';
       console.log($xml);
+      FOO = $xml;
+*/
 
+  
       /*for (var PoS in response) {
           html_str += '<br><em>' + PoS + '</em>: ';
           for (var syn_word in response[PoS].syn) {
@@ -43,7 +84,7 @@ function getWebsterSyns (word, ref, key) {
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
-
+          BAR = response;
           parseWebsterSyns(response);
           //alert("success");
       }
