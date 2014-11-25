@@ -7,12 +7,15 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 
 function getWebsterSyns (word, ref, key) { 
     uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + 
-          encodeURIComponent(word) + "?key=" + encodeURIComponent(mw_apikey);
+          encodeURIComponent(word) + "?key=" + encodeURIComponent(mw_apikey) ; // + '&outputFormat=application/json';
+
+    uri = 'server/proxy.php?url=' + uri;
 
     $.ajax({
       url: uri,
       type: "GET",
-      dataType: "jsonp",  //For external apis
+      //dataType: "jsonp",  //For external apis
+      dataType: "xml",  //For external apis
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
