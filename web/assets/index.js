@@ -263,10 +263,10 @@ function toggleOpts() {
     console.log(this);
     if (OPT_SHOWN == false){
         //$("#popUp").fadeIn();
-        $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+        $("#word-opts").show(function(){OPT_SHOWN = true;});
     }
     if (OPT_SHOWN == true){
         //$("#popUp").fadeOut();
-        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+        $("#word-opts").hide(function(){OPT_SHOWN=false});
     }
 }
