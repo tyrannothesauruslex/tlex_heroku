@@ -25,6 +25,7 @@ function parseWebsterSyns (json_data) {
               syn!
               */
       //var entries = $(xml).find('entry');
+      console.log('json_data',json_data);
       var entries = $(json_data).find('entry');
       var terms, html_str;
 
@@ -142,7 +143,7 @@ function getAndParseBHT() {
               // each of which is an array
               // for now push all syns into one array?    
       new_arr = [];
-      html_str = '<span class="opt-able" onclick="toggleOpts();><b>' + word_path_arr[0] + '</b></span>';
+      html_str = '<span class="opt-able" onclick="toggleOpts();"><b>' + word_path_arr[0] + '</b></span>';
       for (var PoS in response) {
           html_str += '<br><em>' + PoS + '</em>: ';
           for (var syn_word in response[PoS].syn) {
