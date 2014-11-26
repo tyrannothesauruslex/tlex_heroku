@@ -196,3 +196,31 @@ p {
     left: 0;
 
 }
+
+.rot--90 {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+.rot-90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+#word-opts {
+    background-color: #ccc;
+    border: 2px solid #555;
+}
+
+
+#word-opts>span {
+    font-family: "Arial Rounded MT", Helvetica, Arial, sans-serif;
+    font-weight: 700 20px 'Arial Round';
+    font-size: 20px;
+    color: #555;
+}

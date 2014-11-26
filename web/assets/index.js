@@ -35,7 +35,7 @@ function parseWebsterSyns (json_data) {
           word = $(terms[j]).find('hw'); 
           PoS = $(terms[j]).find('fl'); 
           
-          html_str += '<br><strong>' + word + '</strong> (<em>'+ PoS +'</em>)  ';
+          html_str += '<br><span class="opt-able" onclick="toggleOpts();"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
           
 
           senses = $(terms[j]).find('sens'); 
@@ -142,7 +142,7 @@ function getAndParseBHT() {
               // each of which is an array
               // for now push all syns into one array?    
       new_arr = [];
-      html_str = '<b>' + word_path_arr[0] + '</b>';
+      html_str = '<span class="opt-able" onclick="toggleOpts();><b>' + word_path_arr[0] + '</b></span>';
       for (var PoS in response) {
           html_str += '<br><em>' + PoS + '</em>: ';
           for (var syn_word in response[PoS].syn) {
@@ -233,3 +233,39 @@ function xmlToJson(xml) {
   return obj;
 };
 
+
+var OPT_SHOWN = false;
+
+
+function initWordOpts() {
+    // might want to click multiple (heart, upvote, use, ode)
+    /*function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }   */ 
+    $(".opt-able").click(function(){
+        if (OPT_SHOWN == false){
+            //$("#popUp").fadeIn();
+            $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+        }
+        if (OPT_SHOWN == true){
+            //$("#popUp").fadeOut();
+            $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+        }
+    });    
+}
+
+function toggleOpts() {
+    console.log(this);
+    if (OPT_SHOWN == false){
+        //$("#popUp").fadeIn();
+        $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+    }
+    if (OPT_SHOWN == true){
+        //$("#popUp").fadeOut();
+        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+    }
+}
