@@ -47,6 +47,8 @@ function parseWebsterSyns (json_data) {
 
       }
 
+      console.log(html_str);
+
       $('#syns').html( html_str);
 }
 
@@ -101,7 +103,9 @@ window.onload = function() {
     $(window).keypress(function(e) {
       if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
         //console.log('Space pressed, or Enter pressed');
+        var word = extractor( $('#your_word').val() );
         getAndParseBHT();
+        getWebsterDefinitionJSON(word, 'foo', mw_apikey);
       }
     });
 
@@ -148,7 +152,7 @@ function getAndParseBHT() {
           html_str += new_arr.join(', ');
       }
 
-      $('#syns').html( html_str);
+      $('#syns2').html( html_str);
 
 /*
       var newer_arr = ['<b>' + word_path_arr[0] + ': </b>']; // [0] is the original word searched
