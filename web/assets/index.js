@@ -105,7 +105,7 @@ window.onload = function() {
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
         getAndParseBHT();
-        getWebsterDefinitionJSON(word, 'foo', mw_apikey);
+        getWebsterSyns(word, 'foo', mw_apikey);
       }
     });
 
