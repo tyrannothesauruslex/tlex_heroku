@@ -25,7 +25,7 @@ function parseWebsterSyns (json_data) {
               syn!
               */
       //var entries = $(xml).find('entry');
-      var entries = $(response).find('entry');
+      var entries = $(json_data).find('entry');
       var terms, html_str;
 
       for (var i = 0; i < entries.length; i++) {
