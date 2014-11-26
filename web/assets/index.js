@@ -67,7 +67,8 @@ function getWebsterSyns (word, ref, key) {
           console.log(response);
           FOO = response;
           //parseWebsterSyns(response);
-          BAR = xmlToJSON.parseString(FOO);
+          //BAR = xmlToJSON.parseString(FOO);
+          BAR = xmlToJSON.parseXML(FOO);
           //alert("success");
       }
     });
