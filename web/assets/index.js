@@ -11,6 +11,9 @@ function parseWebsterSyns (response) {
       new_arr = [];
       console.log(response);
       FOO = response;
+      xml = $.parseXML(response);
+      BAR = $.parseXML(response);
+
       /* entry
           term
               hw ("magic")
@@ -21,7 +24,7 @@ function parseWebsterSyns (response) {
               vi (example sentence)
               syn!
               */
-      var entries = $(response).find('entry');
+      var entries = $(xml).find('entry');
       var terms, html_str;
 
       for (var i = 0; i < entries.length; i++) {
