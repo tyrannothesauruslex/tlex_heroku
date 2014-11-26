@@ -8,12 +8,12 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 var FOO, BAR;
 
 function parseWebsterSyns (response) {
-      new_arr = [];
+      /*new_arr = [];
       console.log(response);
       FOO = response;
       xml = $.parseXML(response);
       BAR = $.parseXML(response);
-
+*/
       /* entry
           term
               hw ("magic")
@@ -24,7 +24,8 @@ function parseWebsterSyns (response) {
               vi (example sentence)
               syn!
               */
-      var entries = $(xml).find('entry');
+      //var entries = $(xml).find('entry');
+      var entries = $(response).find('entry');
       var terms, html_str;
 
       for (var i = 0; i < entries.length; i++) {
@@ -64,8 +65,9 @@ function getWebsterSyns (word, ref, key) {
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
-          BAR = response;
-          parseWebsterSyns(response);
+          //BAR = response;
+          //parseWebsterSyns(response);
+          BAR = xmlToJson(response);
           //alert("success");
       }
     });
@@ -186,4 +188,43 @@ $(document).on("click.tt", ".tt-suggestion", function(e) {
 // jQuery19109778877520002425_1414967930149({"noun":{"syn":["accident","chance event","fortuity"]},"verb":{"syn":["happen","go on","pass off","occur","pass","fall out","come about","take place"]}});
 
 
+
+// Changes XML to JSON
+function xmlToJson(xml) {
+  
+  // Create the return object
+  var obj = {};
+
+  if (xml.nodeType == 1) { // element
+    // do attributes
+    if (xml.attributes.length > 0) {
+    obj["@attributes"] = {};
+      for (var j = 0; j < xml.attributes.length; j++) {
+        var attribute = xml.attributes.item(j);
+        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+      }
+    }
+  } else if (xml.nodeType == 3) { // text
+    obj = xml.nodeValue;
+  }
+
+  // do children
+  if (xml.hasChildNodes()) {
+    for(var i = 0; i < xml.childNodes.length; i++) {
+      var item = xml.childNodes.item(i);
+      var nodeName = item.nodeName;
+      if (typeof(obj[nodeName]) == "undefined") {
+        obj[nodeName] = xmlToJson(item);
+      } else {
+        if (typeof(obj[nodeName].push) == "undefined") {
+          var old = obj[nodeName];
+          obj[nodeName] = [];
+          obj[nodeName].push(old);
+        }
+        obj[nodeName].push(xmlToJson(item));
+      }
+    }
+  }
+  return obj;
+};
 
