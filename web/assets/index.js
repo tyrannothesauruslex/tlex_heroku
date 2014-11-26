@@ -7,7 +7,7 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 
 var FOO, BAR;
 
-function parseWebsterSyns (response) {
+function parseWebsterSyns (json_data) {
       /*new_arr = [];
       console.log(response);
       FOO = response;
@@ -66,10 +66,10 @@ function getWebsterSyns (word, ref, key) {
           //var xml = $( $.parseXML(response) );
           console.log(response);
           FOO = response;
-          //parseWebsterSyns(response);
           //BAR = xmlToJSON.parseString(FOO);
           BAR = xmlToJSON.parseXML(FOO);
           //alert("success");
+          parseWebsterSyns( xmlToJSON.parseXML(response) );
       }
     });
 }

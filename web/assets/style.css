@@ -186,3 +186,13 @@ p {
        -o-transform: rotate(25deg);
           transform: rotate(25deg);  
 }
+
+.mob_s2 {
+    width: 480px;
+    height: 800px;
+    border: 1px dotted #ddd;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
