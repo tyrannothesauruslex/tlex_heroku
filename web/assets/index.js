@@ -65,9 +65,9 @@ function getWebsterSyns (word, ref, key) {
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
-          //BAR = response;
+          FOO = response;
           //parseWebsterSyns(response);
-          BAR = xmlToJson(response);
+          BAR = xmlToJSON.parseString(FOO);
           //alert("success");
       }
     });
