@@ -1,0 +1,171 @@
+{
+    "entry_list": [{
+        "_attr": {
+            "version": {
+                "_value": 1
+            }
+        },
+        "entry": [{
+            "_attr": {
+                "id": {
+                    "_value": "magic"
+                }
+            },
+            "term": [{
+                "hw": [{
+                    "_text": "magic"
+                }]
+            }],
+            "fl": [{
+                "_text": "adjective"
+            }],
+            "sens": [{
+                "sn": [{
+                    "_text": 1
+                }],
+                "mc": [{
+                    "_text": "being or appearing to be under a magic spell"
+                }],
+                "vi": [{
+                    "it": [{
+                        "_text": "magic"
+                    }],
+                    "_text": "a  castle in which even the furniture comes to life"
+                }],
+                "syn": [{
+                    "_text": "bewitched, charmed, entranced, magic, magical, spellbound"
+                }],
+                "rel": [{
+                    "it": [{
+                        "_text": "also"
+                    }, {
+                        "_text": "also"
+                    }],
+                    "_text": "cursed ( curst), jinxed, possessed; dreamy, fairy, fairylike; fantastic ( fantastical), miraculous, utopian, wondrous; hypnotized, mesmerized; bedazzled, captivated, fascinated"
+                }]
+            }, {
+                "sn": [{
+                    "_text": 2
+                }],
+                "mc": [{
+                    "_text": "having seemingly supernatural qualities or powers"
+                }],
+                "vi": [{
+                    "it": [{
+                        "_text": "magic"
+                    }],
+                    "_text": "truth seekers of all sorts seem to be attracted to this  spot in the desert"
+                }],
+                "syn": [{
+                    "_text": "magic, magical, numinous, occult, weird"
+                }],
+                "rel": [{
+                    "it": [{
+                        "_text": "or"
+                    }],
+                    "_text": "bewitched, enchanted, spellbound; bewitching, charming, conjuring, enchanting, wiling; amazing, astonishing, astounding, awesome, extraordinary, fabulous, marvelous ( marvellous), miraculous, portentous, stunning, stupendous, sublime, wondrous; divining, forecasting, foreknowing, foreseeing, foretelling, fortune-telling, predicting, presaging, prognosticating, prophesying, soothsaying; metaphysical, preternatural, unearthly; paranormal, supernormal"
+                }],
+                "near": [{
+                    "_text": "commonplace, everyday, normal, ordinary, prosaic, routine, run-of-the-mill, unexceptional, unremarkable, usual, workaday"
+                }]
+            }]
+        }, {
+            "_attr": {
+                "id": {
+                    "_value": "magic"
+                }
+            },
+            "term": [{
+                "hw": [{
+                    "_text": "magic"
+                }]
+            }],
+            "fl": [{
+                "_text": "noun"
+            }],
+            "sens": [{
+                "sn": [{
+                    "_text": 1
+                }],
+                "mc": [{
+                    "_text": "the power to control natural forces through supernatural means"
+                }],
+                "vi": [{
+                    "it": [{
+                        "_text": "magic"
+                    }],
+                    "_text": "he claimed that he could summon a storm through"
+                }],
+                "syn": [{
+                    "it": [{
+                        "_text": "or"
+                    }],
+                    "_text": "bewitchery, bewitchment, conjuring, devilry ( deviltry), diablerie, enchantment, ensorcellment, mojo, necromancy, sorcery, thaumaturgy, voodooism, witchcraft, witchery, wizardry"
+                }],
+                "rel": [{
+                    "it": [{
+                        "_text": "also"
+                    }, {
+                        "_text": "also"
+                    }],
+                    "_text": "abracadabra, amulet, charm, fetish ( fetich), mascot, periapt, phylactery, talisman; conjuration, glamour ( glamor), incantation, spell; curse, hex, jinx; augury, crystal gazing, divination, divining, forecasting, foreknowing, foreseeing, foretelling, fortune-telling, predicting, presaging, prognosticating, prophesying, soothsaying, sortilege; hexerei, hoodoo, occultism, spiritualism; augur, omen; exorcism; alchemy"
+                }],
+                "near": [{
+                    "_text": "science"
+                }]
+            }, {
+                "sn": [{
+                    "_text": 2
+                }],
+                "mc": [{
+                    "_text": "the art or skill of performing tricks or illusions for entertainment"
+                }],
+                "vi": [{
+                    "it": [{
+                        "_text": "magic"
+                    }],
+                    "_text": "hired an entertainer to perform  for their child's 10th birthday party"
+                }],
+                "syn": [{
+                    "_text": "conjuring, hocus-pocus, legerdemain, prestidigitation"
+                }],
+                "rel": [{
+                    "_text": "deception, deceptiveness, trickery"
+                }],
+                "ph": [{
+                    "_text": "sleight of hand"
+                }]
+            }, {
+                "sn": [{
+                    "_text": 3
+                }],
+                "mc": [{
+                    "_text": "the power of irresistible attraction"
+                }],
+                "vi": [{
+                    "it": [{
+                        "_text": "magic"
+                    }],
+                    "_text": "a leader so charismatic that his appeal was like"
+                }],
+                "syn": [{
+                    "it": [{
+                        "_text": "also"
+                    }, {
+                        "_text": "or"
+                    }],
+                    "_text": "allure, animal magnetism, appeal, attractiveness, captivation, charisma, duende, enchantment, fascination, force field, glamour ( glamor), magic, magnetism, oomph, pizzazz ( pizazz), seductiveness, witchery"
+                }],
+                "rel": [{
+                    "_text": "allurement, attraction, call, lure, seduction; agreeableness, darlingness, delightfulness, desirability, desirableness, niceness, pleasantness, pleasingness, sweetness; sex appeal"
+                }],
+                "near": [{
+                    "_text": "disagreeableness, distastefulness, obnoxiousness, offensiveness, unpleasantness"
+                }],
+                "ant": [{
+                    "_text": "repulsion, repulsiveness"
+                }]
+            }]
+        }]
+    }]
+}

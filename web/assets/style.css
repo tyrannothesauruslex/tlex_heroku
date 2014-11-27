@@ -71,12 +71,14 @@ html, body {
 
 
 /*.tt-dataset-foo {*/
-.tt-suggestion, #syns {
+.tt-suggestion, #syns, #syns2 {
     border: 0px dotted green; 
     padding: 0px;
     position: fixed;
-    left: 42px;
-    right: 9px;
+    /*left: 42px;
+    right: 9px;*/
+    left: 12px;
+    right: 2px;
     max-width: 800px;
     /* margin-left: 42px; */
     font-size: 16px;

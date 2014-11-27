@@ -8,7 +8,7 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 var FOO, BAR;
 
 function parseWebsterSyns (json_data) {
-      var terms, html_str;
+      var terms, html_str='';
       FOO = json_data;
 
       /*new_arr = [];
@@ -33,9 +33,24 @@ function parseWebsterSyns (json_data) {
       var entry_arr = json_data.entry_list[0].entry;
 
       for (var i = 0; i < entry_arr.length; i++) {
-          PoS = entry_arr[i].fl[0]['_text'];
+          word    = entry_arr[i].term[0].hw[0]['_text'];
+          PoS     = entry_arr[i].fl[0]['_text'];
+          
+          html_str += '<br><span class="opt-able" onclick="toggleOpts();"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
+          
+          senses  = entry_arr[i].sens;
+          for (var j = 0; j < senses.length; j++) {
+              num = senses[j].sn[0]['_text'];
+              def = senses[j].mc[0]['_text'];
+              snys_str = senses[j].syn[0]['_text'];
+
+              html_str += num + '. ' + def + '<br>'; 
+              html_str += snys_str + '<br>'; 
+          };
 
       }
+      
+      $('#syns').html( html_str);
       /*var entries = $(json_data).find('entry');
 
       for (var i = 0; i < entries.length; i++) {
@@ -56,10 +71,6 @@ function parseWebsterSyns (json_data) {
         }
 
       }*/
-
-      console.log(html_str);
-
-      $('#syns').html( html_str);
 }
 
 
