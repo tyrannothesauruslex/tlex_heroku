@@ -271,13 +271,19 @@ function initWordOpts() {
         if (OPT_SHOWN == false){
             //$("#popUp").fadeIn();
             $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+            $('#opt-word').html( $(this).text() + ' ');
         }
         if (OPT_SHOWN == true){
             //$("#popUp").fadeOut();
             $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
         }
     });    
+
+    $('#opt-close').click(function(){
+        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+    })
 }
+
 
 function toggleOpts() {
     console.log(this);
