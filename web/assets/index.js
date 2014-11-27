@@ -268,10 +268,16 @@ function initWordOpts() {
           e.style.display = 'block';
     }   */ 
     $(".opt-able").click(function(){
+        var clicked_word = $(this).text();
+        console.log(clicked_word);
+
+
+        $(this).parent().css( {position:"absolute", top:event.pageY, left: event.pageX});
+
         if (OPT_SHOWN == false){
             //$("#popUp").fadeIn();
             $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
-            $('#opt-word').html( $(this).text() + ' ');
+            $('#opt-word').html( clicked_word );
         }
         if (OPT_SHOWN == true){
             //$("#popUp").fadeOut();
