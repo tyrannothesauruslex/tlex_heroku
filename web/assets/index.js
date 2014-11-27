@@ -77,9 +77,9 @@ function getWebsterSyns (word, ref, key) {
       success: function(response) { 
           //var xml = $( $.parseXML(response) );
           console.log(response);
-          FOO = response;
+          //FOO = response;
           //BAR = xmlToJSON.parseString(FOO);
-          BAR = xmlToJSON.parseXML(FOO);
+          //BAR = xmlToJSON.parseXML(FOO);
           //alert("success");
           parseWebsterSyns( xmlToJSON.parseXML(response) );
       }
