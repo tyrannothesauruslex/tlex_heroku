@@ -287,18 +287,38 @@ function initWordOpts() {
 
     $('#opt-close').click(function(){
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
-    })
+    });
 }
 
 
 function toggleOpts() {
     console.log(this);
-    if (OPT_SHOWN == false){
-        //$("#popUp").fadeIn();
+/*    if (OPT_SHOWN == false){
         $("#word-opts").show(function(){OPT_SHOWN = true;});
     }
     if (OPT_SHOWN == true){
-        //$("#popUp").fadeOut();
         $("#word-opts").hide(function(){OPT_SHOWN=false});
     }
+*/
+    var clicked_word = $(this).text();
+    console.log(clicked_word);
+
+
+    $(this).parent().css( {position:"absolute", top:event.pageY, left: event.pageX});
+
+    if (OPT_SHOWN == false){
+        //$("#popUp").fadeIn();
+        $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+        $('#opt-word').html( clicked_word );
+    }
+    if (OPT_SHOWN == true){
+        //$("#popUp").fadeOut();
+        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+    }
+    
+    $('#opt-close').click(function(){
+        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+    });
+
+
 }
