@@ -8,6 +8,9 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 var FOO, BAR;
 
 function parseWebsterSyns (json_data) {
+      var terms, html_str;
+      FOO = json_data;
+
       /*new_arr = [];
       console.log(response);
       FOO = response;
@@ -26,8 +29,14 @@ function parseWebsterSyns (json_data) {
               */
       //var entries = $(xml).find('entry');
       console.log('json_data',json_data);
-      var entries = $(json_data).find('entry');
-      var terms, html_str;
+
+      var entry_arr = json_data.entry_list[0].entry;
+
+      for (var i = 0; i < entry_arr.length; i++) {
+          PoS = entry_arr[i].fl[0]['_text'];
+
+      }
+      /*var entries = $(json_data).find('entry');
 
       for (var i = 0; i < entries.length; i++) {
         
@@ -46,7 +55,7 @@ function parseWebsterSyns (json_data) {
           }
         }
 
-      }
+      }*/
 
       console.log(html_str);
 
