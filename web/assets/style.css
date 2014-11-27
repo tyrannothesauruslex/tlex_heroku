@@ -200,11 +200,12 @@ p {
 }
 
 .rot--90 {
-    -webkit-transform: rotate(-90deg);
+    display: inline-block;
+    -webkit-transform: rotate(270deg);
     -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+    transform: rotate(270deg);
 }
 .rot-90 {
     display: inline-block;
@@ -230,6 +231,7 @@ p {
 }
 
 span.opt {
+    display: inline-block;
     margin: 0 2px;
 }
 
