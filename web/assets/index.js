@@ -36,7 +36,7 @@ function parseWebsterSyns (json_data) {
           word    = entry_arr[i].term[0].hw[0]['_text'];
           PoS     = entry_arr[i].fl[0]['_text'];
           
-          html_str += '<br><span class="opt-able" onclick="toggleOpts(\'+word+'\'');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
+          html_str += '<br><span class="opt-able" onclick="toggleOpts(\'+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
           
           senses  = entry_arr[i].sens;
           for (var j = 0; j < senses.length; j++) {
