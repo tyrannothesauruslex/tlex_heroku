@@ -36,7 +36,7 @@ function parseWebsterSyns (json_data) {
           word    = entry_arr[i].term[0].hw[0]['_text'];
           PoS     = entry_arr[i].fl[0]['_text'];
           
-          html_str += '<br><span class="opt-able" onclick="toggleOpts();"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
+          html_str += '<br><span class="opt-able" onclick="toggleOpts(\'+word+'\'');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
           
           senses  = entry_arr[i].sens;
           for (var j = 0; j < senses.length; j++) {
@@ -291,7 +291,7 @@ function initWordOpts() {
 }
 
 
-function toggleOpts() {
+function toggleOpts(clicked_word) {
     console.log(this);
 /*    if (OPT_SHOWN == false){
         $("#word-opts").show(function(){OPT_SHOWN = true;});
@@ -300,7 +300,7 @@ function toggleOpts() {
         $("#word-opts").hide(function(){OPT_SHOWN=false});
     }
 */
-    var clicked_word = $(this).text();
+    //var clicked_word = $(this).text();
     console.log(clicked_word);
 
 
@@ -315,8 +315,9 @@ function toggleOpts() {
         //$("#popUp").fadeOut();
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
     }
-    
+
     $('#opt-close').click(function(){
+        console.log('opt-close');
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
     });
 
