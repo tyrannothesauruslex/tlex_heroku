@@ -49,7 +49,7 @@ function parseWebsterSyns (json_data) {
           };
 
       }
-      
+
       $('#syns').html( html_str);
       /*var entries = $(json_data).find('entry');
 
@@ -125,7 +125,7 @@ window.onload = function() {
       if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
-        getAndParseBHT();
+        //getAndParseBHT();
         getWebsterSyns(word, 'foo', mw_apikey);
       }
     });
