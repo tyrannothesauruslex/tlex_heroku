@@ -9,6 +9,7 @@ var FOO, BAR;
 
 function parseWebsterSyns (json_data) {
       var terms, html_str='';
+      var num, def, syns_str, syns_arr;
       FOO = json_data;
 
       /*new_arr = [];
@@ -36,21 +37,38 @@ function parseWebsterSyns (json_data) {
           word    = entry_arr[i].term[0].hw[0]['_text'];
           PoS     = entry_arr[i].fl[0]['_text'];
           
-          html_str += '<br><span class="opt-able" onclick="toggleOpts(\''+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
+          //html_str += '<br><span class="opt-able" onclick="toggleOpts(\''+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
+          html_str += '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
           
           senses  = entry_arr[i].sens;
           for (var j = 0; j < senses.length; j++) {
-              num = senses[j].sn[0]['_text'];
-              def = senses[j].mc[0]['_text'];
-              snys_str = senses[j].syn[0]['_text'];
+              num = senses[j].sn ? senses[j].sn[0]['_text'] + '. ' : '';
+              def = senses[j].mc ? senses[j].mc[0]['_text'] : '';
+              
+              if (senses[j].syn) {
+                  syns_str = senses[j].syn[0]['_text'];
+                  syns_arr = syns_str.split(', ');
+                  for (var k = 0; k < syns_arr.length; k++) {
+                      syns_arr[k] = '<span class="opt-able">' + syns_arr[k] + '</span>';
+                  };
+                  syns_str = syns_arr.join(', ');
 
-              html_str += num + '. ' + def + '<br>'; 
-              html_str += snys_str + '<br>'; 
+                  html_str += num + def + '<br>'; 
+                  html_str += '&nbsp;&nbsp;&nbsp;&nbsp;' + syns_str + '<br>'; 
+              }
           };
 
       }
 
+      console.log('html_str',html_str);
+
       $('#syns').html( html_str);
+
+      $('.opt-able').click(function(){
+          var temp = $(this).text();
+          toggleOpts(temp);
+      })
+
       /*var entries = $(json_data).find('entry');
 
       for (var i = 0; i < entries.length; i++) {
@@ -292,30 +310,34 @@ function initWordOpts() {
 
 
 function toggleOpts(clicked_word) {
-    console.log(this);
-/*    if (OPT_SHOWN == false){
-        $("#word-opts").show(function(){OPT_SHOWN = true;});
-    }
-    if (OPT_SHOWN == true){
-        $("#word-opts").hide(function(){OPT_SHOWN=false});
-    }
+
+    // close box in case it was open
+    /*$("#word-opts").hide(function(){
+        OPT_SHOWN=false;
+        console.log('hide');
+    });
 */
-    //var clicked_word = $(this).text();
-    console.log(clicked_word);
+
+    var top_y = event.pageY - 33;
+    var left_x = event.pageX + 5;
+    $("#word-opts").parent().css( {position:"absolute", top: top_y, left: left_x});
+
+    $('#opt-word').html( clicked_word );
+
+    $("#word-opts").fadeIn(function(){
+        OPT_SHOWN=true;
+        console.log('fadeIn');
+    });
 
 
-    $(this).parent().css( {position:"absolute", top:event.pageY, left: event.pageX});
-
-    if (OPT_SHOWN == false){
-        //$("#popUp").fadeIn();
+/*    if (OPT_SHOWN == false){
         $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
         $('#opt-word').html( clicked_word );
     }
     if (OPT_SHOWN == true){
-        //$("#popUp").fadeOut();
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
     }
-
+*/
     $('#opt-close').click(function(){
         console.log('opt-close');
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
