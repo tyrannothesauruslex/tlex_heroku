@@ -17,38 +17,87 @@ Actions:
 	subtle prompt to tag
 
 
-create table words (
+
+--DRY - don't store it in one table if it can be computed from another (?)
+-- Most loved words:
+select 
+	w.word, 
+	sum(p.primary_click) as love_cnt 
+from
+	words w,
+	primary_submits p 
+where 
+	w.word_id = p.word_id
+	and primary_click = 'love'
+group by 
+	p.word_id
+order by love_cnt desc
+
+-- Most hated words:
+select 
+	w.word, 
+	sum(p.primary_click) as down_cnt 
+from
+	words w,
+	primary_submits p 
+where 
+	primary_click = 'down'
+order by down_cnt desc
+
+-- Most loved words that are not hackneyed or highfalutin
+select 
+	w.word, 
+	sum(p.primary_click) as love_cnt 
+	sum(s.hackneyed) as hackneyed_cnt 
+	sum(s.highfalutin) as highfalutin_cnt 
+from
+	words w,
+	primary_submits p 
+	secondary_submits s
+where 
+	primary_click = 'love'
+	and secondary_submits = 'love'
+group by 
+	secondary_submits.word_id
+order by love_cnt desc
+
+
+insert into x_submits (word, user_id, date)
+
+create table words ( --w
 	word_id serial primary key, -- NOT NULL not needed
 	word text,
-	cnt_liked integer,
-	cnt_entered integer,
-	date_entered text,
-	cnt_
+	--date_entered text,
+	--cnt_entered integer,
+	--cnt_liked integer,
+	--cnt_
 )
 
-create table defs (
+create table defs ( --d
 	def_id serial primary key,
 	word_id integer REFERENCES words(word_id),
 	definition text
 )
 
-create table users (
+create table users ( --u
 	email text primary key,
 	date_added text
 )
 
-create table likes (
-	like_click_id serial primary key,
+create table primary_submits ( --p
+	submit_id serial primary key,
 	word_id integer REFERENCES words(word_id),
 	user_id text REFERENCES users(email),
-	date text
+	date_submit text,
+	primary_click text CHECK (primary_click in ('love','up','down'))
 )
 
-create table form_submissions (
-	form_submit_id serial primary key,
-	word_id integer REFERENCES words(word_id),
+create table submits ( --s
+	submit_id serial primary key,
+	word text REFERENCES words(word),
 	user_id text REFERENCES users(email),
-	date text,
+	date_submit text,
+	primary_click text CHECK (primary_click in ('love','up','down'))	
 	example text,
 	freestyle_comment text,
 	actually_useful boolean,

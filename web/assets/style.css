@@ -217,7 +217,7 @@ p {
 }
 
 #word-opts {
-    background-color: #ddd;
+    background-color: rgba(255,255,255,0.7);
     border: 1px solid #555;
     min-width: 20px;
     height: 47px;
@@ -227,6 +227,9 @@ p {
 }
 
 
+#word-opts>span:hover {
+    color:#000;
+}
 #word-opts>span {
     font-family: Helvetica, Arial, sans-serif;
     font-weight: 700;

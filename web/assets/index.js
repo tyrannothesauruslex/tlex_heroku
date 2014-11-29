@@ -310,14 +310,6 @@ function initWordOpts() {
 
 
 function toggleOpts(clicked_word) {
-
-    // close box in case it was open
-    /*$("#word-opts").hide(function(){
-        OPT_SHOWN=false;
-        console.log('hide');
-    });
-*/
-
     var top_y = event.pageY - 33;
     var left_x = event.pageX + 5;
     $("#word-opts").parent().css( {position:"absolute", top: top_y, left: left_x});
@@ -329,19 +321,124 @@ function toggleOpts(clicked_word) {
         console.log('fadeIn');
     });
 
-
-/*    if (OPT_SHOWN == false){
-        $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
-        $('#opt-word').html( clicked_word );
-    }
-    if (OPT_SHOWN == true){
-        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
-    }
-*/
     $('#opt-close').click(function(){
         console.log('opt-close');
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
     });
+}
 
+
+function searchLyrics (term) { 
+    uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=' + encodeURIComponent(term) ; // + '&outputFormat=application/json';
+
+    uri = 'server/proxy.php?url=' + uri;
+
+    $.ajax({
+      url: uri,
+      type: "GET",
+      //dataType: "jsonp",  //For external apis
+      dataType: "xml",  //For external apis
+      success: function(response) { 
+          //var xml = $( $.parseXML(response) );
+          console.log(response);
+          parseLyricSearch(response, term);
+          FOO = response;
+          //BAR = xmlToJSON.parseString(FOO);
+          //BAR = xmlToJSON.parseXML(FOO);
+          //alert("success");
+          //parseWebsterSyns( xmlToJSON.parseXML(response) );
+      }
+    });
+}
+
+function test(){
+  $.ajax({
+    url: 'http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296',
+    success: function(response) {
+      console.log(response);
+    }
+  })
+}
+
+function getLyrics (a,b, term) { 
+    uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
+    uri = 'server/proxy_params.php?url=' + uri;
+
+    $.ajax({
+      // http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296
+      url: uri,
+      //type: "POST",
+      type: "GET",
+      data: { 'lyricId': a, 'lyricCheckSum': b},
+      dataType: "xml",  //For external apis
+      success: function(response) { 
+          blurb = parseLyricGet(response, term);
+      }
+    });
+    return blurb;
+}
+
+function parseLyricGet(xml, term) {
+    blurb = '';
+    //BAR = xml;
+    console.log(xml);
+    var items = xml.getElementsByTagName('GetLyricResult');
+    // one is enough
+    item = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("Lyric")[0].innerHTML;
+    // only get the words near the term
+    var burps = item.split(term);
+    before = '...' + burps[0].slice(-9);
+    after = burps[1].slice(0,9) + '...';
+    blurb = before + term + after;
+
+    console.log(blurb);
+    return blurb;
+}
+
+var TEST;
+function parseLyricSearch(xml, term) {
+    var html_str = '';
+    //foo
+    var items = xml.getElementsByTagName('SearchLyricResult');
+    BAR = items;
+    //debugger;
+    var items_len = items.length; 
+    items_len = items_len < 6 ? items_len : 6;
+    for (var i = 0; i < items_len; i++) {
+      //try {
+        LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
+        LyricId = items[i].getElementsByTagName('LyricId')[0].innerHTML;
+        SongUrl = items[i].getElementsByTagName('SongUrl')[0].innerHTML;
+        Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
+        Song = items[i].getElementsByTagName('Song')[0].innerHTML;
+        html_str += '<a href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"></span></em><br>';
+      //} catch(e) {console.log(e, i)}
+    };
+    $('#songs').html(html_str);
+        
+    $('.lyric-blurb').each(function(){
+        lyric = getLyrics( $(this).attr('data-id'), $(this).attr('data-checksum'), term );
+        $(this).text(lyric);
+    });
 
 }
+
+// arbitrage ("free money")
+
+/*
+<SearchLyricResult>
+<TrackId>0</TrackId>
+<LyricChecksum>76a96b8a8622fa2ea168fa9e1890e296</LyricChecksum>
+<LyricId>131299</LyricId>
+<SongUrl>
+http://www.chartlyrics.com/SROGu_IlkE6rOL3iDvmEng/Our+Love.aspx
+</SongUrl>
+<ArtistUrl>
+http://www.chartlyrics.com/SROGu_IlkE6rOL3iDvmEng.aspx
+</ArtistUrl>
+<Artist>Rhett Miller</Artist>
+<Song>Our Love</Song>
+<SongRank>3</SongRank>
+</SearchLyricResult>
+
+*/
