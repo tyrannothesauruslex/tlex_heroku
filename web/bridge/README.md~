@@ -1,4 +1,9 @@
 
+
+
+<pre>
+
+
 ?|  Points	| suit length		| bid
 -|----------|-------------------|------------
 a|	< 11	|                   | "Pass"	
@@ -45,7 +50,7 @@ Responding:
     a. Do you have 5 hearts or spades?
         Yes > Bid the suit *below* the suit you have. Then your partner must bid your suit. Then...
     b. Do you have 4 hearts or spades AND 8 or more points? 
-        Yes > Bid 2 clubs. ("Stayman") Then if your partner has 4 hearts or spades partner will bid it. Then you can confirm or deny that you have the same "4-card major". (Btw, don't bid 2 clubs if you have a super "flat" hand: "4-3-3-3".)
+        Yes > Bid 2 clubs. ("Stayman") Then if your partner has 4 hearts or spades she will bid it. Then you can confirm or deny that you have the same "4-card major". (Btw, don't bid 2 clubs if you have a super "flat" hand: "4-3-3-3".)
     c. Do you have 10 or 11 points? (But no long suits, mentioned above.) 
         Yes > Bid 3 NT. (Together you have 25 to 28 points.)
     d. Do you have 8 or 9 points? ((But no long suits.)
