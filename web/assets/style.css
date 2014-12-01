@@ -166,6 +166,7 @@ p {
 .ribbon {
   overflow: hidden;
   white-space: nowrap;
+  text-decoration: none !important;
 
   border: 0px solid #faa;
   color: gray;
@@ -187,6 +188,9 @@ p {
       -ms-transform: rotate(25deg);
        -o-transform: rotate(25deg);
           transform: rotate(25deg);  
+}
+.ribbon:hover {
+    text-decoration: none;
 }
 
 .mob_s2 {

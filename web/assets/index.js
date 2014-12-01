@@ -326,9 +326,12 @@ function toggleOpts(clicked_word) {
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
     });
 }
-
-
-function searchLyrics (term) { 
+/*
+1. search for songs which have lyrics which have the word/term in them
+2. 
+3. get the actual lyrics and write a snip of them to the span
+*/
+function searchLyrics(term) { 
     uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=' + encodeURIComponent(term) ; // + '&outputFormat=application/json';
 
     uri = 'server/proxy.php?url=' + uri;
@@ -339,79 +342,28 @@ function searchLyrics (term) {
       //dataType: "jsonp",  //For external apis
       dataType: "xml",  //For external apis
       success: function(response) { 
-          //var xml = $( $.parseXML(response) );
           console.log(response);
           parseLyricSearch(response, term);
-          FOO = response;
-          //BAR = xmlToJSON.parseString(FOO);
-          //BAR = xmlToJSON.parseXML(FOO);
-          //alert("success");
-          //parseWebsterSyns( xmlToJSON.parseXML(response) );
-    
-          $('.lyric-blurb').each(function(){
-              writeLyrics( $(this), term );
-          });
-                    
+      },
+      complete: function() {
+          /*$('.lyric-blurb').hover(function(){
+              // console.log('blurb',term);
+              var el = $(this);
+              writeLyrics( el, term );
+          });*/
       }
     });
 }
 
-function test(){
-  $.ajax({
-    url: 'http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296',
-    success: function(response) {
-      console.log(response);
-    }
-  })
-}
-
-//function getLyrics (a,b, term) { 
-function writeLyrics (el, term) { 
-    var uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
-    uri = 'server/proxy_params.php?url=' + uri;
-    var blurb = '';
-
-    var a = $(el).attr('data-id');
-    var b = $(el).attr('data-checksum');
-
-    $.ajax({
-      // http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296
-      url: uri,
-      //type: "POST",
-      type: "GET",
-      data: { 'lyricId': a, 'lyricCheckSum': b},
-      dataType: "xml",  //For external apis
-      success: function(response) { 
-      
-          var items = xml.getElementsByTagName('GetLyricResult');
-          // one is enough
-          item = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("Lyric")[0].innerHTML;
-          // only get the words near the term
-          var burps = item.split(term);
-          before = '...' + burps[0].slice(-29);
-          after = burps[1].slice(0,29) + '...';
-          blurb = before + term + after;
-
-          console.log(blurb);
-
-          $(el).html(lyric);
-      }
-    });
-}
-
-/*function parseLyricGet(xml, term) {
-    return blurb;
-}*/
-
-var TEST;
 function parseLyricSearch(xml, term) {
     var html_str = '';
+    console.log(xml);
     //foo
     var items = xml.getElementsByTagName('SearchLyricResult');
     BAR = items;
     //debugger;
     var items_len = items.length; 
-    items_len = items_len < 6 ? items_len : 6;
+    items_len = items_len < 20 ? items_len : 20;
     for (var i = 0; i < items_len; i++) {
       //try {
         LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
@@ -420,17 +372,108 @@ function parseLyricSearch(xml, term) {
         Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
         Song = items[i].getElementsByTagName('Song')[0].innerHTML;
 
-        html_str += '<a href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> the lyric blurb span </span></em><br>';
+        html_str += '<a target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
       //} catch(e) {console.log(e, i)}
     };
     $('#songs').html(html_str);
-        
+    /*    
     $('.lyric-blurb').each(function(){
         writeLyrics( $(this), term );
     });
-    
+    */
 
 }
+
+
+//function getLyrics (a,b, term) { 
+function writeLyrics (el, term) { 
+    var uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
+
+    //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&artist=radiohead&title=creep&bucket=id:lyricfind-US&limit=true&bucket=tracks';
+
+    var a = encodeURIComponent($(el).attr('data-id'));
+    var b = encodeURIComponent($(el).attr('data-checksum'));
+    //var a = encodeURIComponent($(el).attr('data-artist'));
+    //var b = encodeURIComponent($(el).attr('data-song'));
+    //jhnklly@gmail.com apikey
+    //http://developer.echonest.com/api/v4/song/search?api_key=SQMIYFB8AOENSOG4T&format=json&artist=radiohead&title=creep&bucket=id:lyricfind-US&limit=true&bucket=tracks&results=10
+    
+    //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=SQMIYFB8AOENSOG4T&format=json&artist='+a+'&title='+b+'&bucket=id:lyricfind-US&limit=true&bucket=tracks';
+
+    uri = 'server/proxy_params.php?url=' + uri;
+    var blurb = '';
+
+    console.log('el',el);
+
+    //var a = $(el).attr('data-id');
+    //var b = $(el).attr('data-checksum');
+
+    
+
+
+    //console.log('el',el);
+    console.log('a',a);
+    console.log('b',b);
+
+    $.ajax({
+      // http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296
+      url: uri,
+      type: "POST",
+      //type: "GET",
+      data: { 'lyricId': a, 'lyricCheckSum': b},
+      //data: { 'artist': a, 'title': b, 'bucket': 'id:lyricfind-US', 'limit': 'true', 'bucket': 'tracks'},
+      dataType: "xml",  //For external apis
+      success: function(response) { 
+/*          var xml = response;
+          console.log('xml', xml);
+          var items = xml.getElementsByTagName('GetLyricResult');
+          // one is enough
+          item = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("Lyric")[0].innerHTML;*/
+
+          console.log(response);
+
+          // only get the words near the term
+          var burps = item.split(term);
+          //before = '...' + burps[0].slice(-29);
+          // arr of the words before term
+          before = burps[0].split(' ');
+          // if len < 5 use the all of them: otherwise just 5 of them
+          if (before.length < 5) {
+              before = before.join(' ');
+          } else {
+              //z = Math.max(before.length - 5, 1);
+              before = before.slice(5);
+              before = before.join(' ');
+          }
+          before = '...' + before;
+
+          after = burps[1].split(' ');
+          // if len < 5 use the all of them: otherwise just 5 of them
+          if (after.length < 5) {
+              after = after.join(' ');
+          } else {
+              //z = Math.max(before.length - 5, 1);
+              after = after.shift(5);
+              after = after.join(' ');
+          }
+          after = '...' + after;
+
+          blurb = before + term + after;
+
+          console.log('b418', blurb);
+
+          $(el).html(lyric);
+      },
+      error: function(err) {
+          console.log('err',err.responseText);
+      }
+    });
+}
+
+/*function parseLyricGet(xml, term) {
+    return blurb;
+}*/
+
 
 // arbitrage ("free money")
 
