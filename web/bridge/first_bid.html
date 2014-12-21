@@ -6,20 +6,59 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <style>
         .red {color: red;}
+        table, th, tr, td {
+            border-collapse: collapse;
+            border: 1px solid #aaa;
+            padding: 0;
+            border-spacing: 0;
+        }
+        td {padding: 0 3px;}
     </style>
 <body>
 
 <pre>
+<!-- 
  | points | suit length            | bid
 -|--------|------------------------|------------
 a|  < 11  |                        | "Pass"    
 b|  20+   |*                       | 2♣ ?*
 c|  13-21 |5+ ♠ or <span class="red">♥</span>               | 1♠ / 1<span class="red">♥</span>   
 e|  15-17 |at least 2 in every suit| "1 No Trump"
-f|  13-21 |3+ ♣/<span class="red">♦</span>                | 1♣ / 1<span class="red">♦</span>  
+f|  13-21 |3+ ♣/<span class="red">♦</span>                  | 1♣ / 1<span class="red">♦</span>  
 g|  5-11  |7 ♣/<span class="red">♦</span>/<span class="red">♥</span>/♠ *             | 3 of that suit
 h|  5-11  |6 <span class="red">♦</span>/<span class="red">♥</span>/♠ *               | 2 of that suit
-
+ -->
+<table>
+<tr>
+ <td></td><td>points </td><td> suit length            </td><td> bid </td>
+</tr>
+<tr>
+<td>a</td><td>  < 11  </td><td>                        </td><td> "Pass"    </td>
+</td>
+</tr>
+<tr>
+<td>b</td><td>  20+   </td><td>*                       </td><td> 2♣ ?*</td>
+</td>
+</tr>
+<tr>
+<td>c</td><td>  13-21 </td><td>5+ ♠ or <span class="red">♥</span>               </td><td> 1♠ / 1<span class="red">♥</span>   </td>
+</td>
+</tr>
+<tr>
+<td>e</td><td>  15-17 </td><td>at least 2 in every suit</td><td> "1 No Trump"</td>
+</td>
+</tr>
+<tr>
+<td>f</td><td>  13-21 </td><td>3+ ♣/<span class="red">♦</span>                  </td><td> 1♣ / 1<span class="red">♦</span>  </td>
+</td>
+</tr>
+<tr>
+<td>g</td><td>  5-11  </td><td>7 ♣/<span class="red">♦</span>/<span class="red">♥</span>/♠ *             </td><td> 3 of that suit</td>
+</tr>
+<tr>
+<td>h</td><td>  5-11  </td><td>6 <span class="red">♦</span>/<span class="red">♥</span>/♠ *               </td><td> 2 of that suit</td>
+</tr>
+</table>
 
 
 
