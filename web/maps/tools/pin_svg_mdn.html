@@ -1,0 +1,147 @@
+<canvas id="canvas" style="border:1px dotted gray;" width="20" height="20">
+</canvas>
+<script>
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+/*var data0 = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">' +
+           '<foreignObject width="100%" height="100%">' +
+           '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:40px">' +
+             '<em>I</em> like' + 
+             '<span style="color:white; text-shadow:0 0 2px blue;">' +
+             'cheese</span>' +
+           '</div>' +
+           '</foreignObject>' +
+           '</svg>';
+
+var fill = '#dcdcdc';
+var data = '<svg x="0px" y="0px" width="100px" height="100px" viewBox="5.0 -10.0 100.0 135.0" enable-background="new 0 0 100 100" xml:space="preserve"> \
+<g style="fill:' +  fill + ';fill-opacity:1;stroke:#5a5a5a;stroke-width:4.05000019;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:13.8;stroke-opacity:1;stroke-dasharray:none" transform="matrix(0.96497879,0,0,0.96630334,0.74886833,3.2966387)"> \
+ <path   d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z" \
+   style="fill:#dcdcdc;fill-opacity:1;stroke:#5a5a5a;stroke-width:4.05000019;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:13.89999962;stroke-opacity:1;stroke-dasharray:none" /> \
+ </g></svg>';           
+
+
+
+
+var DOMURL = window.URL || window.webkitURL || window;
+
+var img = new Image();
+var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+var url = DOMURL.createObjectURL(svg);
+
+img.onload = function () {
+  ctx.drawImage(img, 0, 0);
+  DOMURL.revokeObjectURL(url);
+}
+
+img.src = url;
+*/
+
+/*
+Use:
+pin_svg_mdn.html?shape:pin;fill:#dcdcdc;stroke:#5a5a5a;stroke-width:4
+*/
+
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    //var pair = vars[i].split("=");
+    var pair = vars[i].split(":");
+      // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+      // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+      // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
+
+var SVG_OPTS = {};
+SVG_OPTS.fill = '#880088';
+SVG_OPTS.fill = 'rgba(124,0,124,0.2)';
+SVG_OPTS.stroke = '#cc00cc';
+SVG_OPTS['stroke-width'] = 4;
+SVG_OPTS.w = 100;
+SVG_OPTS.h = 100;
+SVG_OPTS.shape = 'pin';
+
+var url_opts = encodeURIComponent(JSON.stringify(SVG_OPTS));
+//var BASE_URL = window.location.pathname;
+
+    var BASE_URL = document.URL.split('?')[0];
+    var BASE_URL = BASE_URL.split('#')[0];
+
+var new_url = BASE_URL+'?'+url_opts;
+window.history.pushState('', 'svg custom pin',new_url);
+var NEW_OPTS = JSON.parse(decodeURIComponent(window.location.search.substring(1)));
+opts = NEW_OPTS;
+updateSVG(NEW_OPTS);
+
+function updateSVG(opts) {
+    var style_arr = [];
+    for (var key in opts) {
+        style_arr.push( key + ':' + opts[key] ); 
+    }
+    var style_str = style_arr.join(';');
+
+    style_str = 'fill:' + opts.fill + ';stroke:' + opts.stroke + ';stroke-width:' + opts['stroke-width'];
+
+var data = '<svg x="0px" y="0px" width="100px" height="100px" viewBox="5.0 -10.0 100.0 135.0" enable-background="new 0 0 100 100" xml:space="preserve"> \
+<g style="'+style_str+'"> \
+ <path   d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z" \
+   style="'+style_str+'" /> \
+ </g></svg>';           
+
+var new_svg_div = document.createElement('div');
+new_svg_div.innerHTML = data;
+document.body.appendChild(new_svg_div);
+
+/*
+var DOMURL = window.URL || window.webkitURL || window;
+
+var img = new Image();
+var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+var url = DOMURL.createObjectURL(svg);
+
+img.onload = function () {
+  ctx.drawImage(img, 0, 0);
+  DOMURL.revokeObjectURL(url);
+}
+
+img.src = url;
+*/
+}
+
+</script>
+
+<!-- 
+<svg
+   x="0px"
+   y="0px"
+   width="100px"
+   height="100px"
+   viewBox="5.0 -10.0 100.0 135.0"
+   enable-background="new 0 0 100 100"
+   xml:space="preserve"
+>
+<g
+ id="g3045"
+ style="fill:#dcdcdc;fill-opacity:1;stroke:#5a5a5a;stroke-width:4.05000019;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:13.8;stroke-opacity:1;stroke-dasharray:none"
+ transform="matrix(0.96497879,0,0,0.96630334,0.74886833,3.2966387)">
+ <path
+   d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z"
+   style="fill:#dcdcdc;fill-opacity:1;stroke:#5a5a5a;stroke-width:4.05000019;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:13.89999962;stroke-opacity:1;stroke-dasharray:none" />
+ </g></svg>
+ -->

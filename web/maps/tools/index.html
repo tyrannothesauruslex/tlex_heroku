@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- <canvas id="canvas" style="border:1px dotted gray;" width="20" height="20">
+</canvas>
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+ -->
+
+<html>
+<head>
+  <style>
+    body {background-color: #ccc;}
+  </style>
+</head>
+<body>
+
+<script>
+
+var SVG_OPTS = {};
+SVG_OPTS.fill = '#880088';
+//SVG_OPTS.fill = 'rgba(124,0,124,0.2)';
+SVG_OPTS.fill = '#8af';
+SVG_OPTS.stroke = '#66f';
+SVG_OPTS['stroke-width'] = 8;
+SVG_OPTS.w = 50;
+SVG_OPTS.h = 50;
+SVG_OPTS.shape = 'pin';
+
+var url_opts = encodeURIComponent(JSON.stringify(SVG_OPTS));
+//var BASE_URL = window.location.pathname;
+
+    var BASE_URL = document.URL.split('?')[0];
+    var BASE_URL = BASE_URL.split('#')[0];
+
+var new_url = BASE_URL+'?'+url_opts;
+window.history.pushState('', 'svg custom pin',new_url);
+var NEW_OPTS = JSON.parse(decodeURIComponent(window.location.search.substring(1)));
+opts = NEW_OPTS;
+updateSVG(NEW_OPTS);
+
+function updateSVG(opts) {
+    var style_arr = [];
+    for (var key in opts) {
+        style_arr.push( key + ':' + opts[key] ); 
+    }
+    var style_str = style_arr.join(';');
+
+    style_str = 'fill:' + opts.fill + ';stroke:' + opts.stroke + ';stroke-width:' + opts['stroke-width'];
+
+var data = '<svg x="0px" y="0px" width="'+opts.w+'px" height="'+opts.h+'px" viewBox="5.0 -10.0 100.0 135.0" enable-background="new 0 0 100 100" xml:space="preserve"> \
+<g style="'+style_str+'"> \
+ <path   d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z" \
+   style="'+style_str+'" /> \
+ </g></svg>';           
+
+var new_svg_div = document.createElement('div');
+new_svg_div.innerHTML = data;
+document.body.appendChild(new_svg_div);
+
+}
+
+</script>
+
+</body>
+</html>
