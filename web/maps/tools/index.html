@@ -1,31 +1,103 @@
 <!doctype html>
-<!-- <canvas id="canvas" style="border:1px dotted gray;" width="20" height="20">
-</canvas>
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
- -->
-
 <html>
 <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {background-color: #ccc;}
   </style>
 </head>
 <body>
+  <!-- <canvas id="canvas" style="border:0px dotted gray;" width="200" height="200">
+  </canvas> -->
 
-<script>
+<script type="text/javascript">
+
+var colorbrewer={Spectral:{3:["#fc8d59","#ffffbf","#99d594"],4:["#d7191c","#fdae61","#abdda4","#2b83ba"],5:["#d7191c","#fdae61","#ffffbf","#abdda4","#2b83ba"],6:["#d53e4f","#fc8d59","#fee08b","#e6f598","#99d594","#3288bd"],7:["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],8:["#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd"],9:["#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd"],10:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],11:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"]}};
 
 var SVG_OPTS = {};
 SVG_OPTS.fill = '#880088';
 //SVG_OPTS.fill = 'rgba(124,0,124,0.2)';
-SVG_OPTS.fill = '#8af';
-SVG_OPTS.stroke = '#66f';
-SVG_OPTS['stroke-width'] = 8;
+SVG_OPTS.fill = '#91CADF';
+SVG_OPTS.stroke = '#0077A4';
+SVG_OPTS['stroke-width'] = 6;
 SVG_OPTS.w = 50;
 SVG_OPTS.h = 50;
 SVG_OPTS.shape = 'pin';
 
-var url_opts = encodeURIComponent(JSON.stringify(SVG_OPTS));
+colors = {
+  red: '#ff0000',
+  orange: '#FF7F00',
+  yellow: '#ffff00',
+  green: '#008000',
+  cb_green: '#33A02C',
+  blue: '#0000ff',
+  purple: '#7F00FF',
+  cyan: '#00FFFF',
+  magenta: '#FF00FF',
+  pink: '#FFC0CB',
+  brown: '#804000',
+  cerulean: '#004D95',
+  celeste: '#B2FFFF',
+  azure: '#007FFF',
+  royal: '#4169E1',
+  navy: '#000080',
+  brown: '#804000',
+  forest: '#228B22',
+  dark_green: '#006400'
+};
+SVG_OPTS.colors = colors;
+
+/*for each color:
+  create a canvas/div (inline-block); append to body
+    draw an icon in it
+*/
+
+// not needed: window.open().location = document.getElementsByTagName("canvas")[0].toDataURL("image/png");
+
+function addCanvas(color,opts) {
+  // yes: opts.w = opts.h = 200; (leave vb=100)
+  style_str = 'fill:' + opts.fill + ';stroke:' + opts.stroke + ';stroke-width:' + opts['stroke-width'];
+  console.log(style_str);
+
+  //var data = '<svg xmlns="http://www.w3.org/2000/svg" width="'+opts.w+'px" height="'+opts.h+'px" viewBox="0 0 '+2*opts.w+' '+2*opts.h+'"  > \
+  //var data = '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px dotted #f00;" width="30px" height="30px" viewBox="0 0 190 190"  > \
+  // opts=50 svg w=h=30px; vb 0 0 90 90 = small; tiny chop right&bottom
+  // increasing vb to 190 190 _shrinks_ pin, stays in upper left; tiny chop r&b
+  // w=h=opts=50, vb=2*opts: all normal size
+  // w=h=opts=50, vb=3*opts: smaller, in upper left
+  // w=h=opts=50, vb=100: smaller, in upper left
+  var data = '<svg xmlns="http://www.w3.org/2000/svg" style="border: 0px dotted #f00;"  width="'+opts.w+'px" height="'+opts.h+'px" viewBox="0 0 100 100"   > \
+     <path style="'+style_str+'" d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z"></path> \
+  </svg>';
+
+
+  var canvas = document.createElement('canvas');
+  canvas.width = opts.w;
+  canvas.height = opts.h;
+  var ctx = canvas.getContext('2d');
+  canvas.setAttribute("id", opts.color_name);
+  canvas.setAttribute("title", opts.color_name + ': ' + opts.stroke);
+  document.getElementsByTagName('body')[0].appendChild(canvas);
+
+
+  var DOMURL = window.URL || window.webkitURL || window;
+
+  var img = new Image(); // dumb Image
+  var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'}); // an svg Blob we define
+  var url = DOMURL.createObjectURL(svg); // the url of our svg
+
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0); // draw the dumb image to the canvase
+    DOMURL.revokeObjectURL(url); //
+  }
+
+  img.src = url; // Finally, set the source of the dumb image to the url of our custom svg
+
+}
+
+
+/*var url_opts = encodeURIComponent(JSON.stringify(SVG_OPTS));
 //var BASE_URL = window.location.pathname;
 
     var BASE_URL = document.URL.split('?')[0];
@@ -34,29 +106,156 @@ var url_opts = encodeURIComponent(JSON.stringify(SVG_OPTS));
 var new_url = BASE_URL+'?'+url_opts;
 window.history.pushState('', 'svg custom pin',new_url);
 var NEW_OPTS = JSON.parse(decodeURIComponent(window.location.search.substring(1)));
-opts = NEW_OPTS;
-updateSVG(NEW_OPTS);
 
-function updateSVG(opts) {
-    var style_arr = [];
-    for (var key in opts) {
-        style_arr.push( key + ':' + opts[key] ); 
-    }
-    var style_str = style_arr.join(';');
+opts = NEW_OPTS;*/
+opts = SVG_OPTS;
 
-    style_str = 'fill:' + opts.fill + ';stroke:' + opts.stroke + ';stroke-width:' + opts['stroke-width'];
+style_str = 'fill:' + opts.fill + ';stroke:' + opts.stroke + ';stroke-width:' + opts['stroke-width'];
+console.log(style_str);
 
-var data = '<svg x="0px" y="0px" width="'+opts.w+'px" height="'+opts.h+'px" viewBox="5.0 -10.0 100.0 135.0" enable-background="new 0 0 100 100" xml:space="preserve"> \
-<g style="'+style_str+'"> \
- <path   d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z" \
-   style="'+style_str+'" /> \
- </g></svg>';           
+var data = '<svg xmlns="http://www.w3.org/2000/svg" width="'+opts.w+'px" height="'+opts.h+'px" viewBox="0 0 '+2*opts.w+' '+2*opts.h+'"  > \
+   <path style="'+style_str+'" d="m 49.324,4.814 c -14.332,0 -25.954,11.622 -25.954,25.954 0,5.836 1.929,11.223 5.174,15.556 0.011,0.006 0.016,0.017 0.016,0.022 0.617,0.907 20.496,30.058 20.763,49.422 0.268,-19.364 20.146,-48.515 20.764,-49.422 0.011,-0.016 0.016,-0.022 0.016,-0.022 3.247,-4.333 5.174,-9.72 5.174,-15.556 0,-14.331 -11.62,-25.954 -25.953,-25.954 z"></path> \
+</svg>';
 
-var new_svg_div = document.createElement('div');
-new_svg_div.innerHTML = data;
-document.body.appendChild(new_svg_div);
 
+for (var clr in colors) {
+  var opts = {};
+  //var opts = setOpts(clr, colors[clr]);
+  opts.h = 50;      
+  opts.w = 50;
+  opts.color_name = clr;
+  opts['stroke-width'] = 6;
+  opts.stroke = colors[clr];
+  var opac = 0.6;
+  var r = hexToR(cutHex(colors[clr]));
+  var g = hexToG(cutHex(colors[clr]));
+  var b = hexToB(cutHex(colors[clr]));
+  var rgb_arr = rgba2rgb(r,g,b,opac);
+
+  var half_clr = 'rgb(' +
+    rgb_arr[0] +
+    ',' +
+    rgb_arr[1] +
+    ',' +
+    rgb_arr[2] +
+    ')';
+  opts.fill = half_clr;
+
+  addCanvas(clr,opts);
+};
+
+
+document.getElementsByTagName('body')[0].appendChild(document.createElement('div'));
+
+for (var i = 0; i < colorbrewer.Spectral[5].length; i++) {
+  var hex = colorbrewer.Spectral[5][i];
+  console.log(hex);
+  var opts = {};
+  //var opts = setOpts(clr, colors[clr]);
+  opts.h = 50;      
+  opts.w = 50;
+  opts.color_name = 'Spectral';
+  opts['stroke-width'] = 6;
+  opts.stroke = hex;
+  var opac = 0.6;
+  var r = hexToR(cutHex(hex));
+  var g = hexToG(cutHex(hex));
+  var b = hexToB(cutHex(hex));
+  var rgb_arr = rgba2rgb(r,g,b,opac);
+
+  var half_clr = 'rgb(' +
+    rgb_arr[0] +
+    ',' +
+    rgb_arr[1] +
+    ',' +
+    rgb_arr[2] +
+    ')';
+  opts.fill = half_clr;
+
+  addCanvas(clr,opts);
+};
+
+
+document.getElementsByTagName('body')[0].appendChild(document.createElement('div'));
+
+for (var i = 0; i < colorbrewer.Spectral[11].length; i++) {
+  var hex = colorbrewer.Spectral[11][i];
+  console.log(hex);
+  var opts = {};
+  //var opts = setOpts(clr, colors[clr]);
+  opts.h = 50;      
+  opts.w = 50;
+  opts.color_name = 'Spectral';
+  opts['stroke-width'] = 6;
+  opts.stroke = hex;
+  var opac = 0.6;
+  var r = hexToR(cutHex(hex));
+  var g = hexToG(cutHex(hex));
+  var b = hexToB(cutHex(hex));
+  var rgb_arr = rgba2rgb(r,g,b,opac);
+
+  var half_clr = 'rgb(' +
+    rgb_arr[0] +
+    ',' +
+    rgb_arr[1] +
+    ',' +
+    rgb_arr[2] +
+    ')';
+  opts.fill = half_clr;
+
+  addCanvas(clr,opts);
+};
+
+//updateSVG(NEW_OPTS);
+/*
+single iteration; non-function;
+var canvas = document.getElementById('canvas');
+canvas.width = opts.w;
+canvas.height = opts.h;
+var ctx = canvas.getContext('2d');
+
+var DOMURL = window.URL || window.webkitURL || window;
+
+var img = new Image(); // dumb Image
+var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'}); // an svg Blob we define
+var url = DOMURL.createObjectURL(svg); // the url of our svg
+
+img.onload = function () {
+  ctx.drawImage(img, 0, 0); // draw the dumb image to the canvase
+  DOMURL.revokeObjectURL(url); //
 }
+
+img.src = url; // Finally, set the source of the dumb image to the url of our custom svg
+*/
+
+function rgba2rgb(r,g,b,a) {
+  bg = {r: 255, g: 255, b: 255};
+  r2 = (1-a) * r + (a * bg.r);
+  g2 = (1-a) * g + (a * bg.g);
+  b2 = (1-a) * b + (a * bg.b);
+
+  r2 = r2>255 ? 255 : r2;
+  g2 = g2>255 ? 255 : g2;
+  b2 = b2>255 ? 255 : b2;
+
+  rgb_arr = [parseInt(r2),parseInt(g2),parseInt(b2)];
+  return rgb_arr;
+}
+//a=rgba2rgb(255,0,0,0.5);
+
+function hex2rgba(hex,opacity){
+    R = hexToR(hex);
+    G = hexToG(hex);
+    B = hexToB(hex);
+    rgba = 'rgba('+R+','+G+','+B+','+opacity+')';
+    return rgba;
+}
+
+function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16);}
+function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16);}
+function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16);}
+function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h;}
+
 
 </script>
 
