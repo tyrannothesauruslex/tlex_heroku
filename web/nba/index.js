@@ -289,7 +289,19 @@ function chartPlayerStats(name, pid, color1, color2) {
           .style("stroke", function(d) {
             return d[0].color1;
           })
-          .attr("d", line);
+          .attr("d", line)
+          .on("click", function(d){
+            d3.selectAll("text#tip").remove();
+            d3.select("#chart")
+                .append("text")
+                .text(d.PTS_ave + ", " + d.MIN_ave + "min " + d.name + " | " + d.PTS + "pts " + d.game  )
+                .attr("x", xScale( parseDate(d.GAME_DATE)) + 10)
+                .attr("y", yScale(d.PTS_ave) - 1)
+                //.attr("id", d.line_id)
+                .attr("id", "tip")
+                ;
+            })
+            ;
 
 
     g.selectAll("circle")
