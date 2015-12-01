@@ -299,11 +299,11 @@ function chartPlayerStats(name, pid, color1, color2) {
       .append("circle")
         .attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
         .attr("cy", function(d) {return yScale(d.PTS_ave); })
-        .attr("r",4)
+        .attr("r",8)
         .attr("class","data-dot");
 
     // hover resize effect
-    g.selectAll("circle")
+    /*g.selectAll("circle")
         .on("mouseover", function(d){
             d3.select(this)
                 .transition()
@@ -313,7 +313,7 @@ function chartPlayerStats(name, pid, color1, color2) {
             d3.select(this)
                 .transition()
                 .attr("r",4);
-        });
+        });*/
 
     // tip / label
     g.selectAll("circle")
@@ -343,12 +343,17 @@ function chartPlayerStats(name, pid, color1, color2) {
 
 function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
-        d3.selectAll("text#tip").remove();
-            d3.select("#chart")
-                .append("text")
+        //d3.selectAll("text#tip").remove();
+        d3.selectAll("div#tip").remove();
+            //var text_grp = d3.select("#chart")
+            var div_text = d3.select('body')
+                .append('div')
+                //.append("text")
                 .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
-                .attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
-                .attr("y", yScale(d.PTS_ave) - 1)
+                //.attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
+                //.attr("y", yScale(d.PTS_ave) - 1)
+                .style("top", (d3.event.pageY + 16) + "px")
+                .style("left", (d3.event.pageX + 16) + "px")
                 .attr("paint-order", "stroke")
                 //.attr("id", d.line_id)
                 .attr("id", "tip")
