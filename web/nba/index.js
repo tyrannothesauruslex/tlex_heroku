@@ -322,7 +322,7 @@ function chartPlayerStats(name, pid, color1, color2) {
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
-                .text(d.PTS_ave +  d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
+                .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
                 .attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
                 .attr("y", yScale(d.PTS_ave) - 1)
                 .attr("paint-order", "stroke")
