@@ -343,7 +343,6 @@ function chartPlayerStats(name, pid, color1, color2) {
 
 function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
-        alert("Tap! " + d);
         d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
