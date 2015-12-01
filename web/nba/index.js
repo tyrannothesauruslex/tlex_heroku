@@ -318,7 +318,8 @@ function chartPlayerStats(name, pid, color1, color2) {
     // tip / label
     g.selectAll("circle")
         //.on("mouseover.tooltip", function(d){
-        .on("click, touchstart", function(d){
+        //.on("click", function(d){
+        .on("touchstart", function(d){
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
