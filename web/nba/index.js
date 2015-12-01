@@ -290,7 +290,7 @@ function chartPlayerStats(name, pid, color1, color2) {
             return d[0].color1;
           })
           .attr("d", line)
-          .on("click", function(d){
+          /*.on("click", function(d){
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
@@ -300,7 +300,7 @@ function chartPlayerStats(name, pid, color1, color2) {
                 //.attr("id", d.line_id)
                 .attr("id", "tip")
                 ;
-            })
+            })*/
             ;
 
 
@@ -328,8 +328,8 @@ function chartPlayerStats(name, pid, color1, color2) {
 
     // tip / label
     g.selectAll("circle")
-        .on("mouseover.tooltip", function(d){
-            //d3.select("text").remove();
+        //.on("mouseover.tooltip", function(d){
+        .on("click", function(d){
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
@@ -340,9 +340,9 @@ function chartPlayerStats(name, pid, color1, color2) {
                 .attr("id", "tip")
                 ;
         })
-        .on("mouseout.tooltip", function(d){
+        /*.on("mouseout.tooltip", function(d){
             d3.selectAll("text#tip").remove();
-        })
+        })*/
         ;
 
     });
