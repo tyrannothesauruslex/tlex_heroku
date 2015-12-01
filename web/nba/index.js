@@ -291,6 +291,7 @@ function chartPlayerStats(name, pid, color1, color2) {
           })
           .attr("d", line)
           .on("click", function(d){
+            console.log(d);
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
