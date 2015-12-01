@@ -177,6 +177,7 @@ function chartPlayerStats(name, pid, color1, color2) {
     }
 
     var url = 'stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID='+ pid +'&Season=2015-16&SeasonType=Regular+Season';
+    url = encodeURIComponent(url);
 
 
     A.data = [];
