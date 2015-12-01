@@ -4,10 +4,18 @@
 <head>
 <style>
 
-html, body { font: normal 10px sans-serif; }
+html, body { font: normal 16px sans-serif; }
 
 svg {
   border: 0px dotted gray;
+}
+
+text {
+    paint-order: stroke;
+    stroke-width: 3px;
+    fill: green;
+    stroke: purple;
+    stroke-linejoin: round;
 }
 
 .bar {
@@ -19,7 +27,7 @@ svg {
 }
 
 .axis {
-  font: 10px sans-serif;
+  /*font: 16px sans-serif;*/
 }
 
 .axis path,
@@ -51,7 +59,6 @@ svg {
 
 .data-dot {
     fill: rgba(99,99,99,0.5);
-
 }
 
 </style>
