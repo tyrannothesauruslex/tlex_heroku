@@ -85,7 +85,7 @@ var margin = {top: 40, right: 40, bottom: 40, left: 40},
 var w = 960;
 var h = 485;
 var padding = 90;
-var margin = {top: 20, left: 20, bottom: 40, right: 90}
+var margin = {top: 30, left: 30, bottom: 50, right: 90}
 
 // display date format
 var  date_format = d3.time.format("%d %b");
@@ -323,7 +323,7 @@ function chartPlayerStats(name, pid, color1, color2) {
             d3.select("#chart")
                 .append("text")
                 .text(d.PTS_ave + ", " + d.MIN_ave + "min " + d.name + " | " + d.PTS + "pts " + d.game  )
-                .attr("x", xScale( parseDate(d.GAME_DATE)) + 10)
+                .attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
                 .attr("y", yScale(d.PTS_ave) - 1)
                 .attr("paint-order", "stroke")
                 //.attr("id", d.line_id)
