@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<meta charset="utf-8">
+<head>
+<style>
+
+html, body { font: normal 10px sans-serif; }
+
+svg {
+  border: 0px dotted gray;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  //display: none;
+  //stroke: blue;
+}
+
+
+.line2 {
+  fill: none;
+  stroke: #444;
+  stroke-width: 6px;
+}
+
+.line1 {
+  fill: none;
+  stroke: #444;
+  stroke-width: 3px;
+}
+
+.faded { stroke-opacity: 0.2; }
+
+.data-dot {
+    fill: rgba(99,99,99,0.5);
+
+}
+
+</style>
+
+
+</head>
+<body>
+
+    <div id="status"></div>
+
+    <script src="d3.v3.min.js" charset="utf-8"></script>
+
+    <script src="index.js"></script>
+
+</body>
+</html>
