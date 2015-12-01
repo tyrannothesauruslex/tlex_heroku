@@ -347,6 +347,8 @@ function addHammerEventListener(that, d){
         d3.selectAll("div#tip").remove();
         console.log(event);
         console.log(that);
+        var tap_x = event.srcEvent.clientX;
+        var tap_y = event.srcEvent.clientY;
         //var text_grp = d3.select("#chart")
         var div_text = d3.select('body')
             .append('div')
@@ -355,8 +357,8 @@ function addHammerEventListener(that, d){
             .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
             //.attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
             //.attr("y", yScale(d.PTS_ave) - 1)
-            .style("top", (event.center.y - 16) + "px")
-            .style("left", (event.center.x - 30) + "px")
+            .style("top", (tap_y - 16) + "px")
+            .style("left", (tap_x - 30) + "px")
             //.attr("paint-order", "stroke")
             //.attr("id", d.line_id)
             ;
