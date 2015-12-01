@@ -100,7 +100,7 @@ var today = new Date();
 var reg_season_length = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
 var days_thr_season = Math.round(Math.abs((firstDate.getTime() - today.getTime())/(oneDay)));
 var percent_thr_season = parseInt(100*days_thr_season / reg_season_length);
-d3.select('#status').text('Through ' + percent_thr_season + '% of season');
+d3.select('#status').text('PPG through ' + percent_thr_season + '% of season');
 
 var xScale = d3.time.scale()
 .domain( x_domain )
@@ -322,7 +322,7 @@ function chartPlayerStats(name, pid, color1, color2) {
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
-                .text(d.PTS_ave + ", " + d.MIN_ave + "min " + d.name + " | " + d.PTS + "pts " + d.game  )
+                .text(d.PTS_ave +  d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
                 .attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
                 .attr("y", yScale(d.PTS_ave) - 1)
                 .attr("paint-order", "stroke")
