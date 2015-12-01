@@ -73,7 +73,7 @@ var stat;
 
 
 //var proxy_url = 'http://localhost:1337/'; // npm install -g corsproxy
-var proxy_url = '../server/proxy.php?'; // npm install -g corsproxy
+var proxy_url = '../server/proxy.php?url='; // npm install -g corsproxy
 
 var parseDate = d3.time.format("%b %d, %Y").parse; //"OCT 28, 2015"
 /*
@@ -176,7 +176,7 @@ function chartPlayerStats(name, pid, color1, color2) {
         A[pid].season_stat_obj[stat+'_ave'] = 0;
     }
 
-    var url = 'stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID='+ pid +'&Season=2015-16&SeasonType=Regular+Season';
+    var url = 'http://stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID='+ pid +'&Season=2015-16&SeasonType=Regular+Season';
     url = encodeURIComponent(url);
 
 
