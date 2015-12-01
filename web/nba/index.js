@@ -345,19 +345,18 @@ function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
         //d3.selectAll("text#tip").remove();
         d3.selectAll("div#tip").remove();
-        console.log(d3.event);
+        console.log(event);
         console.log(that);
         //var text_grp = d3.select("#chart")
         var div_text = d3.select('body')
             .append('div')
             .attr("id", "tip")
-            .style("display","absolute")
             //.append("text")
             .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
             //.attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
             //.attr("y", yScale(d.PTS_ave) - 1)
-            .style("top", (d3.event.pageY + 16) + "px")
-            .style("left", (d3.event.pageX + 16) + "px")
+            .style("top", (event.pageY + 16) + "px")
+            .style("left", (event.pageX + 16) + "px")
             .attr("paint-order", "stroke")
             //.attr("id", d.line_id)
             ;
