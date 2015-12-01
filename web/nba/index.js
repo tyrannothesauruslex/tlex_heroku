@@ -72,7 +72,8 @@ A.players = [
 var stat;
 
 
-var proxy_url = 'http://localhost:1337/'; // npm install -g corsproxy
+//var proxy_url = 'http://localhost:1337/'; // npm install -g corsproxy
+var proxy_url = '../server/proxy.php?'; // npm install -g corsproxy
 
 var parseDate = d3.time.format("%b %d, %Y").parse; //"OCT 28, 2015"
 /*
