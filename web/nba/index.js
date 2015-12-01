@@ -317,9 +317,12 @@ function chartPlayerStats(name, pid, color1, color2) {
 
     // tip / label
     g.selectAll("circle")
+        .each(function(d) {
+            addHammerEventListener(this, d);
+        })
         //.on("mouseover.tooltip", function(d){
         //.on("click", function(d){
-        .on("touchstart", function(d){
+        /*.on("touchstart", function(d){
             d3.selectAll("text#tip").remove();
             d3.select("#chart")
                 .append("text")
@@ -330,9 +333,6 @@ function chartPlayerStats(name, pid, color1, color2) {
                 //.attr("id", d.line_id)
                 .attr("id", "tip")
                 ;
-        })
-        /*.on("mouseout.tooltip", function(d){
-            d3.selectAll("text#tip").remove();
         })*/
         ;
 
@@ -340,6 +340,22 @@ function chartPlayerStats(name, pid, color1, color2) {
 
 }
 
+
+function addHammerEventListener(that, d){
+    Hammer(that).on("tap", function(event){
+        alert("Tap! " + d);
+        d3.selectAll("text#tip").remove();
+            d3.select("#chart")
+                .append("text")
+                .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
+                .attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
+                .attr("y", yScale(d.PTS_ave) - 1)
+                .attr("paint-order", "stroke")
+                //.attr("id", d.line_id)
+                .attr("id", "tip")
+                ;
+    });
+}
 
 function type(d) {
   d.frequency = +d.frequency;
