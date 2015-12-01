@@ -27,7 +27,7 @@ html {
     color: #444;
     line-height: 20px;
     border: 0px solid #d2d2d2;
- 
+
     /*#d9eaf3 = blue line?*/
     background: rgba(229,237,214,0.5);
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, rgba(229,237,214,0.5))) 0 4px;
@@ -36,17 +36,17 @@ html {
     background: -ms-linear-gradient(top, #d9eaf3 0%, rgba(229,237,214,0.5) 8%) 0 4px;
     background: -o-linear-gradient(top, #d9eaf3 0%, rgba(229,237,214,0.5) 8%) 0 4px;
     background: linear-gradient(top, #d9eaf3 0%, rgba(229,237,214,0.5) 8%) 0 4px;
- 
+
     -webkit-background-size: 100% 20px;
     -moz-background-size: 100% 20px;
     -ms-background-size: 100% 20px;
     -o-background-size: 100% 20px;
     background-size: 100% 20px;
- 
+
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
- 
+
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
     box-shadow: 0 1px 2px rgba(0,0,0,0.07);
@@ -72,7 +72,7 @@ html, body {
 
 /*.tt-dataset-foo {*/
 .tt-suggestion, #syns, #syns2 {
-    border: 0px dotted green; 
+    border: 0px dotted green;
     padding: 0px;
     position: fixed;
     /*left: 42px;
@@ -86,12 +86,12 @@ html, body {
     white-space: normal !important;
     /* width: 100% !important; */
     /* white-space: pre-wrap;  */
-    white-space: normal; 
+    white-space: normal;
     word-wrap: break-word;
     display: block !important;
     -webkit-hyphens: auto;
        -moz-hyphens: auto;
-            hyphens: auto;   
+            hyphens: auto;
 
     /*position: fixed;
     bottom: 10px;
@@ -137,16 +137,16 @@ span.twitter-typeahead {
     position: fixed;
     top: 100px;
     left: 10px;
-    z-index: 9;     
-    border: 0px dotted red;           
+    z-index: 9;
+    border: 0px dotted red;
 }
 
 /*.tt-dataset-foo2 {
     position: fixed;
     top: 100px;
     left: 10px;
-    z-index: 9;     
-    border: 0px dotted red;           
+    z-index: 9;
+    border: 0px dotted red;
 }*/
 
 .transparent {
@@ -159,15 +159,13 @@ span.twitter-typeahead {
 p {
     margins: 0px !important;
     -webkit-margin-before:0.5em;
-    -webkit-margin-after:0.5em;                
+    -webkit-margin-after:0.5em;
 }
 
 
 .ribbon {
   overflow: hidden;
   white-space: nowrap;
-  text-decoration: none !important;
-
   border: 0px solid #faa;
   color: gray;
   display: block;
@@ -176,7 +174,6 @@ p {
   margin: 1px 0;
 /*  padding: 10px 50px;*/
   text-align: center;
-  text-decoration: none;
 
   position: absolute;
   z-index: 9;
@@ -187,9 +184,10 @@ p {
      -moz-transform: rotate(25deg);
       -ms-transform: rotate(25deg);
        -o-transform: rotate(25deg);
-          transform: rotate(25deg);  
+          transform: rotate(25deg);
 }
-.ribbon:hover {
+.ribbon:hover,
+.ribbon a {
     text-decoration: none;
 }
 
@@ -244,7 +242,7 @@ p {
 }
 
 .big-font {
-    font-size: 50px !important; 
+    font-size: 50px !important;
 }
 
 span.opt {
