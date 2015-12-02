@@ -348,12 +348,11 @@ function addHammerEventListener(that, d){
     /*
         A.evnt = event;
         console.log(event);
-        console.log(that);
         alert(JSON.stringify(event));
     */
-        var tap_x = d3.select(that).attr('cx') || event.srcEvent.clientX || event.originalEvent.gesture.center.x || event.center.x;
-        var tap_y = d3.select(that).attr('cy') || event.srcEvent.clientY || event.originalEvent.gesture.center.y || event.center.y;
-        alert(tap_x,tap_y);
+        console.log(d3.select(that).attr('cx') );
+        var tap_x = d3.select(that).attr('cx') || event.srcEvent.clientX || event.originalEvent.gesture.center.x || event.center.x || 0;
+        var tap_y = d3.select(that).attr('cy') || event.srcEvent.clientY || event.originalEvent.gesture.center.y || event.center.y || 20;
         //var text_grp = d3.select("#chart")
         var div_text = d3.select('body')
             .append('div')
