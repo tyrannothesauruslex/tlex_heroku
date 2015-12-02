@@ -347,8 +347,8 @@ function addHammerEventListener(that, d){
         d3.selectAll("div#tip").remove();
         console.log(event);
         console.log(that);
-        var tap_x = event.srcEvent.clientX;
-        var tap_y = event.srcEvent.clientY;
+        var tap_x = event.srcEvent.clientX || event.gesture.center.pageX;
+        var tap_y = event.srcEvent.clientY || event.gesture.center.pageY;
         //var text_grp = d3.select("#chart")
         var div_text = d3.select('body')
             .append('div')
