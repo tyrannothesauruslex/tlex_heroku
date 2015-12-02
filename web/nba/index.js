@@ -345,6 +345,7 @@ function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
         //d3.selectAll("text#tip").remove();
         d3.selectAll("div#tip").remove();
+        A.evnt = event;
         console.log(event);
         console.log(that);
         alert(JSON.stringify(event));
