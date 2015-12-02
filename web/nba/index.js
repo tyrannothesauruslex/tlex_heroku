@@ -345,12 +345,14 @@ function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
         //d3.selectAll("text#tip").remove();
         d3.selectAll("div#tip").remove();
+    /*
         A.evnt = event;
         console.log(event);
         console.log(that);
+    */
         alert(JSON.stringify(event));
-        var tap_x = event.srcEvent.clientX || event.originalEvent.gesture.center.x;
-        var tap_y = event.srcEvent.clientY || event.originalEvent.gesture.center.y;
+        var tap_x = event.srcEvent.clientX || event.originalEvent.gesture.center.x || event.center.x;
+        var tap_y = event.srcEvent.clientY || event.originalEvent.gesture.center.y || event.center.y;
         //var text_grp = d3.select("#chart")
         var div_text = d3.select('body')
             .append('div')
