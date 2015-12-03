@@ -36,15 +36,15 @@ function parseWebsterSyns (json_data) {
       for (var i = 0; i < entry_arr.length; i++) {
           word    = entry_arr[i].term[0].hw[0]['_text'];
           PoS     = entry_arr[i].fl[0]['_text'];
-          
+
           //html_str += '<br><span class="opt-able" onclick="toggleOpts(\''+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
           html_str += '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
-          
+
           senses  = entry_arr[i].sens;
           for (var j = 0; j < senses.length; j++) {
               num = senses[j].sn ? senses[j].sn[0]['_text'] + '. ' : '';
               def = senses[j].mc ? senses[j].mc[0]['_text'] : '';
-              
+
               if (senses[j].syn) {
                   syns_str = senses[j].syn[0]['_text'];
                   syns_arr = syns_str.split(', ');
@@ -53,8 +53,8 @@ function parseWebsterSyns (json_data) {
                   };
                   syns_str = syns_arr.join(', ');
 
-                  html_str += num + def + '<br>'; 
-                  html_str += '&nbsp;&nbsp;&nbsp;&nbsp;' + syns_str + '<br>'; 
+                  html_str += num + def + '<br>';
+                  html_str += '&nbsp;&nbsp;&nbsp;&nbsp;' + syns_str + '<br>';
               }
           };
 
@@ -72,19 +72,19 @@ function parseWebsterSyns (json_data) {
       /*var entries = $(json_data).find('entry');
 
       for (var i = 0; i < entries.length; i++) {
-        
+
         terms = $(entries[i]).find('term');
         for (var j = 0; j < terms.length; j++) {
-          word = $(terms[j]).find('hw'); 
-          PoS = $(terms[j]).find('fl'); 
-          
-          html_str += '<br><span class="opt-able" onclick="toggleOpts();"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
-          
+          word = $(terms[j]).find('hw');
+          PoS = $(terms[j]).find('fl');
 
-          senses = $(terms[j]).find('sens'); 
+          html_str += '<br><span class="opt-able" onclick="toggleOpts();"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  ';
+
+
+          senses = $(terms[j]).find('sens');
           for (var k = 0; k < senses.length; k++) {
-            html_str += senses[k].find('sn') + '. ' + senses[k].find('mc') + '<br>'; 
-            html_str += senses[k].find('syn') + '<br>'; 
+            html_str += senses[k].find('sn') + '. ' + senses[k].find('mc') + '<br>';
+            html_str += senses[k].find('syn') + '<br>';
           }
         }
 
@@ -92,8 +92,8 @@ function parseWebsterSyns (json_data) {
 }
 
 
-function getWebsterSyns (word, ref, key) { 
-    uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + 
+function getWebsterSyns (word, ref, key) {
+    uri = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" +
           encodeURIComponent(word) + "?key=" + encodeURIComponent(mw_apikey) ; // + '&outputFormat=application/json';
 
     uri = 'server/proxy.php?url=' + uri;
@@ -103,7 +103,7 @@ function getWebsterSyns (word, ref, key) {
       type: "GET",
       //dataType: "jsonp",  //For external apis
       dataType: "xml",  //For external apis
-      success: function(response) { 
+      success: function(response) {
           //var xml = $( $.parseXML(response) );
           console.log(response);
           //FOO = response;
@@ -177,9 +177,9 @@ function getAndParseBHT() {
       console.log(word_path_arr[0]);
               //console.log(response[0]);
               // BHT returns obj with keys for each part of speech
-              // each an object with keys ant, sim, syn 
+              // each an object with keys ant, sim, syn
               // each of which is an array
-              // for now push all syns into one array?    
+              // for now push all syns into one array?
       new_arr = [];
       html_str = '<span class="opt-able" onclick="toggleOpts();"><b>' + word_path_arr[0] + '</b></span>';
       for (var PoS in response) {
@@ -202,12 +202,12 @@ function getAndParseBHT() {
       new_list = [{"words": newer_arr}];
       //return response;
       console.log(new_list);
-      
+
       $('#syns').html( new_list[0]['words'] );
       */
 
       //return new_list;
-  
+
   });
 
 }
@@ -235,7 +235,7 @@ $(document).on("click.tt", ".tt-suggestion", function(e) {
 
 // Changes XML to JSON
 function xmlToJson(xml) {
-  
+
   // Create the return object
   var obj = {};
 
@@ -284,7 +284,7 @@ function initWordOpts() {
           e.style.display = 'none';
        else
           e.style.display = 'block';
-    }   */ 
+    }   */
     $(".opt-able").click(function(){
         var clicked_word = $(this).text();
         console.log(clicked_word);
@@ -301,10 +301,108 @@ function initWordOpts() {
             //$("#popUp").fadeOut();
             $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
         }
-    });    
+    });
 
     $('#opt-close').click(function(){
         $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
+    });
+}
+
+function initSettingsEditor() {
+    /*
+    On click, pop out:
+    (Delta council color widget customized)
+        paper color: bc
+        pen color: fc
+        font face: ff
+        font size: fs
+    On each change, do change
+    On page click, close / pop-in
+
+    */
+
+    $('#paper-div').removeClass('paper');
+
+    $('#edit-background').on('change',function(){
+        $('body').css('background',$(this).value());
+        updateUrl();
+    });
+}
+
+function readUrl() {
+    /*
+    wwww.tlex.me/#bc=ddd&fc=080&ff=serif&fs=18&w=effortless
+
+    */
+    A.url_params = {};
+
+    var all_pairs = location.hash.substring(1).split('&');
+    var a_pair;
+    for (var i = 0; i < all_pairs.length; i++) {
+        a_pair = all_pairs[i].split('=');
+        A.url_params[ a_pair[0] ] = a_pair[1];
+    }
+
+    /*d3.select('#selector_a').node().value = hash[0] || G.input_A;
+    d3.select('#selector_b').node().value = hash[1] || G.input_B;
+    */
+}
+
+function writeUrl() {
+    var new_hash = '#' + d3.select('#selector_a').node().value +
+        '/' + d3.select('#selector_b').node().value;
+    window.location.hash  = new_hash;
+}
+
+
+function initSpectrum(drawn_obj) {
+
+    var color = drawn_obj.options.color || drawn_obj.options.gin_color || '#000011';
+
+    var outline_color = hex2rgba(color,0.8);
+    var fill_color = hex2rgba(color,0.2);
+    $("#colorPicker").css('border-color',outline_color);
+    $("#colorPicker").css('background-color',fill_color);
+
+
+    $("#colorPicker").spectrum({
+        //color: "#000",
+        color: color,
+        showInitial: true,
+        showInput: true,
+        preferredFormat: 'hex',
+        d_obj: drawn_obj,
+        clickoutFiresChange: true, // defaults to cancelling/reverting color
+        show: function(){
+            //$("#colorPicker").css('background-color',drawn_obj.options.color);
+        }
+    });
+
+
+    $("#colorPicker").on('move.spectrum,dragstop.spectrum', {d_obj: drawn_obj}, function(e, tinycolor) {
+        //console.log('drag',tinycolor.toHexString());
+        var outline_color = hex2rgba(tinycolor.toHexString(),0.8);
+        var fill_color = hex2rgba(tinycolor.toHexString(),0.2);
+
+        if ( e.data.d_obj.gin_type == 'marker' ) {
+            customIcon.options.strokeColor = customIcon.options.markerColor = tinycolor.toHexString();
+            e.data.d_obj.setIcon(customIcon);
+            e.data.d_obj.options.gin_color = tinycolor.toHexString();
+            //http://a.tiles.mapbox.com/v3/marker/pin-s+009900.png
+        } else {
+            e.data.d_obj.setStyle({color: tinycolor.toHexString()});
+        }
+        $("#colorPicker").css('border-color',outline_color);
+        $("#colorPicker").css('background-color',fill_color);
+    });
+
+
+    $('#annotation').val(drawn_obj.options.anno);
+
+    $('#custom_info_save').click( {d_obj: drawn_obj}, function(e, d_obj) {
+        e.data.d_obj.options.anno = $('#annotation').val();
+        a = $(".leaflet-popup-close-button")[0];
+        $(a).click();
     });
 }
 
@@ -328,10 +426,10 @@ function toggleOpts(clicked_word) {
 }
 /*
 1. search for songs which have lyrics which have the word/term in them
-2. 
+2.
 3. get the actual lyrics and write a snip of them to the span
 */
-function searchLyrics(term) { 
+function searchLyrics(term) {
     uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=' + encodeURIComponent(term) ; // + '&outputFormat=application/json';
 
     uri = 'server/proxy.php?url=' + uri;
@@ -341,7 +439,7 @@ function searchLyrics(term) {
       type: "GET",
       //dataType: "jsonp",  //For external apis
       dataType: "xml",  //For external apis
-      success: function(response) { 
+      success: function(response) {
           console.log(response);
           parseLyricSearch(response, term);
       },
@@ -362,7 +460,7 @@ function parseLyricSearch(xml, term) {
     var items = xml.getElementsByTagName('SearchLyricResult');
     BAR = items;
     //debugger;
-    var items_len = items.length; 
+    var items_len = items.length;
     items_len = items_len < 20 ? items_len : 20;
     for (var i = 0; i < items_len; i++) {
       //try {
@@ -376,7 +474,7 @@ function parseLyricSearch(xml, term) {
       //} catch(e) {console.log(e, i)}
     };
     $('#songs').html(html_str);
-    /*    
+    /*
     $('.lyric-blurb').each(function(){
         writeLyrics( $(this), term );
     });
@@ -385,8 +483,8 @@ function parseLyricSearch(xml, term) {
 }
 
 
-//function getLyrics (a,b, term) { 
-function writeLyrics (el, term) { 
+//function getLyrics (a,b, term) {
+function writeLyrics (el, term) {
     var uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
 
     //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&artist=radiohead&title=creep&bucket=id:lyricfind-US&limit=true&bucket=tracks';
@@ -397,7 +495,7 @@ function writeLyrics (el, term) {
     //var b = encodeURIComponent($(el).attr('data-song'));
     //jhnklly@gmail.com apikey
     //http://developer.echonest.com/api/v4/song/search?api_key=SQMIYFB8AOENSOG4T&format=json&artist=radiohead&title=creep&bucket=id:lyricfind-US&limit=true&bucket=tracks&results=10
-    
+
     //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=SQMIYFB8AOENSOG4T&format=json&artist='+a+'&title='+b+'&bucket=id:lyricfind-US&limit=true&bucket=tracks';
 
     uri = 'server/proxy_params.php?url=' + uri;
@@ -408,7 +506,7 @@ function writeLyrics (el, term) {
     //var a = $(el).attr('data-id');
     //var b = $(el).attr('data-checksum');
 
-    
+
 
 
     //console.log('el',el);
@@ -423,7 +521,7 @@ function writeLyrics (el, term) {
       data: { 'lyricId': a, 'lyricCheckSum': b},
       //data: { 'artist': a, 'title': b, 'bucket': 'id:lyricfind-US', 'limit': 'true', 'bucket': 'tracks'},
       dataType: "xml",  //For external apis
-      success: function(response) { 
+      success: function(response) {
 /*          var xml = response;
           console.log('xml', xml);
           var items = xml.getElementsByTagName('GetLyricResult');

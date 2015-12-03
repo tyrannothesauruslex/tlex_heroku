@@ -7,12 +7,6 @@ html {
   border: 0px dashed gray;
 }
 
-#settings-btn, #settings-div {
-    position: absolute;
-    bottom: 2px;
-    left: 2px;
-}
-
 .paper {
     /*font: normal 12px/1.5 "Lucida Grande", arial, sans-serif;*/
     /*width: 300px;*/
@@ -68,7 +62,11 @@ html, body {
     height: 100%;
 }
 
-
+.top { position: absolute; top: 0px; }
+.right { position: absolute; right: 0px; }
+.bottom { position: absolute; bottom: 0px; }
+.left { position: absolute; left: 0px; }
+.pad05 { padding: 5px }
 
 /*.tt-dataset-foo {*/
 .tt-suggestion, #syns, #syns2 {
@@ -189,6 +187,25 @@ p {
 .ribbon:hover,
 .ribbon a {
     text-decoration: none;
+}
+
+a.a-btn {
+    display: inline-block;
+    text-decoration: none;
+    width: 36px;
+}
+
+#settings-div {
+    padding: 0px 10px;
+    display: inline-block;
+    z-index: 99;
+}
+#settings {
+    stroke: gray;
+    fill: gray;
+    /*
+    stroke-opacity: 1;
+    */
 }
 
 .mob_s2 {
