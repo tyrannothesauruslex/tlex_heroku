@@ -336,12 +336,26 @@ function readUrl() {
     */
     A.url_params = {};
 
+    // Get url params:
     var all_pairs = location.hash.substring(1).split('&');
     var a_pair;
     for (var i = 0; i < all_pairs.length; i++) {
         a_pair = all_pairs[i].split('=');
         A.url_params[ a_pair[0] ] = a_pair[1];
     }
+
+    // Make page changes for params
+
+    // Illustrate typing/writing
+    $(function(){
+      $("#your_word").typed({
+        strings: ["First sentence "],
+        showCursor: false,
+        typeSpeed: 0
+      });
+    });
+
+    // Set settings input controls to match
 
     /*d3.select('#selector_a').node().value = hash[0] || G.input_A;
     d3.select('#selector_b').node().value = hash[1] || G.input_B;
