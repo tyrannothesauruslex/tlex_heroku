@@ -347,19 +347,35 @@ function readUrl() {
     // Make page changes for params
 
     // Illustrate typing/writing
-    $(function(){
-      $("#your_word").typed({
-        strings: ["First sentence "],
-        showCursor: false,
-        typeSpeed: 0
-      });
-    });
 
     // Set settings input controls to match
 
     /*d3.select('#selector_a').node().value = hash[0] || G.input_A;
     d3.select('#selector_b').node().value = hash[1] || G.input_B;
     */
+}
+
+function simulateUse() {
+    $(function(){
+      $("#your_word").typed({
+        strings: ["First sentence"],
+        showCursor: false,
+        typeSpeed: 0,
+        callback: function() {
+            extractAndGetSyns();
+        }
+      });
+    });
+
+}
+
+function extractAndGetSyns() {
+    console.log('callback eAGS');
+    console.log( $('#your_word').val() );
+    var word = extractor( $('#your_word').val() );
+    console.log(word);
+    //getAndParseBHT();
+    getWebsterSyns(word, 'foo', mw_apikey);
 }
 
 function writeUrl() {

@@ -135,8 +135,6 @@ var svg = d3.select("body").append("svg")
     .attr("width", w)
     .attr("height", h)
   .append("g")
-    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
   svg.append("g")
       .attr("class", "x axis")
@@ -153,16 +151,159 @@ var svg = d3.select("body").append("svg")
       .attr("transform", "translate(" + margin.left + ",0)")
       .call(yAxis)
     .append("text")
-      /*.attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")*/
       .style("text-anchor", "end")
       .text("PTS");
 
-for (var i = 0; i < A.players.length; i++) {
 
+// Chart 2 (shot distances)
+var x2 = d3.scale.linear()
+    //.domain([25, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    .domain([0, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    .range([0, w]);
+
+var y2 = d3.scale.linear()
+    //.domain([0, d3.max(data, function(d) { return d.y; })])
+    .domain([0, 300])
+    .range([h, 0]);
+
+var xAxis2 = d3.svg.axis()
+    .scale(x2)
+    .orient("bottom");
+
+var svg2 = d3.select("body").append("svg")
+    .attr("id", "chart2")
+    .attr("width", w)
+    .attr("height", h)
+  .append("g")
+
+  svg2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + (h - margin.bottom) + ")")
+      .call(xAxis2)
+      .selectAll("text")
+         .style("text-anchor", "end")
+         .attr("dx", "-.8em")
+         .attr("dy", ".15em")
+         .attr("transform", "rotate(-65)");
+
+  svg2.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + margin.left + ",0)")
+      .call(yAxis)
+    .append("text")
+      .style("text-anchor", "end")
+      .text("shots");
+
+
+
+
+for (var i = 0; i < A.players.length; i++) {
     chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
 }
+
+chartPlayerShots('Curry', 201939, 'bar');
+chartPlayerShots('James', 2544, 'bar2');
+
+/*
+*/
+
+var smallest = 25;
+var largest = 47;
+var bin_size = 1;
+var number_of_bins = (largest-smallest)/bin_size;
+
+function chartPlayerShots(name, pid, bar_class) {
+    /*
+    PerMode ??
+    */
+    var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
+
+    url = encodeURIComponent(url);
+/*
+    Top of arc: 23.75'
+    Area of interest: > 25' ?
+*/
+    A.shot_data = [];
+    d3.json(proxy_url+url, function (json) {
+        var chartData = [];
+        A.shot_header = json.resultSets[0].headers;
+        games_data = json.resultSets[0].rowSet.reverse();
+        A.shot_data.push(games_data);
+
+        var MATCHUP_idx = A.shot_header.indexOf('MATCHUP'); // "DEC 02, 2015 - GSW @ CHA"
+        var SHOT_DIST_idx = A.shot_header.indexOf('SHOT_DIST');
+        var PTS_TYPE_idx = A.shot_header.indexOf('PTS_TYPE');
+        var PTS_idx = A.shot_header.indexOf('PTS');
+        var SHOT_RESULT_idx = A.shot_header.indexOf('SHOT_RESULT');
+
+        var temp;
+        var dist;
+
+        A.shot_chart_values = [];
+
+        for (var i = 0; i < games_data.length; i++) {
+            dist = games_data[i][SHOT_DIST_idx];
+            if ( dist >= 25 ) {
+                A.shot_chart_values.push( dist );
+            }
+        }
+
+        var values = A.shot_chart_values;
+
+        // A formatter for counts.
+        var formatCount = d3.format(",.0f");
+
+
+
+        tempScale = d3.scale.linear().domain([0, number_of_bins]).range([smallest, largest]);
+        console.log(tempScale);
+
+        tickArray = d3.range(number_of_bins + 1).map(tempScale);
+
+        console.log(tickArray);
+
+        // Generate a histogram using twenty uniformly-spaced bins.
+        var data = d3.layout.histogram()
+            //.bins(x.ticks(20))
+            .bins( tickArray )
+            (values);
+
+        /*
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        */
+
+        var bar = svg2.selectAll("."+bar_class)
+            .data(data)
+          .enter().append("g")
+            .attr("class", bar_class)
+            .attr("transform", function(d) { return "translate(" + x2(d.x) + "," + y2(d.y) + ")"; });
+
+        bar.append("rect")
+            .attr("x", 1)
+            .attr("width", x2(data[0].dx) - 1)
+            .attr("height", function(d) { return h - y2(d.y); });
+
+        bar.append("text")
+            .attr("dy", ".75em")
+            .attr("y", 6)
+            .attr("x", x2(data[0].dx) / 2)
+            .attr("text-anchor", "middle")
+            .text(function(d) { return formatCount(d.y); });
+
+        svg2.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + h + ")")
+            .call(xAxis2);
+
+
+    });
+
+}
+
 
 function chartPlayerStats(name, pid, color1, color2) {
     A[pid] = {
@@ -178,7 +319,6 @@ function chartPlayerStats(name, pid, color1, color2) {
 
     var url = 'http://stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID='+ pid +'&Season=2015-16&SeasonType=Regular+Season';
     url = encodeURIComponent(url);
-
 
     A.data = [];
     d3.json(proxy_url+url, function (json) {
