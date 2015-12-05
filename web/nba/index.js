@@ -71,6 +71,11 @@ A.players = [
 ];
 var stat;
 
+// shot distance bins
+var smallest = 25;
+var largest = 35;
+var bin_size = 1;
+var number_of_bins = (largest-smallest)/bin_size;
 
 //var proxy_url = 'http://localhost:1337/'; // npm install -g corsproxy
 var proxy_url = '../server/proxy.php?url='; // npm install -g corsproxy
@@ -85,7 +90,7 @@ var margin = {top: 40, right: 40, bottom: 40, left: 40},
 var w = 960;
 var h = 485;
 var padding = 90;
-var margin = {top: 30, left: 30, bottom: 50, right: 90}
+var margin = {top: 30, left: 50, bottom: 50, right: 90}
 
 // display date format
 var  date_format = d3.time.format("%d %b");
@@ -135,6 +140,7 @@ var svg = d3.select("body").append("svg")
     .attr("width", w)
     .attr("height", h)
   .append("g")
+  ;
 
   svg.append("g")
       .attr("class", "x axis")
@@ -156,19 +162,37 @@ var svg = d3.select("body").append("svg")
 
 
 // Chart 2 (shot distances)
+// x2 is a function that maps values from 0-35 to margin-plottableWidth
 var x2 = d3.scale.linear()
     //.domain([25, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
-    .domain([0, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
-    .range([0, w]);
+    .domain([0, largest]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    //.range([0, w])
+    .range([margin.left, w - margin.left - margin.right]);
+
+var x2_bar_width = d3.scale.linear()
+    //.domain([25, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    .domain([0, largest]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    .range([0, w - margin.left - margin.right]);
+
 
 var y2 = d3.scale.linear()
     //.domain([0, d3.max(data, function(d) { return d.y; })])
-    .domain([0, 300])
+    .domain([0, 200])
     .range([h, 0]);
 
 var xAxis2 = d3.svg.axis()
     .scale(x2)
     .orient("bottom");
+
+
+var yScale2 = d3.scale.linear()
+    .domain([0,200])
+    .range([h - margin.bottom, margin.top]);
+
+var yAxis2 = d3.svg.axis()
+    .scale(yScale2)
+    .orient("left")
+    //.ticks(5);
 
 var svg2 = d3.select("body").append("svg")
     .attr("id", "chart2")
@@ -181,15 +205,15 @@ var svg2 = d3.select("body").append("svg")
       .attr("transform", "translate(0," + (h - margin.bottom) + ")")
       .call(xAxis2)
       .selectAll("text")
-         .style("text-anchor", "end")
+/*         .style("text-anchor", "end")
          .attr("dx", "-.8em")
          .attr("dy", ".15em")
-         .attr("transform", "rotate(-65)");
+         .attr("transform", "rotate(-65)");*/
 
   svg2.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + margin.left + ",0)")
-      .call(yAxis)
+      .call(yAxis2)
     .append("text")
       .style("text-anchor", "end")
       .text("shots");
@@ -198,25 +222,20 @@ var svg2 = d3.select("body").append("svg")
 
 
 for (var i = 0; i < A.players.length; i++) {
-    chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
+    //chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
 }
 
-chartPlayerShots('Curry', 201939, 'bar');
-chartPlayerShots('James', 2544, 'bar2');
+chartPlayerShots('Curry', 201939, '2014-15', 'bar');
+chartPlayerShots('James', 2544, '2014-15', 'bar2');
 
 /*
 */
 
-var smallest = 25;
-var largest = 47;
-var bin_size = 1;
-var number_of_bins = (largest-smallest)/bin_size;
-
-function chartPlayerShots(name, pid, bar_class) {
+function chartPlayerShots(name, pid, season, bar_class) {
     /*
     PerMode ??
     */
-    var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
+    var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season='+ season +'&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
 
     url = encodeURIComponent(url);
 /*
@@ -243,7 +262,7 @@ function chartPlayerShots(name, pid, bar_class) {
 
         for (var i = 0; i < games_data.length; i++) {
             dist = games_data[i][SHOT_DIST_idx];
-            if ( dist >= 25 ) {
+            if ( dist >= smallest && dist <= largest) {
                 A.shot_chart_values.push( dist );
             }
         }
@@ -262,19 +281,10 @@ function chartPlayerShots(name, pid, bar_class) {
 
         console.log(tickArray);
 
-        // Generate a histogram using twenty uniformly-spaced bins.
         var data = d3.layout.histogram()
             //.bins(x.ticks(20))
             .bins( tickArray )
             (values);
-
-        /*
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        */
 
         var bar = svg2.selectAll("."+bar_class)
             .data(data)
@@ -284,19 +294,22 @@ function chartPlayerShots(name, pid, bar_class) {
 
         bar.append("rect")
             .attr("x", 1)
-            .attr("width", x2(data[0].dx) - 1)
-            .attr("height", function(d) { return h - y2(d.y); });
+            .attr("width", x2_bar_width( data[0].dx ) - 1)
+            //.attr("width", x2( data[0].dx ) - 1)
+            //.attr("height", function(d) { return h - y2(d.y); });
+            .attr("height", function(d) { return h - margin.bottom - y2(d.y); });
 
         bar.append("text")
             .attr("dy", ".75em")
             .attr("y", 6)
-            .attr("x", x2(data[0].dx) / 2)
+            //.attr("x", x2(data[0].dx) / 2)
+            .attr("x", x2_bar_width(data[0].dx) / 2)
             .attr("text-anchor", "middle")
             .text(function(d) { return formatCount(d.y); });
 
         svg2.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + h + ")")
+            .attr("transform", "translate(0," + (h - margin.bottom) + ")")
             .call(xAxis2);
 
 
