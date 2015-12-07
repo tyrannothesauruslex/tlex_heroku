@@ -171,6 +171,7 @@
                         skip += substr.length;
                         charPause = parseInt(substr);
                     }
+                    extractAndGetSyns(); // JMK hacktastic
 
                     // strip out the escape character and pause value so they're not printed
                     curString = curString.substring(0, curStrPos) + curString.substring(curStrPos + skip);

@@ -8,7 +8,7 @@ var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo
 
 var FOO, BAR;
 
-function parseWebsterSyns (json_data) {
+function parseWebsterSyns (json_data, word) {
       var terms, html_str='';
       var num, def, syns_str, syns_arr;
       FOO = json_data;
@@ -30,37 +30,43 @@ function parseWebsterSyns (json_data) {
               syn!
               */
       //var entries = $(xml).find('entry');
-      console.log('json_data',json_data);
+      //console.log('json_data',json_data);
 
       var entry_arr = json_data.entry_list[0].entry;
 
-      for (var i = 0; i < entry_arr.length; i++) {
-          word    = entry_arr[i].term[0].hw[0]['_text'];
-          PoS     = entry_arr[i].fl[0]['_text'];
+      if (entry_arr === undefined) {
+          console.log('UNDEF');
+          html_str = '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>no synonyms found</em>)  <br>';
 
-          //html_str += '<br><span class="opt-able" onclick="toggleOpts(\''+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
-          html_str += '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
+      } else {
 
-          senses  = entry_arr[i].sens;
-          for (var j = 0; j < senses.length; j++) {
-              num = senses[j].sn ? senses[j].sn[0]['_text'] + '. ' : '';
-              def = senses[j].mc ? senses[j].mc[0]['_text'] : '';
+          for (var i = 0; i < entry_arr.length; i++) {
+              word    = entry_arr[i].term[0].hw[0]['_text'];
+              PoS     = entry_arr[i].fl[0]['_text'];
 
-              if (senses[j].syn) {
-                  syns_str = senses[j].syn[0]['_text'];
-                  syns_arr = syns_str.split(', ');
-                  for (var k = 0; k < syns_arr.length; k++) {
-                      syns_arr[k] = '<span class="opt-able">' + syns_arr[k] + '</span>';
-                  };
-                  syns_str = syns_arr.join(', ');
+              //html_str += '<br><span class="opt-able" onclick="toggleOpts(\''+word+'\');"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
+              html_str += '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>'+ PoS +'</em>)  <br>';
 
-                  html_str += num + def + '<br>';
-                  html_str += '&nbsp;&nbsp;&nbsp;&nbsp;' + syns_str + '<br>';
-              }
-          };
+              senses  = entry_arr[i].sens;
+              for (var j = 0; j < senses.length; j++) {
+                  num = senses[j].sn ? senses[j].sn[0]['_text'] + '. ' : '';
+                  def = senses[j].mc ? senses[j].mc[0]['_text'] : '';
 
+                  if (senses[j].syn) {
+                      syns_str = senses[j].syn[0]['_text'];
+                      syns_arr = syns_str.split(', ');
+                      for (var k = 0; k < syns_arr.length; k++) {
+                          syns_arr[k] = '<span class="opt-able">' + syns_arr[k] + '</span>';
+                      };
+                      syns_str = syns_arr.join(', ');
+
+                      html_str += num + def + '<br>';
+                      html_str += '&nbsp;&nbsp;&nbsp;&nbsp;' + syns_str + '<br>';
+                  }
+              };
+
+          }
       }
-
       //console.log('html_str',html_str);
 
       $('#syns').html( html_str);
@@ -99,21 +105,26 @@ function getWebsterSyns (word, ref, key) {
 
     uri = 'server/proxy.php?url=' + uri;
 
-    $.ajax({
-      url: uri,
-      type: "GET",
-      //dataType: "jsonp",  //For external apis
-      dataType: "xml",  //For external apis
-      success: function(response) {
-          //var xml = $( $.parseXML(response) );
-          console.log(response);
-          //FOO = response;
-          //BAR = xmlToJSON.parseString(FOO);
-          //BAR = xmlToJSON.parseXML(FOO);
-          //alert("success");
-          parseWebsterSyns( xmlToJSON.parseXML(response) );
-      }
-    });
+    if (most_common_words.indexOf(word) == -1) {
+        $.ajax({
+          url: uri,
+          type: "GET",
+          //dataType: "jsonp",  //For external apis
+          dataType: "xml",  //For external apis
+          success: function(response) {
+              //var xml = $( $.parseXML(response) );
+              console.log(response);
+              //FOO = response;
+              //BAR = xmlToJSON.parseString(FOO);
+              //BAR = xmlToJSON.parseXML(FOO);
+              //alert("success");
+              parseWebsterSyns( xmlToJSON.parseXML(response), word );
+          }
+        });
+    } else {
+        html_str = '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>[too common]</em>)  <br>';
+        $('#syns').html( html_str);
+    }
 }
 
 function getWebsterDefinitionJSON (word, ref, key)
@@ -359,7 +370,10 @@ function readUrl() {
 }
 
 function simulateUse() {
-    var words_in_lyric = getRandomLyric().split(' ');
+    // First add escape character where spaces are
+    // Don't split to array (because each word overwrites previous
+    var words_in_lyric = getRandomLyric().replace(/ /g, '^1000 ');
+    //.split(' ');
     for (var i = 0; i < words_in_lyric.length; i++) {
         // Need to
         //words_in_lyric[i];
@@ -368,7 +382,7 @@ function simulateUse() {
     $(function(){
       $("#your_word").typed({
         //strings: ["First sentence"],
-        strings: words_in_lyric,
+        strings: [words_in_lyric],
         //strings: ["First sentence.", "Second sentence."],
         showCursor: false,
         typeSpeed: 100, // ms? Inverse speed? Delays?
@@ -384,10 +398,7 @@ function simulateUse() {
 }
 
 function extractAndGetSyns() {
-    console.log('callback eAGS');
-    console.log( $('#your_word').val() );
     var word = extractor( $('#your_word').val() );
-    console.log(word);
     //getAndParseBHT();
     getWebsterSyns(word, 'foo', mw_apikey);
 }
@@ -652,6 +663,8 @@ function getRandomLyric() {
     console.log(ret);
     return ret;
 }
+
+var most_common_words = ['the','be','to','of','and','a','in','that','have','I','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us'];
 
 
 A.lyrics_array = ["It may have been Camelot for Jack and Jacqueline",
