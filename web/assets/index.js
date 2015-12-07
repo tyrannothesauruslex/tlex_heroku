@@ -1,3 +1,4 @@
+var A = {};
 var mw_url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/test?key=ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d";
 
 var mw_apikey = 'ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d';
@@ -60,7 +61,7 @@ function parseWebsterSyns (json_data) {
 
       }
 
-      console.log('html_str',html_str);
+      //console.log('html_str',html_str);
 
       $('#syns').html( html_str);
 
@@ -147,6 +148,8 @@ window.onload = function() {
         getWebsterSyns(word, 'foo', mw_apikey);
       }
     });
+
+    simulateUse();
 
 };
 
@@ -356,12 +359,23 @@ function readUrl() {
 }
 
 function simulateUse() {
+    var words_in_lyric = getRandomLyric().split(' ');
+    for (var i = 0; i < words_in_lyric.length; i++) {
+        // Need to
+        //words_in_lyric[i];
+    };
+
     $(function(){
       $("#your_word").typed({
-        strings: ["First sentence"],
+        //strings: ["First sentence"],
+        strings: words_in_lyric,
+        //strings: ["First sentence.", "Second sentence."],
         showCursor: false,
-        typeSpeed: 0,
-        callback: function() {
+        typeSpeed: 100, // ms? Inverse speed? Delays?
+        /*callback: function() {
+            extractAndGetSyns();
+        },*/
+        onStringTyped: function() {
             extractAndGetSyns();
         }
       });
@@ -485,7 +499,7 @@ function searchLyrics(term) {
 
 function parseLyricSearch(xml, term) {
     var html_str = '';
-    console.log(xml);
+    //console.log(xml);
     //foo
     var items = xml.getElementsByTagName('SearchLyricResult');
     BAR = items;
@@ -494,7 +508,7 @@ function parseLyricSearch(xml, term) {
     items_len = items_len < 20 ? items_len : 20;
     for (var i = 0; i < items_len; i++) {
       //try {
-        LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
+        //LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
         LyricId = items[i].getElementsByTagName('LyricId')[0].innerHTML;
         SongUrl = items[i].getElementsByTagName('SongUrl')[0].innerHTML;
         Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
@@ -502,7 +516,8 @@ function parseLyricSearch(xml, term) {
 
         html_str += '<a target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
       //} catch(e) {console.log(e, i)}
-    };
+    }
+    console.log(html_str);
     $('#songs').html(html_str);
     /*
     $('.lyric-blurb').each(function(){
@@ -622,3 +637,58 @@ http://www.chartlyrics.com/SROGu_IlkE6rOL3iDvmEng.aspx
 </SearchLyricResult>
 
 */
+/*
+On page load: start "typing" words to illustrate tlex lookups.
+Lorem ipsum: lyrics (billy bragg?)
+
+*/
+
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomLyric() {
+    var ret = A.lyrics_array[ randomInt(0,A.lyrics_array.length) ];
+    console.log(ret);
+    return ret;
+}
+
+
+A.lyrics_array = ["It may have been Camelot for Jack and Jacqueline",
+"But on the Che Guevara highway filling up with gasoline",
+"Fidel Castro's brother spies a rich lady who's crying",
+"Over luxury's disappointment",
+"So he walks over and he's trying",
+"To sympathize with her but thinks that he should warn her",
+"That the Third World is just around the corner",
+"In the Soviet Union a scientist is blinded",
+"By the resumption of nuclear testing and he is reminded",
+"That Dr Robert Oppenheimer's optimism fell",
+"At the first hurdle",
+"In the Cheese Pavilion and the only noise I hear",
+"Is the sound of people stacking chairs",
+"And mopping up spilt beer",
+"And someone asking questions and basking in the light",
+"Of the fifteen fame filled minutes of the fanzine writer",
+"Mixing Pop and Politics he asks me what the use is",
+"I offer him embarrassment and my usual excuses",
+"While looking down the corridor",
+"Out to where the van is waiting",
+"I'm looking for the Great Leap Forwards",
+"Jumble sales are organized and pamphlets have been posted",
+"Even after closing time there's still parties to be hosted",
+"You can be active with the activists",
+"Or sleep in with the sleepers",
+"While you're waiting for the Great Leap Forwards",
+"One leap forwards, two leaps back",
+"Will politics get me the sack?",
+"Here comes the future and you can't run from it",
+"If you've got a blacklist I want to be on it",
+"It's a mighty long way down rock 'n roll",
+"From Top of the Pops to drawing the dole",
+"If no one seems to understand",
+"Start your own revolution, cut out the middleman",
+"In a perfect world we'd all sing in tune",
+"But this is reality so give me some room",
+"So join the struggle while you may",
+"The Revolution is just a t-shirt away"];

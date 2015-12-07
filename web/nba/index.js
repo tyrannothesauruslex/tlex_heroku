@@ -222,7 +222,7 @@ var svg2 = d3.select("body").append("svg")
 
 
 for (var i = 0; i < A.players.length; i++) {
-    //chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
+    chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
 }
 
 chartPlayerShots('Curry', 201939, '2014-15', 'bar');
