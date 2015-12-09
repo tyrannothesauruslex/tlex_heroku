@@ -13,12 +13,14 @@ function parseWebsterSyns (json_data, word) {
       var num, def, syns_str, syns_arr;
       FOO = json_data;
 
-      /*new_arr = [];
+      /*
+      new_arr = [];
       console.log(response);
       FOO = response;
       xml = $.parseXML(response);
       BAR = $.parseXML(response);
-*/
+
+    */
       /* entry
           term
               hw ("magic")
@@ -122,7 +124,7 @@ function getWebsterSyns (word, ref, key) {
           }
         });
     } else {
-        html_str = '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>[too common]</em>)  <br>';
+        html_str = '<br><span class="opt-able"><strong>' + word + "</strong></span> (<em>C'mon.</em>)  <br>";
         $('#syns').html( html_str);
     }
 }
