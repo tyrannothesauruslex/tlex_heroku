@@ -14,7 +14,7 @@ config = {
     // Configure your URL and mail settings here
     production: {
         //url: 'http://my-ghost-blog.com',
-        url: 'http://tlex.me',
+        url: 'http://www.tyrannothesauruslex.com',
         mail: {},
         database: {
             client: 'postgres',
