@@ -1,1 +1,2 @@
-web: vendor/bin/heroku-php-apache2 web/
+web: node index.js
+web: npm start --production
