@@ -4,7 +4,7 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
   color: gray;
-  border: 0px dashed gray;
+  border: 1px dashed gray;
 }
 
 .paper {
@@ -62,6 +62,8 @@ html, body {
     height: 100%;
     font-family: 'Open Sans', Helvetica, sans-serif;
 }
+
+body { background: pink; }
 
 .fixed {position: fixed;}
 .top { top: 0px; }
@@ -121,7 +123,7 @@ span.twitter-typeahead {
 #your_word {
     border: 0px dotted red;
     /*color: blue;*/
-    color: rgb(34, 34, 173);
+    /*color: rgb(34, 34, 173); dark ink blue*/
     /*text-align: top;*/
     /*height: 200px;*/
     width: 100%;
