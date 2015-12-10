@@ -10771,7 +10771,10 @@ d3.select('body')
         .text(function(d,i){
             var ret = '';
             ret = (i-6) +  ", " + d[1] + ", " + d[0];
-            return ret;
+
+            var opponent = d[1].split(' ');
+            opponent = opponent[1];
+            if ( ['SAS','CLE','OKC'].indexOf(opponent) > -1 ) return ret;
         })
         .attr('style',function(d){
             var opponent = d[1].split(' ');
