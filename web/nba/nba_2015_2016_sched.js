@@ -10774,7 +10774,8 @@ d3.select('body')
 
             var opponent = d[1].split(' ');
             opponent = opponent[1];
-            if ( ['SAS','CLE','OKC'].indexOf(opponent) > -1 ) return ret;
+            //if ( ['SAS','CLE','OKC'].indexOf(opponent) > -1 )
+            return ret;
         })
         .attr('style',function(d){
             var opponent = d[1].split(' ');
