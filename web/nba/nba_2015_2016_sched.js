@@ -1,24 +1,10 @@
 
 // http://data.nba.com/data/json/cms/2015/league/nba_games.json
 
-/*
-A.sched = a.sports_content.schedule.game;
-var team_abrv = 'GSW';
-A.sched[team_abrv] = [];
+//var A = {};
 
-for (var i = 0; i < A.sched.length; i++) {
-    temp_obj = A.sched[i];
-    if (temp_obj.h_abrv == team_abrv) {
-        A.sched[team_abrv].push( [ temp_obj.dt, 'vs ' + temp_obj.v_abrv ] );
-    }
 
-    if (temp_obj.v_abrv == team_abrv) {
-        A.sched[team_abrv].push( [ temp_obj.dt, '@ ' + temp_obj.v_abrv ] );
-    }
-}
-*/
-
-{
+var a = {
     "sports_content": {
         "sports_meta": {
             "date_time": "20151130 1753",
@@ -10758,3 +10744,33 @@ for (var i = 0; i < A.sched.length; i++) {
         }
     }
 }
+
+
+
+A.sched = a.sports_content.schedule.game;
+var team_abrv = 'GSW';
+A.sched[team_abrv] = [];
+
+for (var i = 0; i < A.sched.length; i++) {
+    temp_obj = A.sched[i];
+    if (temp_obj.h_abrv == team_abrv) {
+        A.sched[team_abrv].push( [ temp_obj.dt, 'vs ' + temp_obj.v_abrv ] );
+    }
+
+    if (temp_obj.v_abrv == team_abrv) {
+        A.sched[team_abrv].push( [ temp_obj.dt, '@ ' + temp_obj.h_abrv ] );
+    }
+}
+
+
+d3.select('body')
+    .selectAll('p')
+    .data(A.sched.GSW)
+    .enter()
+    .append('html')
+        .text(function(d,i){
+            var ret = (i-6) +  ", " + d[1] + ", " + d[0];
+            return ret;
+        })
+    ;
+
