@@ -10769,8 +10769,14 @@ d3.select('body')
     .enter()
     .append('html')
         .text(function(d,i){
-            var ret = (i-6) +  ", " + d[1] + ", " + d[0];
+            var ret = '';
+            ret = (i-6) +  ", " + d[1] + ", " + d[0];
             return ret;
+        })
+        .attr('style',function(d){
+            var opponent = d[1].split(' ');
+            opponent = opponent[1];
+            if ( ['SAS','CLE','OKC'].indexOf(opponent) > -1 ) return "font-weight: bold; color: red;";
         })
     ;
 
