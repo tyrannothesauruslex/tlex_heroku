@@ -153,12 +153,13 @@ window.onload = function() {
     //initAutoThesaurus();
     $('#your_word').focus();
 
-    $(window).keypress(function(e) {
+    //$(window).keypress(function(e) {
+    $(document).on('keyup','#your_word', function(e) {
+
         var kcd = e.keyCode || e.which;
         if (kcd == 0 || kcd == 229) { //for android chrome keycode fix
             kcd = getKeyCode(this.value);
         }
-        alert(kcd);
 
       //if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
       if (kcd == 0 || kcd == 32 || kcd == 13) {
