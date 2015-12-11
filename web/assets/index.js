@@ -162,6 +162,7 @@ window.onload = function() {
 
       //if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
       if (kcd == 0 || kcd == 32 || kcd == 13) {
+        console.log('keypress', kcd);
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
         //getAndParseBHT();
@@ -178,13 +179,6 @@ var getKeyCode = function (str) {
     return str.charCodeAt(str.length - 1);
 }
 
-document.getElementById("a").onkeyup = function (e) {
-    var kCd = e.keyCode || e.which;
-    if (kCd == 0 || kCd == 229) { //for android chrome keycode fix
-        kCd = getKeyCode(this.value);
-    }
-    alert(kCd)
-}
 
 //$(function() { $('#your_word').focus(); });
 
@@ -394,7 +388,7 @@ function readUrl() {
 function simulateUse() {
     // First add escape character where spaces are
     // Don't split to array (because each word overwrites previous
-    var words_in_lyric = getRandomLyric().replace(/ /g, '^1000 ');
+    var words_in_lyric = getRandomLyric().replace(/ /g, '^200 ');
     //.split(' ');
     for (var i = 0; i < words_in_lyric.length; i++) {
         // Need to
