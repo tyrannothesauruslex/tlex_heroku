@@ -166,6 +166,7 @@ window.onload = function() {
         console.log('keypress', kcd);
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
+        console.log('word', word);
         //getAndParseBHT();
         getWebsterSyns(word, 'foo', mw_apikey);
       }
@@ -245,6 +246,7 @@ function getAndParseBHT() {
 
 
 function extractor(query) {
+    query = query.trim();
     var result = /([^ ]+)$/.exec(query);
     if(result && result[1])
         return result[1].trim();
