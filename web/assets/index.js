@@ -154,7 +154,14 @@ window.onload = function() {
     $('#your_word').focus();
 
     $(window).keypress(function(e) {
-      if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
+        var kcd = e.keyCode || e.which;
+        if (kcd == 0 || kcd == 229) { //for android chrome keycode fix
+            kcd = getKeyCode(this.value);
+        }
+        alert(kcd);
+
+      //if (e.keyCode == 0 || e.keyCode == 32 || e.keyCode == 13) {
+      if (kcd == 0 || kcd == 32 || kcd == 13) {
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
         //getAndParseBHT();
@@ -165,6 +172,19 @@ window.onload = function() {
     simulateUse();
 
 };
+
+// keycode workaround needed for android
+var getKeyCode = function (str) {
+    return str.charCodeAt(str.length - 1);
+}
+
+document.getElementById("a").onkeyup = function (e) {
+    var kCd = e.keyCode || e.which;
+    if (kCd == 0 || kCd == 229) { //for android chrome keycode fix
+        kCd = getKeyCode(this.value);
+    }
+    alert(kCd)
+}
 
 //$(function() { $('#your_word').focus(); });
 
@@ -387,7 +407,7 @@ function simulateUse() {
         strings: [words_in_lyric],
         //strings: ["First sentence.", "Second sentence."],
         showCursor: false,
-        typeSpeed: 100, // ms? Inverse speed? Delays?
+        typeSpeed: 10, // ms? Inverse speed? Delays?
         /*callback: function() {
             extractAndGetSyns();
         },*/
