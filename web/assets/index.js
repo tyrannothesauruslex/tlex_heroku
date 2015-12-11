@@ -308,16 +308,9 @@ function xmlToJson(xml) {
 
 var OPT_SHOWN = false;
 
-
+/*
 function initWordOpts() {
     // might want to click multiple (heart, upvote, use, ode)
-    /*function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'block')
-          e.style.display = 'none';
-       else
-          e.style.display = 'block';
-    }   */
     $(".opt-able").click(function(){
         var clicked_word = $(this).text();
         console.log(clicked_word);
@@ -327,18 +320,35 @@ function initWordOpts() {
 
         if (OPT_SHOWN == false){
             //$("#popUp").fadeIn();
-            $("#word-opts").fadeIn(function(){OPT_SHOWN = true;});
+            $("#word-opts").fadeIn(function(){
+                OPT_SHOWN = true;
+                console.log(OPT_SHOWN,this);
+                makeMeCloseable(this);
+            });
             $('#opt-word').html( clicked_word );
         }
         if (OPT_SHOWN == true){
             //$("#popUp").fadeOut();
             $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
         }
+
+    });
+}
+*/
+function makeMeCloseable(el) {
+    console.log('makeMeCloseable',el);
+    $(document).mouseup(function (e) {
+        var container = $(el);
+        console.log(container);
+        console.log(e.target);
+
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            container.hide();
+        }
     });
 
-    $('#opt-close').click(function(){
-        $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
-    });
 }
 
 function initSettingsEditor() {
@@ -484,13 +494,35 @@ function initSpectrum(drawn_obj) {
 function toggleOpts(clicked_word) {
     var top_y = event.pageY - 33;
     var left_x = event.pageX + 5;
-    $("#word-opts").parent().css( {position:"absolute", top: top_y, left: left_x});
+    var css_obj = {position:"absolute" };
+    // which edge is it closest to?
+    console.log( $('body').width(), event.pageX );
+    console.log( $('body').height(), event.pageY );
+    if ( event.pageX < $('body').width() / 2 ) {
+        console.log('left half');
+        css_obj.left = event.pageX + 0;
+    } else {
+        console.log('right half');
+        css_obj.right = $('body').width() - event.pageX - 0;
+    }
+
+    if ( event.pageY < $('body').height() / 2 ) {
+        console.log('top half');
+        css_obj.top = event.pageY + 0;
+    } else {
+        console.log('bottom half');
+        css_obj.bottom = $('body').height() - event.pageY - 0;
+    }
+
+
+    //$("#word-opts").parent().css( {position:"absolute", top: top_y, left: left_x});
+    $("#word-opts").parent().css( css_obj );
 
     $('#opt-word').html( clicked_word );
 
     $("#word-opts").fadeIn(function(){
         OPT_SHOWN=true;
-        console.log('fadeIn');
+        makeMeCloseable(this);
     });
 
     $('#opt-close').click(function(){
