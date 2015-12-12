@@ -496,7 +496,7 @@ function toggleOpts(clicked_word) {
     $("#word-opts").fadeIn(function(){
         OPT_SHOWN=true;
         $("#opt-heart").click(function(){
-            var url = "ode_endpoint.php&term=" + clicked_word;
+            var url = "server/ode_endpoint.php?term=" + clicked_word;
             window.open(url, '_blank');
         });
         makeMeCloseable(this);

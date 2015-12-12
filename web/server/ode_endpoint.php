@@ -27,8 +27,19 @@ try {
     $dbh = new PDO("pgsql:host='$HOST';dbname=$DB_NAME", $USER, $PASSWORD);
 
     $sql = "INSERT INTO terms (word, date_added) $word, '2015-12-12' ";
-    echo $sql;
     $inserted = $dbh->exec( $sql );
+
+
+    $sql = "SELECT word, date_added FROM terms WHERE word = '$word'";
+
+    $result = $db->query($sql);
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        echo "<tr>";
+        echo "<td>" . $row["word"] . "</td>";
+        echo "<td>" . htmlspecialchars($row["date_added"]) . "</td>";
+        echo "</tr>";
+    }
+    echo $sql;
     echo $inserted;
 }
 catch(PDOException $e) {
