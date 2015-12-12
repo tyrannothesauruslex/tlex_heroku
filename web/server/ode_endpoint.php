@@ -32,7 +32,7 @@ try {
 
     $sql = "SELECT word, date_added FROM terms WHERE word = '$word'";
 
-    $result = $db->query($sql);
+    $result = $dbh->query($sql);
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         echo "<tr>";
         echo "<td>" . $row["word"] . "</td>";
