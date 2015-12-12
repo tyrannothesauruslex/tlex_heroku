@@ -26,7 +26,8 @@ try {
     //$dbh = new PDO("pgsql:host='localhost';dbname=$DB_NAME", $USER, $PASSWORD);
     $dbh = new PDO("pgsql:host='$HOST';dbname=$DB_NAME", $USER, $PASSWORD);
 
-    $sql = "INSERT INTO terms (word, date_added) $word, '2015-12-12' ";
+    // INSERT INTO terms (word, date_added) 'moxie', '2015-12-12'
+    $sql = "INSERT INTO terms (word) '$word'";
     $inserted = $dbh->exec( $sql );
 
 
