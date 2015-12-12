@@ -308,33 +308,6 @@ function xmlToJson(xml) {
 
 var OPT_SHOWN = false;
 
-/*
-function initWordOpts() {
-    // might want to click multiple (heart, upvote, use, ode)
-    $(".opt-able").click(function(){
-        var clicked_word = $(this).text();
-        console.log(clicked_word);
-
-
-        $(this).parent().css( {position:"absolute", top:event.pageY, left: event.pageX});
-
-        if (OPT_SHOWN == false){
-            //$("#popUp").fadeIn();
-            $("#word-opts").fadeIn(function(){
-                OPT_SHOWN = true;
-                console.log(OPT_SHOWN,this);
-                makeMeCloseable(this);
-            });
-            $('#opt-word').html( clicked_word );
-        }
-        if (OPT_SHOWN == true){
-            //$("#popUp").fadeOut();
-            $("#word-opts").fadeOut(function(){OPT_SHOWN=false});
-        }
-
-    });
-}
-*/
 function makeMeCloseable(el) {
     console.log('makeMeCloseable',el);
     $(document).mouseup(function (e) {
@@ -522,6 +495,10 @@ function toggleOpts(clicked_word) {
 
     $("#word-opts").fadeIn(function(){
         OPT_SHOWN=true;
+        $("#opt-heart").click(function(){
+            var url = "ode_endpoint.php&term=" + clicked_word;
+            window.open(url, '_blank');
+        });
         makeMeCloseable(this);
     });
 
