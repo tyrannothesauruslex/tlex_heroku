@@ -18,6 +18,8 @@ DB design:
 CREATE TABLE terms (word TEXT PRIMARY KEY NOT NULL, date_added DATE NOT NULL DEFAULT CURRENT_DATE);
 CREATE TABLE comments (word TEXT, comment_date DATE NOT NULL DEFAULT CURRENT_DATE, comment TEXT);
 
+CREATE TABLE comments (word TEXT, comment TEXT);
+
 */
 include('config.php');
 $word = $_REQUEST["term"];
@@ -26,8 +28,9 @@ try {
     //$dbh = new PDO("pgsql:host='localhost';dbname=$DB_NAME", $USER, $PASSWORD);
     $dbh = new PDO("pgsql:host='$HOST';dbname=$DB_NAME", $USER, $PASSWORD);
 
-    // INSERT INTO terms (word, date_added) 'moxie', '2015-12-12'
-    $sql = "INSERT INTO terms (word) '$word'";
+    // INSERT INTO terms (word) VALUES ('moxie');
+    $sql = "INSERT INTO terms (word) VALUES ('$word')";
+
     $inserted = $dbh->exec( $sql );
 
 
