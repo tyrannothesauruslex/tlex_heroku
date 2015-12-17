@@ -3,24 +3,14 @@ var mw_url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/test?
 
 var mw_apikey = 'ee5e16f0-13f9-4750-b9e8-b4fa8a4f860d';
 
-var wordnik_url = "http://api.wordnik.com/v4/word.json/";
-var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+//var wordnik_url = "http://api.wordnik.com/v4/word.json/";
+//var wordnik_apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 
-var FOO, BAR;
 
 function parseWebsterSyns (json_data, word) {
       var terms, html_str='';
       var num, def, syns_str, syns_arr;
-      FOO = json_data;
 
-      /*
-      new_arr = [];
-      console.log(response);
-      FOO = response;
-      xml = $.parseXML(response);
-      BAR = $.parseXML(response);
-
-    */
       /* entry
           term
               hw ("magic")
@@ -541,7 +531,7 @@ function parseLyricSearch(xml, term) {
     //console.log(xml);
     //foo
     var items = xml.getElementsByTagName('SearchLyricResult');
-    BAR = items;
+    //BAR = items;
     //debugger;
     var items_len = items.length;
     items_len = items_len < 20 ? items_len : 20;
