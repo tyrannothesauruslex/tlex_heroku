@@ -364,17 +364,17 @@ function readUrl() {
 function simulateUse() {
     // First add escape character where spaces are
     // Don't split to array (because each word overwrites previous
-    var words_in_lyric = getRandomLyric().replace(/ /g, '^200 ');
+    var words_in_sample = getRandomLyric().replace(/ /g, '^200 ');
     //.split(' ');
-    for (var i = 0; i < words_in_lyric.length; i++) {
+    for (var i = 0; i < words_in_sample.length; i++) {
         // Need to
-        //words_in_lyric[i];
+        //words_in_sample[i];
     };
 
     $(function(){
       $("#your_word").typed({
         //strings: ["First sentence"],
-        strings: [words_in_lyric],
+        strings: [words_in_sample],
         //strings: ["First sentence.", "Second sentence."],
         showCursor: false,
         typeSpeed: 10, // ms? Inverse speed? Delays?
@@ -647,8 +647,6 @@ function writeLyrics (el, term) {
 }*/
 
 
-// arbitrage ("free money")
-
 /*
 <SearchLyricResult>
 <TrackId>0</TrackId>
@@ -666,11 +664,6 @@ http://www.chartlyrics.com/SROGu_IlkE6rOL3iDvmEng.aspx
 </SearchLyricResult>
 
 */
-/*
-On page load: start "typing" words to illustrate tlex lookups.
-Lorem ipsum: lyrics (billy bragg?)
-
-*/
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -684,41 +677,12 @@ function getRandomLyric() {
 
 
 /*
-heroku addons:create heroku-postgresql:hobby-dev
-Creating postgresql-sinuous-3460... done, (free)
-Adding postgresql-sinuous-3460 to aqueous-eyrie-3719... done
-Setting HEROKU_POSTGRESQL_TEAL_URL and restarting aqueous-eyrie-3719... done, v99
-Database has been created and is available
- ! This database is empty. If upgrading, you can transfer
- ! data from another database with pg:copy
-Use `heroku addons:docs heroku-postgresql` to view documentation.
-
-*/
-
-/*
 Easiest user sign up?
 Easiest way to prove "not a robot"? https://www.google.com/recaptcha/intro/index.html "low friction"
 Easiest way to leave comments?
 "Guest"/Anonymous/Anon. (Just require "not a robot")
 If email required, then username === email.
-
-Write comments to db;
-Generate pages from db.
-
-HEROKU_POSTGRESQL_TEAL_URL:   postgres://dzjaebpbglolem:aGciQGgo9x7FtTWdFh-0gWW6du@ec2-54-225-197-30.compute-1.amazonaws.com:5432/d5rpi1j0et2mpo
-
-2nd thought: no db; no server side tracking of users:
-http://mikebybee.com/blog/static-site-comments-jquery-google-forms-sheets
-Form: http://goo.gl/forms/8MUC7bf5AB
-<iframe src="https://docs.google.com/forms/d/1PnEs0rkBiFVEZuzib7-eC4S4Cq2CPp8t1ru3oZGE11c/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-
-Responses sheet: https://docs.google.com/spreadsheets/d/1icB-pt0BpHCciumW8WgSyR3oL1oJvNMR23wmDZoO-_Q/pubhtml?gid=1112502541&single=true
 */
-
-/*
-
-*/
-
 
 var most_common_words = ['the','be','to','of','and','a','in','that','have','I','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us'];
 
