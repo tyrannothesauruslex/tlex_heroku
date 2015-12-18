@@ -157,8 +157,8 @@ window.onload = function() {
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
         console.log('word', word);
-        //getAndParseBHT();
         getWebsterSyns(word, 'foo', mw_apikey);
+        //getLy(word, 'foo', mw_apikey);
       }
     });
 
@@ -174,6 +174,7 @@ var getKeyCode = function (str) {
 
 //$(function() { $('#your_word').focus(); });
 
+/*
 function getBHTsynPath() {
     //console.log( $('#your_word').val() );
     var word = extractor( $('#your_word').val() );
@@ -215,25 +216,9 @@ function getAndParseBHT() {
 
       $('#syns2').html( html_str);
 
-/*
-      var newer_arr = ['<b>' + word_path_arr[0] + ': </b>']; // [0] is the original word searched
-      for (var i = 0; i < new_arr.length; i++) {
-        newer_arr.push(' <span class="syn">' + new_arr[i] + ',</span> ');
-      }
-
-      new_list = [{"words": newer_arr}];
-      //return response;
-      console.log(new_list);
-
-      $('#syns').html( new_list[0]['words'] );
-      */
-
-      //return new_list;
-
   });
-
 }
-
+*/
 
 function extractor(query) {
     query = query.trim();
@@ -251,9 +236,6 @@ $(document).on("click.tt", ".tt-suggestion", function(e) {
     e.stopPropagation();
     e.preventDefault();
 });
-
-// jQuery19109778877520002425_1414967930149({"noun":{"syn":["accident","chance event","fortuity"]},"verb":{"syn":["happen","go on","pass off","occur","pass","fall out","come about","take place"]}});
-
 
 
 // Changes XML to JSON
@@ -537,13 +519,16 @@ function parseLyricSearch(xml, term) {
     items_len = items_len < 20 ? items_len : 20;
     for (var i = 0; i < items_len; i++) {
       //try {
-        //LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
-        LyricId = items[i].getElementsByTagName('LyricId')[0].innerHTML;
-        SongUrl = items[i].getElementsByTagName('SongUrl')[0].innerHTML;
-        Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
-        Song = items[i].getElementsByTagName('Song')[0].innerHTML;
+        //debugger;
+        if ( items[i].getElementsByTagName('LyricChecksum').length > 0 ) {
+            LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
+            LyricId = items[i].getElementsByTagName('LyricId')[0].innerHTML;
+            SongUrl = items[i].getElementsByTagName('SongUrl')[0].innerHTML;
+            Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
+            Song = items[i].getElementsByTagName('Song')[0].innerHTML;
 
-        html_str += '<a target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
+            html_str += '<a class="song-link" target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
+        }
       //} catch(e) {console.log(e, i)}
     }
     console.log(html_str);
@@ -553,6 +538,14 @@ function parseLyricSearch(xml, term) {
         writeLyrics( $(this), term );
     });
     */
+
+    var $iFrame = $('#songs-iframe');
+    $('.song-link').hover(function() {
+        var src= this.href /* not sure of source*/
+        $iFrame.show().attr('src', src);
+    },function(){
+        //$iFrame.hide()
+    });
 
 }
 

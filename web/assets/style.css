@@ -285,3 +285,8 @@ span.opt {
     border-bottom: 1px dotted;
     /*text-decoration: dotted*/
 }
+
+#songs-iframe {
+    height: 500px;
+    width: 100%;
+}
