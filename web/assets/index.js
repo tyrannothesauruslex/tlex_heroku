@@ -157,8 +157,8 @@ window.onload = function() {
         //console.log('Space pressed, or Enter pressed');
         var word = extractor( $('#your_word').val() );
         console.log('word', word);
-        //getAndParseBHT();
         getWebsterSyns(word, 'foo', mw_apikey);
+        //getLy(word, 'foo', mw_apikey);
       }
     });
 
@@ -174,6 +174,7 @@ var getKeyCode = function (str) {
 
 //$(function() { $('#your_word').focus(); });
 
+/*
 function getBHTsynPath() {
     //console.log( $('#your_word').val() );
     var word = extractor( $('#your_word').val() );
@@ -215,25 +216,9 @@ function getAndParseBHT() {
 
       $('#syns2').html( html_str);
 
-/*
-      var newer_arr = ['<b>' + word_path_arr[0] + ': </b>']; // [0] is the original word searched
-      for (var i = 0; i < new_arr.length; i++) {
-        newer_arr.push(' <span class="syn">' + new_arr[i] + ',</span> ');
-      }
-
-      new_list = [{"words": newer_arr}];
-      //return response;
-      console.log(new_list);
-
-      $('#syns').html( new_list[0]['words'] );
-      */
-
-      //return new_list;
-
   });
-
 }
-
+*/
 
 function extractor(query) {
     query = query.trim();
@@ -251,9 +236,6 @@ $(document).on("click.tt", ".tt-suggestion", function(e) {
     e.stopPropagation();
     e.preventDefault();
 });
-
-// jQuery19109778877520002425_1414967930149({"noun":{"syn":["accident","chance event","fortuity"]},"verb":{"syn":["happen","go on","pass off","occur","pass","fall out","come about","take place"]}});
-
 
 
 // Changes XML to JSON
