@@ -22,7 +22,7 @@ CREATE TABLE comments (word TEXT, comment_date DATE NOT NULL DEFAULT CURRENT_DAT
 CREATE TABLE comments (word TEXT, comment TEXT);
 
 */
-include('./config.php');
+include("$_SERVER[DOCUMENT_ROOT]/config.php");
 $word = $_REQUEST["term"];
 
 try {
