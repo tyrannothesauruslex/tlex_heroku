@@ -7,6 +7,8 @@ html {
   border: 0px dashed gray;
 }
 
+strong { font-weight: 500; color: #000; }
+
 .paper {
     /*font: normal 12px/1.5 "Lucida Grande", arial, sans-serif;*/
     /*width: 300px;*/
@@ -61,6 +63,7 @@ html, body {
     width: 100%;
     height: 100%;
     font-family: 'Open Sans', Helvetica, sans-serif;
+    font-weight: 300;
 }
 
 
