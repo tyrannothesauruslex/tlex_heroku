@@ -76,7 +76,7 @@
 
     <div style="display: inline-block;">
     <div id="word-opts" style="display: none;">
-        <span class="opt" id="opt-word"></span>&nbsp;<span class="opt" id="opt-heart" title="Love it.">❤</span>
+        <span class="opt" id="opt-word"></span>&nbsp;<span class="opt" id="opt-heart" title="Love it.">♡<!-- &#9825; --></span>
         <!-- <span class="opt rot--90 big-font" id="opt-downvote" title="Yay; upvote.">&rsaquo;</span>
         <span class="opt rot-90 big-font" id="opt-downvote" title="Meh; downvote.">&rsaquo;</span>
         <span class="opt" id="opt-replace" title="Use this syn (and re-tlex).">&crarr;</span>
@@ -84,6 +84,13 @@
         <span class="opt" id="opt-close" title="Close.">&times;</span>
         -->
     </div>
+    </div>
+
+    <div id="new_ode_inputs" style="display: none;">
+        <h3 id="the_word"></h3>
+        <textarea id="new_ode_example" name="new_ode_example" placeholder="word in the wild" style="width:100%; height:0.5in;"></textarea>
+        <textarea id="new_ode_comment" name="new_ode_comment" placeholder="comment" style="width:100%; height:0.5in;"></textarea>
+        <a href="javascript:void(0)" id="ode_save" class="button-b">Save</a>
     </div>
 
     <script src="assets/fonter.js"></script>

@@ -468,8 +468,25 @@ function toggleOpts(clicked_word) {
     $("#word-opts").fadeIn(function(){
         OPT_SHOWN=true;
         $("#opt-heart").click(function(){
-            var url = "server/ode_endpoint.php?term=" + clicked_word;
-            window.open(url, '_blank');
+            //var url = "server/ode_endpoint.php?term=" + clicked_word;
+            //window.open(url, '_blank');
+            var data = {
+                "f": 'testWordExists',
+                //"the_word": $('#the_word').text(),
+                "the_word": $('#opt-word').text(),
+                "new_ode_example": $('#new_ode_example').val(),
+                "new_ode_comment": $('#new_ode_comment').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "server/ode_endpoint.php",
+                data: data
+            }).done(function( msg ) {
+                //console.log( "Data Saved: " + msg );
+                console.log( JSON.stringify(msg) );
+            });
+
         });
         makeMeCloseable(this);
     });
@@ -719,3 +736,22 @@ A.lyrics_array = ["It may have been Camelot for Jack and Jacqueline",
 "So join the struggle while you may",
 "The Revolution is just a t-shirt away"];
 
+
+$('#ode_save').click(function(){
+    // send it to the php insert endpoint
+    var data = {
+        "f": 'insertComment',
+        "the_word": $('#the_word').text(),
+        "new_ode_example": $('#new_ode_example').val(),
+        "new_ode_comment": $('#new_ode_comment').val()
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "server/ode_endpoint.php",
+        data: data
+    }).done(function( msg ) {
+        //console.log( "Data Saved: " + msg );
+        console.log( JSON.stringify(msg) );
+    });
+});
