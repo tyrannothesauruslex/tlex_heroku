@@ -10,6 +10,9 @@ html, body { font: normal 12px sans-serif; }
 
 svg {
   border: 0px dotted gray;
+  pointer-events:none;
+  /*width: 100%;
+  min-width: 1200px;*/
 }
 
 text#tip {
@@ -68,19 +71,49 @@ div#tip {
   fill: none;
   stroke: #444;
   stroke-width: 6px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 .line1 {
   fill: none;
   stroke: #444;
   stroke-width: 3px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
+
 
 .faded { stroke-opacity: 0.2; }
 
 .data-dot {
     fill: rgba(99,99,99,0.5);
+    cursor: pointer;
+    pointer-events: all;
 }
+.made-shot {
+  fill: #0A994D;
+  opacity: 0.5;
+}
+.attempted-shot {
+  fill: #F6A57F;
+  opacity: 0.5;
+  pointer-events: all;
+}
+
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}
+
+#g9661, #g9647, #layer1 {
+    pointer-events: none;
+}
+
 
 </style>
 

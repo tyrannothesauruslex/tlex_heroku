@@ -61,21 +61,51 @@ A.players = [
     "lastName": "Durant",
     "playerId": 201142
   },
-  {
+  /*{
     "color1": "#00275D",
     "color2": "#FFC633",
     "firstName": "Paul",
     "lastName": "George",
     "playerId": 202331
+  },*/
+  {
+    "color1": "#724C9F",
+    "color2": "#8E9090",
+    "firstName": "DeMarcus",
+    "lastName": "Cousins",
+    "playerId": 202326
+  },
+  {
+    "color1": "#BAC3C9",
+    "color2": "#061922",
+    "firstName": "Kawhi",
+    "lastName": "Leonard",
+    "playerId": 202695
+  },
+  {
+    "color1": "#E03A3E",
+    "color2": "#061922",
+    "firstName": "Damian",
+    "lastName": "Lillard",
+    "playerId": 203081
   }
 ];
 var stat;
 
 // shot distance bins
+var cornerThree = 22;
+var topArc = 23.75;
 var smallest = 25;
-var largest = 35;
+var largest = 45;
 var bin_size = 1;
 var number_of_bins = (largest-smallest)/bin_size;
+
+/*
+    Corner 3: 22'
+    Top of arc: 23.75'
+    Area of interest: > 25' ?
+    Half Court: 47 - 4 - 1.5/2 = 42.25
+*/
 
 //var proxy_url = 'http://localhost:1337/'; // npm install -g corsproxy
 var proxy_url = '../server/proxy.php?url='; // npm install -g corsproxy
@@ -87,7 +117,7 @@ var margin = {top: 40, right: 40, bottom: 40, left: 40},
     height = 500 - margin.top - margin.bottom;
 */
 //
-var w = 960;
+var w = 1800;
 var h = 485;
 var padding = 90;
 var margin = {top: 30, left: 50, bottom: 50, right: 90}
@@ -113,7 +143,8 @@ var xScale = d3.time.scale()
 .range([margin.left, w - margin.left - margin.right]);
 
 var yScale = d3.scale.linear()
-.domain([15, 40])
+//.domain([15, 40])
+.domain([20, 35])
 //.range([h - padding, padding]);
 .range([h - margin.bottom, margin.top]);
 
@@ -142,6 +173,22 @@ var svg = d3.select("body").append("svg")
   .append("g")
   ;
 
+
+function make_y_axis() {
+    return d3.svg.axis()
+        .scale(yScale)
+         .orient("left")
+         .ticks(5)
+}
+
+svg.append("g")
+        .attr("class", "grid")
+        .call(make_y_axis()
+            .tickSize(-w + margin.left, 0, 0)
+            .tickFormat("")
+        )
+
+
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + (h - margin.bottom) + ")")
@@ -162,10 +209,96 @@ var svg = d3.select("body").append("svg")
 
 
 // Chart 2 (shot distances)
+/*d3.xml("halfcourt.svg", "image/svg+xml", function(error, xml) {
+  if (error) throw error;
+  document.body.appendChild(xml.documentElement);
+});*/
+
+d3.xml("halfcourt2.svg", function(error, documentFragment) {
+    if (error) {console.log(error); return;}
+
+    var svgNode = documentFragment
+                .getElementsByTagName("svg")[0];
+    //use plain Javascript to extract the node
+
+    //main_chart_svg.node().appendChild(svgNode);
+    //d3's selection.node() returns the DOM node, so we
+    //can use plain Javascript to append content
+
+    //var innerSVG = main_chart_svg.select("svg");
+    var bod = d3.select('body')[0][0];
+    var innerSVG = bod
+      //.node()
+      .appendChild(svgNode)
+      ;
+
+      //.select("svg");
+    var halfcourt = d3.select('#svg7993');
+    // 0 0 754.51014 708.25002
+
+    A.grp = halfcourt
+      .append('g')
+      .attr('id','grp1');
+
+    /*
+    var halfcourtHeight = halfcourt.node().height.baseVal.value;
+    var halfcourtWidth = halfcourt.node().width.baseVal.value;
+    */
+    A.halfcourtHeight = 708;
+    A.halfcourtWidth = 754;
+
+    var shotDist = topArc;
+    //var shotDist = 0;
+    var fudge = 0.52;
+    var distPix = A.halfcourtHeight - (shotDist + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
+
+    //plotShotGroup(A.halfcourtWidth/2, distPix, 20, 30, 'ball', A.grp);
+});
+
+
+
+function plotShotGroup(x, dist, magnitude1, magnitude2, attrClass, parent) {
+  //console.log(x, dist, magnitude1, magnitude2, attrClass, parent);
+
+  parent.append('circle')
+        .data([dist, magnitude1, magnitude2])
+        //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
+        //.attr("cy", function(d) {return yScale(d.PTS_ave); })
+        .attr('cx', x)
+        .attr('cy', dist)
+        .attr("r", magnitude2)
+        .attr("class","attempted-shot");
+
+  parent.append('circle')
+        .data([dist, magnitude1, magnitude2])
+        //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
+        //.attr("cy", function(d) {return yScale(d.PTS_ave); })
+        .attr('cx', x)
+        .attr('cy', dist)
+        .attr("r", magnitude1)
+        .attr("class","made-shot");
+
+/*
+    parent.selectAll("circle")
+        .each(function(d) {
+            addHammerEventListener2(this, d);
+        });
+
+*/
+
+    d3.selectAll('.attempted-shot')
+        .each(function(d) {
+            console.log(this, d);
+            addHammerEventListener2(this, d);
+        });
+
+}
+
 // x2 is a function that maps values from 0-35 to margin-plottableWidth
 var x2 = d3.scale.linear()
     //.domain([25, 47]) // 94' end-to-end; basket @ 4.75'; other: diagonal
-    .domain([0, largest]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    //.domain([0, largest]) // 94' end-to-end; basket @ 4.75'; other: diagonal
+    .domain([topArc, largest]) // 94' end-to-end; basket @ 4.75'; other: diagonal
     //.range([0, w])
     .range([margin.left, w - margin.left - margin.right]);
 
@@ -178,7 +311,7 @@ var x2_bar_width = d3.scale.linear()
 var y2 = d3.scale.linear()
     //.domain([0, d3.max(data, function(d) { return d.y; })])
     .domain([0, 200])
-    .range([h, 0]);
+    .range([h - margin.bottom, margin.top]);
 
 var xAxis2 = d3.svg.axis()
     .scale(x2)
@@ -219,53 +352,159 @@ var svg2 = d3.select("body").append("svg")
       .text("shots");
 
 
+var chart = d3.select("#chart");
+var hiddenClickTarget = chart
+    .append('rect')
+    .attr('class', 'hiddenClickTarget')
+    .attr("fill", 'none')
+    .attr("width", w)
+    .attr("height", h)
+    .attr("pointer-events", 'all')
+    ;
+
 
 
 for (var i = 0; i < A.players.length; i++) {
     chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
 }
 
-chartPlayerShots('Curry', 201939, '2014-15', 'bar');
-chartPlayerShots('James', 2544, '2014-15', 'bar2');
+A.shot_data = { 201939: [], 2544: [] };
+A.chartShots = {};
+A.chartShots['201939'] = chartPlayerShots('Curry', 201939, '2014-15', 'bar');
+//A.chartShots['2544'] = chartPlayerShots('James', 2544, '2014-15', 'bar2');
 
-/*
-*/
 
 function chartPlayerShots(name, pid, season, bar_class) {
     /*
     PerMode ??
     */
-    var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season='+ season +'&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
+
+    var url = 'http://stats.nba.com/stats/shotchartdetail?Period=0&VsConference=&LeagueID=00&LastNGames=0&TeamID=0&Position=&Location=&Outcome=&ContextMeasure=FGA&DateFrom=&StartPeriod=&DateTo=&OpponentTeamID=0&ContextFilter=&RangeType=&Season='+ season +'&AheadBehind=&PlayerID=' + pid + '&EndRange=&VsDivision=&PointDiff=&RookieYear=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod=&SeasonType=Regular+Season&SeasonSegment=&GameID=&ShotZoneRange=24+ft.';
+
+    //var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season='+ season +'&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
 
     url = encodeURIComponent(url);
-/*
-    Top of arc: 23.75'
-    Area of interest: > 25' ?
-*/
-    A.shot_data = [];
+
+        var shot_chart_values = [];
+        var shot_chart_dict = {};
+
     d3.json(proxy_url+url, function (json) {
         var chartData = [];
         A.shot_header = json.resultSets[0].headers;
         games_data = json.resultSets[0].rowSet.reverse();
-        A.shot_data.push(games_data);
 
         var MATCHUP_idx = A.shot_header.indexOf('MATCHUP'); // "DEC 02, 2015 - GSW @ CHA"
-        var SHOT_DIST_idx = A.shot_header.indexOf('SHOT_DIST');
+        var SHOT_DIST_idx = A.shot_header.indexOf('SHOT_DISTANCE');
         var PTS_TYPE_idx = A.shot_header.indexOf('PTS_TYPE');
         var PTS_idx = A.shot_header.indexOf('PTS');
-        var SHOT_RESULT_idx = A.shot_header.indexOf('SHOT_RESULT');
+        var SHOT_MADE_idx = A.shot_header.indexOf('SHOT_MADE_FLAG');
+        var PID_idx = A.shot_header.indexOf('PLAYER_ID');
+        var pid = games_data[1][PID_idx];
+        console.log(pid);
+        var xOffset = (pid == '201939' ? 0 : 90);
+
+        //debugger;
 
         var temp;
         var dist;
 
-        A.shot_chart_values = [];
-
         for (var i = 0; i < games_data.length; i++) {
-            dist = games_data[i][SHOT_DIST_idx];
+            dist = parseInt(games_data[i][SHOT_DIST_idx]);
+            A.shot_data[pid].push(parseInt(dist));
+            madeFlag = games_data[i][SHOT_MADE_idx];
             if ( dist >= smallest && dist <= largest) {
-                A.shot_chart_values.push( dist );
+                console.log(dist);
+                shot_chart_values.push( dist );
+                if ( shot_chart_dict.hasOwnProperty(dist) ) {
+                  //shot_chart_dict[dist]['distance'] = dist;
+                  shot_chart_dict[dist]['made'] += madeFlag;
+                  shot_chart_dict[dist]['attempted'] += 1;
+                } else {
+                  shot_chart_dict[dist] = {
+                    'distance': dist,
+                    'made': 0,
+                    'attempted': 0
+                  };
+                  shot_chart_dict[dist]['made'] += madeFlag;
+                  shot_chart_dict[dist]['attempted'] += 1;
+                }
             }
         }
+        A.shot_chart_dict = shot_chart_dict;
+
+        //shot_chart_dict.forEach(function(v){
+        A.shotChartObjArr = [];
+        Object.keys(shot_chart_dict).forEach(function (key) {
+          console.log(key, shot_chart_dict[key]);
+          A.shotChartObjArr.push( shot_chart_dict[key] );
+        });
+
+          A.halfcourtHeight = 708;
+          A.halfcourtWidth = 754;
+          var x = A.halfcourtWidth/2 + xOffset;
+
+          //var shotDist = parseInt(key);
+/*          var shotDist = parseInt(key);
+          //var shotDist = 0;
+          var fudge = 0.52;
+          var distPix = A.halfcourtHeight - (shotDist + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
+
+          var attempted = (shot_chart_dict[key]['attempted']);
+          var made = (shot_chart_dict[key]['made']);
+*/
+
+/*          var attempted = 4 * Math.log(shot_chart_dict[key]['attempted']);
+          var made = 4 * Math.log(shot_chart_dict[key]['made']);
+*/
+
+/*          var x = A.halfcourtWidth/2 + xOffset;
+          var dist = distPix;
+          var magnitude1 = made;
+          var magnitude2 = attempted;
+*/
+          //plotShotGroup(A.halfcourtWidth/2 + xOffset, distPix, made, attempted, 'ball', A.grp);
+
+          A.grp.selectAll('circle')
+                .data(A.shotChartObjArr)
+                .enter()
+                .append('circle')
+                //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
+                //.attr("cy", function(d) {return yScale(d.PTS_ave); })
+                .attr('cx', x)
+                .attr('cy', function(d) {
+                  var fudge = 0.52;
+                  console.log(d);
+                  d = parseInt(d.distance);
+                  var distPix = A.halfcourtHeight - (d + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
+                  console.log('distPix ', distPix);
+                  return distPix;
+                })
+                .attr("r", function(d) {
+                  var ret = d.attempted;
+                  return ret;
+                })
+                .attr("class","attempted-shot");
+/*
+          A.grp.selectAll('circle')
+                .data([dist, magnitude1, magnitude2])
+                .enter()
+                .append('circle')
+                //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
+                //.attr("cy", function(d) {return yScale(d.PTS_ave); })
+                .attr('cx', x)
+                .attr('cy', dist)
+                .attr("r", magnitude1)
+                .attr("class","made-shot");
+*/
+/*
+            A.grp.selectAll("circle")
+                .each(function(d) {
+                    console.log(d);
+                    addHammerEventListener2(this, d);
+                });
+
+*/
+
 
         var values = A.shot_chart_values;
 
@@ -275,16 +514,15 @@ function chartPlayerShots(name, pid, season, bar_class) {
 
 
         tempScale = d3.scale.linear().domain([0, number_of_bins]).range([smallest, largest]);
-        console.log(tempScale);
 
         tickArray = d3.range(number_of_bins + 1).map(tempScale);
-
-        console.log(tickArray);
 
         var data = d3.layout.histogram()
             //.bins(x.ticks(20))
             .bins( tickArray )
             (values);
+
+        A.histData = data;
 
         var bar = svg2.selectAll("."+bar_class)
             .data(data)
@@ -314,7 +552,7 @@ function chartPlayerShots(name, pid, season, bar_class) {
 
 
     });
-
+      return shot_chart_dict;
 }
 
 
@@ -387,8 +625,20 @@ function chartPlayerStats(name, pid, color1, color2) {
         }
 
     var data = chartData;
+/*
 
-    var g = d3.select("#chart")
+    var chart = d3.select("#chart");
+    var hiddenClickTarget = chart
+        .append('rect')
+        .attr('class', 'hiddenClickTarget')
+        .attr("fill", 'none')
+        .attr("width", w)
+        .attr("height", h)
+        .attr("pointer-events", 'all')
+        ;
+*/
+
+    var g = chart
         .append("g")
         .attr("id", pid + "_path")
         ;
@@ -469,10 +719,16 @@ function chartPlayerStats(name, pid, color1, color2) {
         });*/
 
     // tip / label
+
+    d3.selectAll(".hiddenClickTarget")
+        .each(function(d) {
+            addHammerCloser(this, d);
+        });
+
     g.selectAll("circle")
         .each(function(d) {
             addHammerEventListener(this, d);
-        })
+        });
         //.on("mouseover.tooltip", function(d){
         //.on("click", function(d){
         /*.on("touchstart", function(d){
@@ -487,16 +743,21 @@ function chartPlayerStats(name, pid, color1, color2) {
                 .attr("id", "tip")
                 ;
         })*/
-        ;
 
     });
 
 }
 
 
+function addHammerCloser(that, d){
+    Hammer(that).on("tap", function(event){
+        d3.selectAll("div#tip").remove();
+    });
+}
+
 function addHammerEventListener(that, d){
     Hammer(that).on("tap", function(event){
-        //d3.selectAll("text#tip").remove();
+        event.srcEvent.stopPropagation();
         d3.selectAll("div#tip").remove();
     /*
         A.evnt = event;
@@ -512,6 +773,35 @@ function addHammerEventListener(that, d){
             .attr("id", "tip")
             //.append("text")
             .text(d.PTS_ave + " " + d.name + " (" + d.MIN_ave + "mpg) " +" | " + d.PTS + "pts " + d.game  )
+            //.attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
+            //.attr("y", yScale(d.PTS_ave) - 1)
+            .style("top", (tap_y - 16) + "px")
+            .style("left", (tap_x - 30) + "px")
+            //.attr("paint-order", "stroke")
+            //.attr("id", d.line_id)
+            ;
+    });
+}
+
+function addHammerEventListener2(that, d){
+    Hammer(that).on("tap", function(event){
+      console.log('HAMMER 2', tap_x, tap_y);
+        event.srcEvent.stopPropagation();
+        d3.selectAll("div#tip").remove();
+    /*
+        A.evnt = event;
+        console.log(event);
+        alert(JSON.stringify(event));
+    */
+        console.log(d3.select(that).attr('cx') );
+        var tap_x = d3.select(that).attr('cx') || event.srcEvent.clientX || event.originalEvent.gesture.center.x || event.center.x || 0;
+        var tap_y = d3.select(that).attr('cy') || event.srcEvent.clientY || event.originalEvent.gesture.center.y || event.center.y || 20;
+        //var text_grp = d3.select("#chart")
+        var div_text = d3.select('body')
+            .append('div')
+            .attr("id", "tip")
+            //.append("text")
+            .text(d.distance + ": " + d.made + "/" + d.attempted)
             //.attr("x", xScale( parseDate(d.GAME_DATE)) - 10)
             //.attr("y", yScale(d.PTS_ave) - 1)
             .style("top", (tap_y - 16) + "px")
