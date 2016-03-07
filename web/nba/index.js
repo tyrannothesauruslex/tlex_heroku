@@ -170,7 +170,7 @@ var yAxis = d3.svg.axis()
 
 
 //var svg = d3.select(".inner").append("svg")
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#points").append("svg")
     .attr("id", "chart")
     .attr("width", w)
     .attr("height", h)
@@ -230,7 +230,7 @@ d3.xml("halfcourt2.svg", function(error, documentFragment) {
     //can use plain Javascript to append content
 
     //var innerSVG = main_chart_svg.select("svg");
-    var bod = d3.select('body')[0][0];
+    var bod = d3.select('#deep-threes')[0][0];
     var innerSVG = bod
       //.node()
       .appendChild(svgNode)
@@ -772,7 +772,7 @@ function addHammerEventListener(that, d){
         var tap_x = d3.select(that).attr('cx') || event.srcEvent.clientX || event.originalEvent.gesture.center.x || event.center.x || 0;
         var tap_y = d3.select(that).attr('cy') || event.srcEvent.clientY || event.originalEvent.gesture.center.y || event.center.y || 20;
         //var text_grp = d3.select("#chart")
-        var div_text = d3.select('body')
+        var div_text = d3.select('#points')
             .append('div')
             .attr("id", "tip")
             //.append("text")

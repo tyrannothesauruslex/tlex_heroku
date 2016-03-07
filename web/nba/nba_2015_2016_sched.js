@@ -10763,7 +10763,7 @@ for (var i = 0; i < A.sched.length; i++) {
 }
 
 
-d3.select('body')
+d3.select('#calendar')
     .selectAll('p')
     .data(A.sched.GSW)
     .enter()
