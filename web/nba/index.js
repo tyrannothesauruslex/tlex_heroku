@@ -100,6 +100,9 @@ var largest = 45;
 var bin_size = 1;
 var number_of_bins = (largest-smallest)/bin_size;
 
+A.shot_chart_dict = {};
+A.offset1 = 60;
+
 /*
     Corner 3: 22'
     Top of arc: 23.75'
@@ -327,7 +330,7 @@ var yAxis2 = d3.svg.axis()
     .orient("left")
     //.ticks(5);
 
-var svg2 = d3.select("body").append("svg")
+/*var svg2 = d3.select("body").append("svg")
     .attr("id", "chart2")
     .attr("width", w)
     .attr("height", h)
@@ -338,11 +341,6 @@ var svg2 = d3.select("body").append("svg")
       .attr("transform", "translate(0," + (h - margin.bottom) + ")")
       .call(xAxis2)
       .selectAll("text")
-/*         .style("text-anchor", "end")
-         .attr("dx", "-.8em")
-         .attr("dy", ".15em")
-         .attr("transform", "rotate(-65)");*/
-
   svg2.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + margin.left + ",0)")
@@ -350,7 +348,7 @@ var svg2 = d3.select("body").append("svg")
     .append("text")
       .style("text-anchor", "end")
       .text("shots");
-
+*/
 
 var chart = d3.select("#chart");
 var hiddenClickTarget = chart
@@ -368,20 +366,23 @@ for (var i = 0; i < A.players.length; i++) {
     chartPlayerStats(A.players[i].lastName, A.players[i].playerId, A.players[i].color1, A.players[i].color2);
 }
 
-A.shot_data = { 201939: [], 2544: [] };
+A.shot_data = { 201939: [], 2544: [], 201142: [] };
 A.chartShots = {};
-A.chartShots['201939'] = chartPlayerShots('Curry', 201939, '2014-15', 'bar');
-//A.chartShots['2544'] = chartPlayerShots('James', 2544, '2014-15', 'bar2');
+A.chartShots['201939'] = chartPlayerShots('Curry', 201939, '2015-16', 0);
+A.chartShots['2544'] = chartPlayerShots('James', 2544, '2015-16', A.offset1);
+A.chartShots['201142'] = chartPlayerShots('Durant', 201142, '2015-16', -1*A.offset1);
 
 
-function chartPlayerShots(name, pid, season, bar_class) {
+function chartPlayerShots(name, pid, season, xoff) {
     /*
     PerMode ??
     */
 
-    var url = 'http://stats.nba.com/stats/shotchartdetail?Period=0&VsConference=&LeagueID=00&LastNGames=0&TeamID=0&Position=&Location=&Outcome=&ContextMeasure=FGA&DateFrom=&StartPeriod=&DateTo=&OpponentTeamID=0&ContextFilter=&RangeType=&Season='+ season +'&AheadBehind=&PlayerID=' + pid + '&EndRange=&VsDivision=&PointDiff=&RookieYear=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod=&SeasonType=Regular+Season&SeasonSegment=&GameID=&ShotZoneRange=24+ft.';
+    var url = 'http://stats.nba.com/stats/shotchartdetail?Period=0&VsConference=&LeagueID=00&LastNGames=0&TeamID=0&Position=&Location=&Outcome=&ContextMeasure=FGA&DateFrom=&StartPeriod=&DateTo=&OpponentTeamID=0&ContextFilter=&RangeType=&Season='+ season +'&AheadBehind=&PlayerID=' + pid + '&EndRange=&VsDivision=&PointDiff=&RookieYear=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod=&SeasonType=Regular+Season&SeasonSegment=&GameID=' + '' + '&ShotZoneRange=24+ft.';
 
     //var url = 'http://stats.nba.com/stats/playerdashptshotlog?CFID=33&CFPARAMS=2015-16&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Position=&Rank=N&RookieYear=&Season='+ season +'&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&PlayerID=' + pid ;
+
+    console.log(name, pid, season, xoff);
 
     url = encodeURIComponent(url);
 
@@ -400,10 +401,14 @@ function chartPlayerShots(name, pid, season, bar_class) {
         var SHOT_MADE_idx = A.shot_header.indexOf('SHOT_MADE_FLAG');
         var PID_idx = A.shot_header.indexOf('PLAYER_ID');
         var pid = games_data[1][PID_idx];
-        console.log(pid);
-        var xOffset = (pid == '201939' ? 0 : 90);
 
-        //debugger;
+          A.halfcourtHeight = 708;
+          A.halfcourtWidth = 754;
+          //var x = A.halfcourtWidth/2 + xOffset;
+
+        //var xOffset = (pid == 201939 ? 0 : 60);
+        var xOffset = xoff;
+        console.log(pid, xOffset, 100, 'fu');
 
         var temp;
         var dist;
@@ -413,7 +418,7 @@ function chartPlayerShots(name, pid, season, bar_class) {
             A.shot_data[pid].push(parseInt(dist));
             madeFlag = games_data[i][SHOT_MADE_idx];
             if ( dist >= smallest && dist <= largest) {
-                console.log(dist);
+                //console.log(dist);
                 shot_chart_values.push( dist );
                 if ( shot_chart_dict.hasOwnProperty(dist) ) {
                   //shot_chart_dict[dist]['distance'] = dist;
@@ -423,94 +428,90 @@ function chartPlayerShots(name, pid, season, bar_class) {
                   shot_chart_dict[dist] = {
                     'distance': dist,
                     'made': 0,
-                    'attempted': 0
+                    'attempted': 0,
+                    'xOffset': A.halfcourtWidth/2 + xoff
                   };
                   shot_chart_dict[dist]['made'] += madeFlag;
                   shot_chart_dict[dist]['attempted'] += 1;
                 }
             }
         }
-        A.shot_chart_dict = shot_chart_dict;
+        //A.shot_chart_dict[pid] = { pid: shot_chart_dict };
+        A.shot_chart_dict[pid] = shot_chart_dict;
 
         //shot_chart_dict.forEach(function(v){
         A.shotChartObjArr = [];
+        innerShotObjArr = []
         Object.keys(shot_chart_dict).forEach(function (key) {
-          console.log(key, shot_chart_dict[key]);
-          A.shotChartObjArr.push( shot_chart_dict[key] );
+          //console.log(key, shot_chart_dict[key]);
+          //A.shotChartObjArr.push( shot_chart_dict[key] );
+          innerShotObjArr.push( shot_chart_dict[key] );
         });
 
-          A.halfcourtHeight = 708;
-          A.halfcourtWidth = 754;
-          var x = A.halfcourtWidth/2 + xOffset;
+        console.log(innerShotObjArr);
 
-          //var shotDist = parseInt(key);
-/*          var shotDist = parseInt(key);
-          //var shotDist = 0;
-          var fudge = 0.52;
-          var distPix = A.halfcourtHeight - (shotDist + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
-
-          var attempted = (shot_chart_dict[key]['attempted']);
-          var made = (shot_chart_dict[key]['made']);
-*/
-
-/*          var attempted = 4 * Math.log(shot_chart_dict[key]['attempted']);
-          var made = 4 * Math.log(shot_chart_dict[key]['made']);
-*/
-
-/*          var x = A.halfcourtWidth/2 + xOffset;
-          var dist = distPix;
-          var magnitude1 = made;
-          var magnitude2 = attempted;
-*/
           //plotShotGroup(A.halfcourtWidth/2 + xOffset, distPix, made, attempted, 'ball', A.grp);
 
-          A.grp.selectAll('circle')
-                .data(A.shotChartObjArr)
+          A.grp.selectAll('circle.attempted-shot.pid_'+pid)
+                //.data(A.shotChartObjArr)
+                .data(innerShotObjArr)
                 .enter()
                 .append('circle')
                 //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
                 //.attr("cy", function(d) {return yScale(d.PTS_ave); })
-                .attr('cx', x)
+                .attr('cx', function(d) {
+                  console.log('d.xOffset',d.xOffset);
+                  return d.xOffset;
+                })
                 .attr('cy', function(d) {
                   var fudge = 0.52;
-                  console.log(d);
+                  //console.log(d);
                   d = parseInt(d.distance);
                   var distPix = A.halfcourtHeight - (d + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
-                  console.log('distPix ', distPix);
+                  //console.log('distPix ', distPix);
                   return distPix;
                 })
                 .attr("r", function(d) {
-                  var ret = d.attempted;
+                  //var ret = d.attempted;
+                  var ret = 3 * Math.log(d.attempted) + 6;
+                  //console.log('d.attempted ', d.attempted);
                   return ret;
                 })
-                .attr("class","attempted-shot");
-/*
-          A.grp.selectAll('circle')
-                .data([dist, magnitude1, magnitude2])
+                .attr("class","attempted-shot " + "pid_" + pid);
+
+          A.grp.selectAll('circle.made-shot.pid_'+pid)
+                //.data(A.shotChartObjArr)
+                .data(innerShotObjArr)
                 .enter()
                 .append('circle')
                 //.attr("cx", function(d) {return xScale( parseDate(d.GAME_DATE)); })
                 //.attr("cy", function(d) {return yScale(d.PTS_ave); })
-                .attr('cx', x)
-                .attr('cy', dist)
-                .attr("r", magnitude1)
-                .attr("class","made-shot");
-*/
+                .attr('cx', function(d) {
+                  console.log('d.xOffset',d.xOffset);
+                  return d.xOffset;
+                })
+                .attr('cy', function(d) {
+                  var fudge = 0.52;
+                  //console.log(d);
+                  d = parseInt(d.distance);
+                  var distPix = A.halfcourtHeight - (d + 4 + 1.5/2 + fudge) * A.halfcourtHeight / 47;
+                  //console.log('distPix ', distPix);
+                  return distPix;
+                })
+                .attr("r", function(d) {
+                  //var ret = d.attempted;
+                  var ret = 3 * Math.log(d.made) + 6;
+                  //console.log('d.attempted ', d.attempted);
+                  return ret;
+                })
+                .attr("class","made-shot " + "pid_" + pid);
+
+
 /*
-            A.grp.selectAll("circle")
-                .each(function(d) {
-                    console.log(d);
-                    addHammerEventListener2(this, d);
-                });
-
-*/
-
-
         var values = A.shot_chart_values;
 
         // A formatter for counts.
         var formatCount = d3.format(",.0f");
-
 
 
         tempScale = d3.scale.linear().domain([0, number_of_bins]).range([smallest, largest]);
@@ -523,7 +524,8 @@ function chartPlayerShots(name, pid, season, bar_class) {
             (values);
 
         A.histData = data;
-
+*/
+/*
         var bar = svg2.selectAll("."+bar_class)
             .data(data)
           .enter().append("g")
@@ -549,7 +551,7 @@ function chartPlayerShots(name, pid, season, bar_class) {
             .attr("class", "x axis")
             .attr("transform", "translate(0," + (h - margin.bottom) + ")")
             .call(xAxis2);
-
+*/
 
     });
       return shot_chart_dict;
@@ -581,6 +583,7 @@ function chartPlayerStats(name, pid, color1, color2) {
         var pts_idx = A.header.indexOf('PTS');
         var match_idx = A.header.indexOf('MATCHUP');
         var date_idx = A.header.indexOf('GAME_DATE');
+        var game_id_idx = A.header.indexOf('GAME_ID');
 
         //A.x_vals = [];
         //A.y_vals = [];
