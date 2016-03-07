@@ -169,7 +169,8 @@ var yAxis = d3.svg.axis()
 //
 
 
-var svg = d3.select(".inner").append("svg")
+//var svg = d3.select(".inner").append("svg")
+var svg = d3.select("body").append("svg")
     .attr("id", "chart")
     .attr("width", w)
     .attr("height", h)
