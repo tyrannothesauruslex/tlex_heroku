@@ -24,19 +24,42 @@
         <script src="assets/index.js"></script>
         <script src="assets/typed.js"></script>
         <style>
-
+          .col2 {
+            width: 50%;
+          }
+          .floatleft { float: left; }
+          .floatright { float: right; }
+          #blurb { white-space: pre-line; }
+          .highlight {
+            display: inline-block;
+            background: #00BFFF;
+            font-weight: bolder;
+          }
+          .emph { font-weight: bold; }
         </style>
     </head>
 <body>
 
+    <div id="lyrics-phrase-search" class="fixed top right">
+      <a href="#">♫</a>
+    </div>
+
+<!--
     <div class="ribbon">
       <a href="bridge/first_bid.html">Drafty!</a>
     </div>
+ -->
 
+    <div class="fixed bottom center">
+      <a id="demo" href="#">Demo</a>
+    </div>
+
+<!--
     <div class="fixed bottom right">
       <a href="http://dictionaryapi.com/"><img src="assets/mw-logo-light-background-50x50.png" /></a>
     </div>
 
+ -->
     <!--
     <div class="fixed bottom right" id="settings-div">
       <a href="#" id="settings" class="a-btn">
@@ -57,7 +80,7 @@
         <div id="syns"></div>
         <div id="syns2"></div>
 
-        <div id="songs"></div>
+        <!-- <div id="songs"></div> -->
 
         <div id="container"></div>
         <div id="sink">
@@ -74,7 +97,7 @@
 
     <div style="display: inline-block;">
     <div id="word-opts" style="display: none;">
-        <span class="opt" id="opt-word"></span>&nbsp;<span class="opt" id="opt-heart" title="Love it.">❤</span>
+        <span class="opt" id="opt-word"></span>&nbsp;<span class="opt" id="opt-heart" title="Love it.">❤</span>&nbsp;<span class="opt" id="opt-music" title="Lyrics.">♫</span>
         <!-- <span class="opt rot--90 big-font" id="opt-downvote" title="Yay; upvote.">&rsaquo;</span>
         <span class="opt rot-90 big-font" id="opt-downvote" title="Meh; downvote.">&rsaquo;</span>
         <span class="opt" id="opt-replace" title="Use this syn (and re-tlex).">&crarr;</span>
@@ -82,6 +105,20 @@
         <span class="opt" id="opt-close" title="Close.">&times;</span>
         -->
     </div>
+    </div>
+
+    <div id="lyrics-modal" class="fullscreen">
+        <div id="close-lyrics">
+          <a href="#">&times;</a>
+        </div>
+        <div class="">
+            <div id="songs" class="col2 floatleft">
+              When in the course
+            </div>
+            <div id="blurb" class="col2 floatright">
+              Corpus
+            </div>
+        </div>
     </div>
 
     <script src="assets/fonter.js"></script>

@@ -63,9 +63,9 @@ function parseWebsterSyns (json_data, word) {
 
       $('#syns').html( html_str);
 
-      $('.opt-able').click(function(){
+      $('.opt-able').click(function(event){
           var temp = $(this).text();
-          toggleOpts(temp);
+          toggleOpts(temp, event);
       })
 
       /*var entries = $(json_data).find('entry');
@@ -162,7 +162,19 @@ window.onload = function() {
       }
     });
 
-    simulateUse();
+    $('#demo').on('click', function(e) { simulateUse(); });
+
+    $('#lyrics-phrase-search').on('click', function(e) {
+
+        $("#lyrics-modal").fadeIn(function(){});
+
+        console.log($('#your_word').val());
+        searchLyrics($('#your_word').val());
+
+        $("#close-lyrics").click(function(){
+            $("#lyrics-modal").fadeOut(function(){});
+        });
+    });
 
 };
 
@@ -170,55 +182,6 @@ window.onload = function() {
 var getKeyCode = function (str) {
     return str.charCodeAt(str.length - 1);
 }
-
-
-//$(function() { $('#your_word').focus(); });
-
-/*
-function getBHTsynPath() {
-    //console.log( $('#your_word').val() );
-    var word = extractor( $('#your_word').val() );
-    //if (word.length < 2) { return null; }
-    //console.log( word );
-    var res = $('.tt-dataset-foo2').find('p')[0];
-    //console.log( '.tt-dataset-foo', $(res).html() );
-    //path = bht_url + bht_apikey + '/' + word + '/json?callback=?';
-    path = bht_url + bht_apikey + '/' + word + '/json?callback=?';
-    //path = baseUrl + word + "/definitions?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
-
-    word_path_arr = [word, path];
-    //return path;
-    return word_path_arr;
-}
-
-function getAndParseBHT() {
-
-  var word_path_arr = getBHTsynPath();
-
-  $.getJSON(word_path_arr[1],word_path_arr[0],function(response) {
-      console.log(response);
-      console.log(word_path_arr[0]);
-              //console.log(response[0]);
-              // BHT returns obj with keys for each part of speech
-              // each an object with keys ant, sim, syn
-              // each of which is an array
-              // for now push all syns into one array?
-      new_arr = [];
-      html_str = '<span class="opt-able" onclick="toggleOpts();"><b>' + word_path_arr[0] + '</b></span>';
-      for (var PoS in response) {
-          html_str += '<br><em>' + PoS + '</em>: ';
-          for (var syn_word in response[PoS].syn) {
-            new_arr.push('<span class="syn">' + response[PoS].syn[syn_word] + '</span>');
-          }
-          //html_str += new_arr.concat(', ');
-          html_str += new_arr.join(', ');
-      }
-
-      $('#syns2').html( html_str);
-
-  });
-}
-*/
 
 function extractor(query) {
     query = query.trim();
@@ -436,7 +399,7 @@ function initSpectrum(drawn_obj) {
 }
 
 
-function toggleOpts(clicked_word) {
+function toggleOpts(clicked_word, event) {
     var top_y = event.pageY - 33;
     var left_x = event.pageX + 5;
     var css_obj = {position:"absolute" };
@@ -467,10 +430,22 @@ function toggleOpts(clicked_word) {
 
     $("#word-opts").fadeIn(function(){
         OPT_SHOWN=true;
+
         $("#opt-heart").click(function(){
             var url = "server/ode_endpoint.php?term=" + clicked_word;
             window.open(url, '_blank');
         });
+
+        $("#opt-music").click(function(){
+          $("#lyrics-modal").fadeIn(function(){});
+
+          searchLyrics(clicked_word);
+
+          $("#close-lyrics").click(function(){
+              $("#lyrics-modal").fadeOut(function(){});
+          });
+        });
+
         makeMeCloseable(this);
     });
 
@@ -484,10 +459,23 @@ function toggleOpts(clicked_word) {
 2.
 3. get the actual lyrics and write a snip of them to the span
 */
-function searchLyrics(term) {
-    uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=' + encodeURIComponent(term) ; // + '&outputFormat=application/json';
+// Good exact match, but no api? http://www.songlyrics.com/index.php?section=search&searchW=here+comes+the+future+and+you+can%27t+run+from+it&submit=Search&searchIn4=lyrics&searchIn5=phrase
+// Comparisons: http://www.baykalhafizoglu.com/obtaining-song-lyrics-using-music-apis/
+// https://pypi.python.org/pypi/songtext/0.1.4
+// https://developer.musixmatch.com/documentation/api-reference/matcher-track-get
 
-    uri = 'server/proxy.php?url=' + uri;
+function searchLyrics(term) {
+    //uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=' + encodeURIComponent(term) ; // + '&outputFormat=application/json';
+    //uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?' + encodeURIComponent('lyricText=' +term) ; // + '&outputFormat=application/json';
+    //uri = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?' + encodeURIComponent('lyricText=' +term) ; // + '&outputFormat=application/json';
+
+    //uri = 'server/proxy_params.php?url=' + uri;
+    // YES: uri = 'server/proxy_params.php?search_encoded=' + encodeURIComponent(term);
+
+
+    uri = 'server/proxy_params.php?endpoint=http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?';
+
+    uri += '&params_encoded=' + encodeURIComponent('lyricText='+term);
 
     $.ajax({
       url: uri,
@@ -517,33 +505,41 @@ function parseLyricSearch(xml, term) {
     //debugger;
     var items_len = items.length;
     items_len = items_len < 20 ? items_len : 20;
-    for (var i = 0; i < items_len; i++) {
+    for (var i = 0; i < items_len - 1; i++) {
       //try {
-        //LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
+        LyricChecksum = items[i].getElementsByTagName('LyricChecksum')[0].innerHTML;
         LyricId = items[i].getElementsByTagName('LyricId')[0].innerHTML;
         SongUrl = items[i].getElementsByTagName('SongUrl')[0].innerHTML;
         Artist = items[i].getElementsByTagName('Artist')[0].innerHTML;
         Song = items[i].getElementsByTagName('Song')[0].innerHTML;
 
-        html_str += '<a target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
+        console.log(i,Song);
+
+        //html_str += '<a class="song-title" data-corpusid="'+ LyricId +'" target="_blank" href="'+SongUrl+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'"> </span></em><br>';
+
+        html_str += '<a class="song-title" data-corpusid="'+ LyricId +'" target="_blank" href="'+SongUrl+'" data-artist="'+Artist+'" data-song="'+Song+'" data-id="'+LyricId+'" data-checksum="'+LyricChecksum+'">' + Song + '</a> by ' + Artist + ' <em><span class="lyric-blurb"> </span></em><br>';
+
       //} catch(e) {console.log(e, i)}
     }
     console.log(html_str);
     $('#songs').html(html_str);
-    /*
-    $('.lyric-blurb').each(function(){
-        writeLyrics( $(this), term );
+
+    //$('.lyric-blurb').each(function(){
+    $('.song-title').hover(function(){
+      writeLyrics( $(this), term );
     });
-    */
+
 
 }
 
 
 //function getLyrics (a,b, term) {
 function writeLyrics (el, term) {
-    var uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
+    //var uri = 'http://api.chartlyrics.com/apiv1.asmx/GetLyric';
 
     //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&artist=radiohead&title=creep&bucket=id:lyricfind-US&limit=true&bucket=tracks';
+
+    console.log($(el));
 
     var a = encodeURIComponent($(el).attr('data-id'));
     var b = encodeURIComponent($(el).attr('data-checksum'));
@@ -554,40 +550,55 @@ function writeLyrics (el, term) {
 
     //uri = 'http://developer.echonest.com/api/v4/song/search?api_key=SQMIYFB8AOENSOG4T&format=json&artist='+a+'&title='+b+'&bucket=id:lyricfind-US&limit=true&bucket=tracks';
 
-    uri = 'server/proxy_params.php?url=' + uri;
+    uri = 'server/proxy_params.php?endpoint=http://api.chartlyrics.com/apiv1.asmx/GetLyric?';
+
+    uri += '&params_encoded=' + encodeURIComponent("lyricId=" + a + "&lyricCheckSum=" + b);
+
     var blurb = '';
 
-    console.log('el',el);
+    //console.log('el',el);
 
     //var a = $(el).attr('data-id');
     //var b = $(el).attr('data-checksum');
 
 
-
-
-    //console.log('el',el);
-    console.log('a',a);
-    console.log('b',b);
-
     $.ajax({
       // http://api.chartlyrics.com/apiv1.asmx/GetLyric?lyricId=131299&lyricCheckSum=76a96b8a8622fa2ea168fa9e1890e296
       url: uri,
-      type: "POST",
-      //type: "GET",
-      data: { 'lyricId': a, 'lyricCheckSum': b},
+      type: "GET",
+      //data: { 'lyricId': a, 'lyricCheckSum': b},
       //data: { 'artist': a, 'title': b, 'bucket': 'id:lyricfind-US', 'limit': 'true', 'bucket': 'tracks'},
       dataType: "xml",  //For external apis
       success: function(response) {
-/*          var xml = response;
-          console.log('xml', xml);
+          var xml = response;
           var items = xml.getElementsByTagName('GetLyricResult');
           // one is enough
-          item = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("Lyric")[0].innerHTML;*/
+          lyric = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("Lyric")[0].innerHTML || '';
+          songName = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("LyricSong")[0].innerHTML || '';
+          artistName = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("LyricArtist")[0].innerHTML || '';
+          //coverArt = xml.getElementsByTagName('GetLyricResult')[0].getElementsByTagName("LyricCoverArtUrl")[0].innerHTML || '';
 
-          console.log(response);
+          console.log(xml.getElementsByTagName('GetLyricResult')[0]);
+
+          lyric = lyric.replace(RegExp(term, "g"), '<span class="highlight">' + term + '</span>');
+
+          corpus = '';
+          //corpus += '<div><img src=' + coverArt + '></div>';
+          corpus += '<div class="emph"><span class="songName">' + songName + '</span>, by ';
+          corpus += '<span class="artistName">' + artistName + '</span></div>';
+          corpus += lyric;
+
+          $('#blurb').html(corpus);
+
+          //console.log('inner lyric', item);
 
           // only get the words near the term
-          var burps = item.split(term);
+          /*A.item = item;
+          A.burps = item.split(term);
+          burps = item.split("(?i)" + term); // case-INsensitive
+          console.log('burps', burps);
+          //debugger;
+
           //before = '...' + burps[0].slice(-29);
           // arr of the words before term
           before = burps[0].split(' ');
@@ -607,16 +618,21 @@ function writeLyrics (el, term) {
               after = after.join(' ');
           } else {
               //z = Math.max(before.length - 5, 1);
-              after = after.shift(5);
-              after = after.join(' ');
+              A.after = after;
+              //after = after.shift(5);
+              //afterslice = after.slice(5);
+              afterslice = after.shift(5);
+              afterjoin = afterslice.join(' ');
           }
-          after = '...' + after;
+          after = '...' + afterjoin;
 
           blurb = before + term + after;
 
-          console.log('b418', blurb);
+          console.log('blurb', blurb);
+          $('#blurb').html(blurb);
+*/
 
-          $(el).html(lyric);
+
       },
       error: function(err) {
           console.log('err',err.responseText);
