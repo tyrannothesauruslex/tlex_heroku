@@ -203,7 +203,7 @@ p {
 .ribbon a {
 */
 a {
-    /*text-decoration: none;*/
+    text-decoration: none;
 }
 
 a.a-btn {
@@ -298,4 +298,8 @@ span.opt {
     cursor: pointer;
     border-bottom: 1px dotted;
     /*text-decoration: dotted*/
+}
+
+#lyrics-phrase-search {
+  display: none;
 }

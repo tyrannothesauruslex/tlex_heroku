@@ -26,6 +26,8 @@ function parseWebsterSyns (json_data, word) {
 
       var entry_arr = json_data.entry_list[0].entry;
 
+      console.log(word);
+
       if (entry_arr === undefined) {
           console.log('UNDEF');
           html_str = '<br><span class="opt-able"><strong>' + word + '</strong></span> (<em>no synonyms found</em>)  <br>';
@@ -98,6 +100,7 @@ function getWebsterSyns (word, ref, key) {
     uri = 'server/proxy.php?url=' + uri;
 
     if (most_common_words.indexOf(word) == -1) {
+        console.log(word);
         $.ajax({
           url: uri,
           type: "GET",
@@ -105,12 +108,17 @@ function getWebsterSyns (word, ref, key) {
           dataType: "xml",  //For external apis
           success: function(response) {
               //var xml = $( $.parseXML(response) );
-              console.log(response);
               //FOO = response;
               //BAR = xmlToJSON.parseString(FOO);
               //BAR = xmlToJSON.parseXML(FOO);
               //alert("success");
               parseWebsterSyns( xmlToJSON.parseXML(response), word );
+          },
+          error: function (request, status, error) {
+              console.log(request.responseText);
+          },
+          complete: function (foo) {
+              //console.log(foo);
           }
         });
     } else {
@@ -162,7 +170,10 @@ window.onload = function() {
       }
     });
 
-    $('#demo').on('click', function(e) { simulateUse(); });
+    $('#demo').on('click', function(e) {
+      console.log($("#your_word").val());
+      simulateUse(e);
+    });
 
     $('#lyrics-phrase-search').on('click', function(e) {
 
@@ -306,28 +317,46 @@ function readUrl() {
     */
 }
 
-function simulateUse() {
+function simulateUse(e) {
+    console.log("simuse");
     // First add escape character where spaces are
     // Don't split to array (because each word overwrites previous
-    var words_in_sample = getRandomLyric().replace(/ /g, '^200 ');
+
+
+    var words_in_sample = getRandomLyric();
+    words_in_sample = words_in_sample.replace(/ /g, '^200 ');
     //.split(' ');
     for (var i = 0; i < words_in_sample.length; i++) {
         // Need to
         //words_in_sample[i];
-    };
+    }
 
+    console.log(words_in_sample);
+
+    // ? http://stackoverflow.com/questions/31598309/typed-js-how-to-call-function-onclick-multiple-times
     $(function(){
+      console.log("anon in simuse");
+      console.log($("#your_word").val());
       $("#your_word").typed({
         //strings: ["First sentence"],
         strings: [words_in_sample],
         //strings: ["First sentence.", "Second sentence."],
         showCursor: false,
         typeSpeed: 10, // ms? Inverse speed? Delays?
-        /*callback: function() {
-            extractAndGetSyns();
-        },*/
+        callback: function() {
+          console.log("CALLBACK");
+          $("#demo").html("");
+          //$("#your_word").focus();
+        },
+        preStringTyped: function() {
+          console.log("preStringTyped");
+        },
         onStringTyped: function() {
-            extractAndGetSyns();
+          console.log("STRINGTYPED");
+          extractAndGetSyns();
+        },
+        resetCallback: function() {
+          console.log("RESET");
         }
       });
     });
