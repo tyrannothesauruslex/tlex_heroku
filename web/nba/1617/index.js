@@ -55,8 +55,8 @@ A.players = [
     "playerId": 201933
   },
   {
-    "color1": "#007DC3",
-    "color2": "#F05133",
+    "color1": "#FDB927",
+    "color2": "#006BB6",
     "firstName": "Kevin",
     "lastName": "Durant",
     "playerId": 201142
@@ -88,6 +88,20 @@ A.players = [
     "firstName": "Damian",
     "lastName": "Lillard",
     "playerId": 203081
+  },
+  {
+    "color1": "#999999",
+    "color2": "#333333",
+    "firstName": "Anthony",
+    "lastName": "Davis",
+    "playerId": 203076
+  },
+  {
+    "color1": "#999999",
+    "color2": "#333333",
+    "firstName": "DeMar",
+    "lastName": "DeRozan",
+    "playerId": 201942
   }
 ];
 var stat;
@@ -120,7 +134,8 @@ var margin = {top: 40, right: 40, bottom: 40, left: 40},
     height = 500 - margin.top - margin.bottom;
 */
 //
-var w = 1800;
+// var w = 1800;
+var w = 1000;
 var h = 485;
 var padding = 90;
 var margin = {top: 30, left: 50, bottom: 50, right: 90}
@@ -128,11 +143,11 @@ var margin = {top: 30, left: 50, bottom: 50, right: 90}
 // display date format
 var  date_format = d3.time.format("%d %b");
 
-var x_domain = [ parseDate('OCT 27, 2016'), new Date ];
+var x_domain = [ parseDate('OCT 24, 2016'), new Date ];
 
 var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-var firstDate = new Date(2015,09,27); // january = 0, dec = 11
-var secondDate = new Date(2016,03,13);
+var firstDate = new Date(2016,09,24); // january = 0, dec = 11
+var secondDate = new Date(2017,03,13);
 var today = new Date();
 
 var reg_season_length = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
