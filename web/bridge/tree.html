@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 
 <title>Yet another bridge bidding flowchart</title>
 <meta name="description" content="Bridge bidding flowchart in d3. 5-card majors; 15-17 NT; Roman Keycard Blackwood; Gerber; Stayman; Jacoby; HoB; House of Bridge; tlex; tyrannothesaurauslex">
@@ -118,6 +118,8 @@ d3.csv("bids.csv", function(error, data) {
 
   node.append("foreignObject")
       .attr("dy", 3)
+      .attr("width", 300)
+      .attr("height", 20)
       .attr("x", function(d) { return d.children ? -8 : 8; })
       .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
     .append("xhtml:div")
