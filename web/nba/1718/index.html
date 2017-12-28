@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<meta charset="utf-8">
+<meta name='viewport' content='initial-scale=1,user-scalable=yes' />
+
+<head>
+<style>
+
+html, body { font: normal 12px sans-serif; }
+
+svg {
+  border: 0px dotted gray;
+  pointer-events:none;
+  /*width: 100%;
+  min-width: 1200px;*/
+}
+
+text#tip {
+    font-size: 14px;
+    fill: black;
+    font-weight: bold;
+    /*
+    stroke-width: 5px;
+    stroke: rgba(255,255,255,0.9);
+    stroke-linejoin: round;
+    */
+    text-anchor: end;
+}
+
+div#tip {
+    position: absolute;
+    display: inline-block;
+    background-color: rgba(255,255,255,0.8);
+    padding: 3px;
+    border: 1px solid #333;
+    font-size: 14px;
+}
+
+.bar {
+  /*fill: steelblue;*/
+  fill: rgba(127,127,127,0.5);
+}
+
+.bar2 {
+  /*fill: steelblue;*/
+  fill: rgba(127,127,255,0.5);
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  /*font: 16px sans-serif;*/
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  //display: none;
+  //stroke: blue;
+}
+
+
+.line2 {
+  fill: none;
+  stroke: #444;
+  stroke-width: 6px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.line1 {
+  fill: none;
+  stroke: #444;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+
+.faded { stroke-opacity: 0.2; }
+
+.data-dot {
+    fill: rgba(99,99,99,0.5);
+    cursor: pointer;
+    pointer-events: all;
+}
+.made-shot {
+  fill: #0A994D;
+  opacity: 0.5;
+}
+.attempted-shot {
+  // fill: #F6A57F;
+  fill: orange;
+  opacity: 0.5;
+  pointer-events: all;
+}
+
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}
+
+#g9661, #g9647, #layer1 {
+    pointer-events: none;
+}
+
+
+</style>
+
+
+</head>
+<body>
+
+    <div id="status"></div>
+    <div id="points"></div>
+    <div id="calendar"></div>
+    <div id="deep-threes">
+      <p>Deep 3's, Durant, Curry, James</p>
+    </div>
+
+    <script src="d3.v3.min.js" charset="utf-8"></script>
+    <script src="hammer.min.js"></script>
+    <script src="index.js"></script>
+    <script src="nba_2015_2016_sched.js"></script>
+
+</body>
+</html>

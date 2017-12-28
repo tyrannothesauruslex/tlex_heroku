@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   id="svg7993"
+   viewBox="0 0 754.51014 708.25002"
+   >
+  <defs
+     id="defs7995" />
+  <metadata
+     id="metadata7998">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+     <!--
+     transform="rotate(180)"
+       -->
+  <g
+      transform="translate(-20.23988,-103.6122)"
+     id="layer1">
+    <g
+      transform="matrix(-1,0,0,-1,794.98988,915.4744)"
+       id="g9647">
+      <g
+         id="g9661">
+        <path
+           d="m 21.25,104.6122 0,706.25"
+           id="path25"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 773.75,104.6122 0,706.25"
+           id="path27"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 278.75,105.8622 0,283.75 237.5,0 0,-283.75"
+           id="path119"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 386.25,184.6122 c 0,-6.21337 5.0365,-11.25 11.25,-11.25 6.21338,0 11.25,5.03663 11.25,11.25 0,6.2135 -5.03662,11.25 -11.25,11.25 -6.2135,0 -11.25,-5.0365 -11.25,-11.25 z"
+           id="path125"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 67.5195,105.8622 0.03175,210 C 119.743,446.9557 247.79937,539.61221 397.5,539.61221 c 149.7005,0 277.84725,-92.6565 330.039,-223.75001 l -0.039,-210"
+           id="path129"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 352.5,167.1122 90,0"
+           id="path135"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 308.7695,390.86221 c 0,49.01588 39.71462,88.75 88.7305,88.75 49.01575,0 88.75,-39.73412 88.75,-88.75"
+           id="path163"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 486.25,105.8622 0,283.75 -177.5,0 0,-283.75"
+           id="path181"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 308.7695,810.8622 c 0,-49.01575 39.71462,-88.75 88.7305,-88.75 49.01575,0 88.75,39.73425 88.75,88.75"
+           id="path219"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 21.2695,810.2372 752.4805,0"
+           id="path223"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 21.23988,104.61663 752.49311,0.0164"
+           id="path137-9"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.86360717;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+</svg>
