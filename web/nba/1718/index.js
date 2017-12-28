@@ -384,10 +384,12 @@ for (var i = 0; i < A.players.length; i++) {
 
 A.shot_data = { 201939: [], 2544: [], 201142: [] };
 A.chartShots = {};
+/*
 A.chartShots['201939'] = chartPlayerShots('Curry', 201939, '2016-17', 0);
 A.chartShots['2544'] = chartPlayerShots('James', 2544, '2016-17', A.offset1);
 A.chartShots['201142'] = chartPlayerShots('Durant', 201142, '2016-17', -1*A.offset1);
-
+*/
+// http://stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID=201142&Season=2017-18&SeasonType=Regular+Season
 
 function chartPlayerShots(name, pid, season, xoff) {
     /*
@@ -543,10 +545,13 @@ function chartPlayerStats(name, pid, color1, color2) {
     }
 
     var url = 'http://stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID='+ pid +'&Season=2017-18&SeasonType=Regular+Season';
-    url = encodeURIComponent(url);
+    // url = encodeURIComponent(url);
 
     A.data = [];
-    d3.json(proxy_url+url, function (json) {
+    // d3.json(proxy_url+url, function (json) {
+        console.log(url);
+    d3.json(url, function (json) {
+        console.log(url);
         var chartData = [];
         A.header = json.resultSets[0].headers;
         games_data = json.resultSets[0].rowSet.reverse();
