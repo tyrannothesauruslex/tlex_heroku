@@ -549,9 +549,7 @@ function chartPlayerStats(name, pid, color1, color2) {
 
     A.data = [];
     // d3.json(proxy_url+url, function (json) {
-        console.log(url);
     d3.json(url, function (json) {
-        console.log(url);
         var chartData = [];
         A.header = json.resultSets[0].headers;
         games_data = json.resultSets[0].rowSet.reverse();
