@@ -1,0 +1,335 @@
+:root {
+  --mono-font: San Francisco Mono, Monaco, 'Consolas', 'Lucida Console',
+    'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+  --sans-font: sans-serif;
+  /*
+  --sans-font: -apple-system, BlinkMacSystemFont, 'avenir next', avenir, helvetica, 'helvetica neue',
+    ubuntu, roboto, noto, 'segoe ui', arial, sans-serif;
+  */
+  --path-opacity: 1;
+  --path-base-width: 1.5;
+}
+body {
+  color: #111;
+  margin: 30px auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  font-size: 12px;
+  font-family: var(--sans-font);
+}
+
+svg text {
+  font-size: 15px;
+}
+
+foreignObject.svg-fo-label {
+  text-anchor: middle;
+  border: 0px dotted #ccf;
+  overflow: visible;
+}
+foreignObject.svg-fo-label.leaf {
+  dominant-baseline: central;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+/*
+foreignObject.svg-fo-label.leaf {
+  text-anchor: left;
+  overflow: visible;
+}
+ */
+.node circle {
+  fill: #ddd;
+  stroke: #999;
+  stroke-width: 1px;
+}
+
+foreignObject,
+.node text {
+  font: 14px sans-serif;
+  color: #333333;
+  /*
+  fill: #555;
+  color: #555;
+  font-weight: 400;
+  */
+}
+
+.node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #eee;
+  stroke-width: calc(24 * var(--path-base-width));
+}
+
+.link.foo {
+  fill: none;
+  stroke: #f00;
+  stroke-width: 1px;
+}
+.was-cloned {
+  fill: none;
+  stroke: #0f0;
+  stroke-width: 0px;
+}
+
+.node-text {
+  /*
+  text-anchor: middle;
+  display: inline-block;
+  */
+  margin: 0 auto;
+  text-align: center;
+  border: 0px solid #ccc;
+  background: rgba(255, 255, 255, 0);
+}
+.node--leaf .node-text {
+  transform: rotate(45deg);
+  transform-origin: center left;
+  /*overflow: visible;*/
+}
+path {
+  stroke: #aaa;
+  stroke-width: 0;
+  fill: none;
+  /*fill: none;*/
+  stroke-opacity: var(--path-opacity);
+  /*stroke-alignment: outer;*/
+}
+path.highlight {
+  stroke-width: 2;
+}
+
+path.highlight {
+  stroke: green;
+  background: rgba(255, 255, 255, 1);
+  color: #08f;
+}
+
+svg {
+  overflow: visible;
+}
+
+.match circle {
+  font-weight: 900;
+  color: #2af;
+  fill: #2af;
+  stroke: #2af;
+}
+.match text {
+  fill: #2af;
+  color: #2af;
+}
+
+circle.no-name {
+  fill: rgba(255, 0, 0, 0);
+  stroke: rgba(255, 0, 0, 0);
+}
+
+path.rw {
+  stroke: #dc7a13;
+  stroke: #e8a45d;
+  /*fill: #dc7a13;*/
+  stroke-width: calc(24 * var(--path-base-width));
+}
+path.gn {
+  stroke: #7fc0da;
+  stroke: #abd7e8;
+  stroke-width: calc(24 * var(--path-base-width));
+}
+
+path.teq {
+  stroke: #ffffd4;
+  stroke-width: calc(24 * var(--path-base-width));
+}
+path.rum {
+  stroke: #efedf5;
+  stroke-width: calc(24 * var(--path-base-width));
+}
+
+path.vod {
+  stroke: #deebf7;
+  stroke-width: calc(24 * var(--path-base-width));
+}
+
+path.bit {
+  /*stroke: #b62d05;*/
+  stroke: #bf812d;
+  stroke-width: calc(19 * var(--path-base-width));
+}
+path.amar {
+  /*
+  stroke: #b30022;
+  stroke: #cb181d;
+  */
+  stroke: #da7175;
+  stroke-width: calc(19 * var(--path-base-width));
+}
+path.cocchi {
+  stroke: #ecdda2;
+  stroke-width: calc(19 * var(--path-base-width));
+}
+
+path.ss {
+  stroke: #dddddd;
+  stroke-width: calc(15 * var(--path-base-width));
+}
+path.sv {
+  /*
+  stroke: #840e11;
+  stroke: #de2d26;
+  stroke: #ef3b2c;
+  */
+  stroke: #ecb1ac;
+  stroke-width: calc(15 * var(--path-base-width));
+}
+
+path.gc {
+  stroke: #39d623;
+  stroke: #85e278;
+  stroke-width: calc(11 * var(--path-base-width));
+}
+path.bene {
+  stroke: #ecd10e;
+  stroke: #fee08b;
+  stroke-width: calc(11 * var(--path-base-width));
+}
+
+path.mali {
+  stroke: #de001f;
+  stroke: #de495e;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+path.tripsc {
+  /*stroke: #ff9a34;*/
+  stroke: #fc8d59;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+
+path.lemj {
+  stroke: #ffff99;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+path.limj {
+  /*stroke: #93d53d;*/
+  stroke: #99d594;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+path.oj {
+  stroke: #fd8d3c;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+path.gj {
+  stroke: #fbb4b9;
+  stroke-width: calc(8 * var(--path-base-width));
+}
+path.soda {
+  stroke: #eeeeff;
+  stroke-width: calc(6 * var(--path-base-width));
+}
+path.abs {
+  stroke: #aec390;
+  stroke-width: calc(4 * var(--path-base-width));
+}
+path.cog {
+  stroke: #8c3226;
+  stroke-width: calc(4 * var(--path-base-width));
+}
+path.peych {
+  stroke: #d45d9e;
+  stroke-width: calc(4 * var(--path-base-width));
+}
+
+path.mint {
+  stroke: #ccebc5;
+  stroke-width: calc(4 * var(--path-base-width));
+}
+path.gngrbr {
+  stroke: #8c2d04;
+  stroke-width: calc(4 * var(--path-base-width));
+}
+
+/*.leaf,*/
+.leaf div {
+  /*color: #000;*/
+  color: #000000;
+  font-weight: 700;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  background: #eee;
+}
+
+circle.ing-node {
+  fill-opacity: 0;
+  stroke-opacity: 0;
+}
+circle.textless {
+  fill-opacity: 0;
+  stroke-opacity: 0.8;
+}
+
+#legend {
+  height: 200px;
+  width: 181;
+  border: 0px dotted orange;
+}
+.legend-item-wrapper {
+  display: inline-block;
+  width: 350px;
+}
+.legend-item path {
+  stroke: #333;
+  stroke-width: 3;
+  /*fill: #ddd;*/
+  stroke-linejoin: round;
+  paint-order: fill stroke markers;
+}
+
+.vertical-text {
+  transform: rotate(-90deg);
+  transform-origin: 50% 100%;
+}
+.btl-label {
+  font-size: 11px;
+  width: 20px;
+  line-height: 1;
+}
+div.flex-center-both {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.position-absolute {
+  position: absolute;
+  margin: auto auto;
+}
+div.legend-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+}
+div.legend-text {
+  display: inline-block;
+}
+
+#text-opacity-slider-container {
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+}
+
+#wtf {
+  fill: none;
+  stroke: #2af;
+  stroke-width: 3;
+}
+
+.node-text {
+  opacity: 0;
+}
