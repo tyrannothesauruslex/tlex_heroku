@@ -15,20 +15,17 @@ Bid.15-17 HCP and at least 2 cards in every suit: <span class="bid">1NT</span>,
 
 foreignObject {
   width: 300px;
-  height: 20px;
+  /* height: 20px; */
   max-width: 500px;
-  // color: #2af;
+  /* color: #2af; */
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-  // max-height: 100px;
-  // border: 1px dotted gray;
+  /* max-height: 100px; */
+  /* border: 1px dotted gray; */
+  overflow: visible;
 }
 
 .decision {
-  //background: #99CBFF;
-  // background: rgba(255,255,255,0.25);
-  // background: rgba(205,205,205,0.25);
   border: 0px dotted green;
-  // min-height: 50px;
 }
 
 .red {
@@ -73,9 +70,39 @@ foreignObject {
   stroke-width: 1.5px;
 }
 
+.responder {
+  position: absolute;
+  height: 2000px;
+  width: 400px;
+  background: #eee;
+}
+
+#responder-bid {
+  left: 800px;
+}
+
+#responder-rebid {
+  left: 2000px;
+}
+
+#svg-wrapper {
+  position: absolute;
+}
 
 </style>
-<svg width="2000" height="1600"></svg>
+
+
+<body>
+
+
+
+<div class="responder" id="responder-bid"></div>  
+<div class="responder" id="responder-rebid"></div>  
+
+<div id="svg-wrapper">
+  <svg width="2000" height="2000"></svg>
+</div>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
@@ -133,3 +160,5 @@ d3.csv("bids.csv", function(error, data) {
 });
 
 </script>
+
+</body>
