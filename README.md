@@ -1,4 +1,4 @@
-<!-- git push https://tyrannothesauruslex@github.com/tyrannothesauruslex/tlex_heroku.git -->
+<!-- git push https://tyrannothesauruslex@github.com/tyrannothesauruslex/tlex_heroku.git branch_name -->
 
 ## TODO
 
